@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.attribes.push2beat.fragments.GpsFragment;
+import com.attribes.push2beat.fragments.MusicFragment;
 import com.attribes.push2beat.fragments.PlaceholderFragment;
 import com.attribes.push2beat.mainnavigation.MainActivity;
 
@@ -26,7 +28,27 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        return PlaceholderFragment.newInstance(position + 1);
+        switch (position)
+        {
+            case 0:
+                GpsFragment gpsFragment = new GpsFragment();
+                return gpsFragment;
+            case 1:
+            case 2:
+            case 3:
+                MusicFragment musicFragment = new MusicFragment();
+                return musicFragment;
+
+            default:
+                return null;
+
+
+
+
+        }
+
+
+     //   return PlaceholderFragment.newInstance(position + 1);
     }
 
     @Override
@@ -41,7 +63,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return "GPS";
             case 1:
-                return "WORKOUT";
+                return "Music";
             case 2:
                 return "Stats";
             case 3:

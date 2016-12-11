@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:background="@color/secondary_dark_grey"
+        android:orientation="horizontal"
+         android:padding="@dimen/large_padding"
+        android:elevation="@dimen/normal_elevation"
+        android:weightSum="5"
+        android:layout_gravity="center">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/placeholder"
+            android:layout_weight="1"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FF000000"/>
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="First name"
+            android:textColor="@color/white"
+
+            android:gravity="center"
+            android:layout_weight="2"
+            android:padding="@dimen/large_padding"
+            android:textSize="@dimen/md_title_textsize"
+            />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#c91f57"
+            android:layout_weight="2"
+           android:text="Start"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            />
+
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="100dp"
+        android:background="@color/secondary_dark_purple"
+        android:orientation="horizontal"
+        android:padding="@dimen/large_padding"
+        android:weightSum="5"
+        >
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/p2b_icon"
+
+            android:layout_weight="2"
+            />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="@dimen/large_margin"
+            android:src="@drawable/rat_icon"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@string/distance"
+            android:textColor="@color/white"
+
+            android:gravity="center"
+            android:layout_weight="1"
+            android:padding="@dimen/large_padding"
+            android:textSize="@dimen/medium_text_size"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@string/distance"
+            android:textColor="@color/white"
+
+            android:gravity="center"
+            android:layout_weight="1"
+            android:padding="@dimen/large_padding"
+            android:textSize="@dimen/medium_text_size"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

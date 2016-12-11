@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/secondary_dark_grey">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+        <ImageView
+                android:id="@+id/horse"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/catch_me_icon"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="25dp"
+                android:layout_marginStart="25dp"/>
+
+        <TextView
+                android:id="@+id/cmText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Catch Me if You can"
+                android:layout_toRightOf="@+id/horse"
+                android:layout_toEndOf="@+id/horse"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_centerVertical="true"/>
+
+        <ImageView
+                android:id="@+id/cm_go"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:background="@drawable/go_btn"
+                android:layout_alignTop="@+id/horse"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

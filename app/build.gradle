@@ -30,11 +30,25 @@ dependencies {
     compile group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.1.0'
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
+    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0' //for Circular ImageView
+
     testCompile 'junit:junit:4.12'
 }
 
+//play Services dependencies
 dependencies{
+    compile 'com.google.android.gms:play-services-maps:9.8.0'
+    compile 'com.google.android.gms:play-services-location:9.8.0'
+
+}
+
+dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.3.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+}
+dependencies {
+    compile 'com.android.support:support-v4:24.+'
+    compile 'com.android.support:recyclerview-v7:24.0.0'
 }
