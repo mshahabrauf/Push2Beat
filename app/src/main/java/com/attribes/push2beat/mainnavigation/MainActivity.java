@@ -1,27 +1,15 @@
 package com.attribes.push2beat.mainnavigation;
 
 import android.databinding.DataBindingUtil;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.TextView;
+import android.support.v7.app.AppCompatActivity;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.adapter.SectionsPagerAdapter;
 import com.attribes.push2beat.databinding.ActivityMainBinding;
+import com.attribes.push2beat.fragments.GpsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+          GpsFragment fragment = (GpsFragment) mSectionsPagerAdapter.getItem(0);
 
 
         // Set up the ViewPager with the sections adapter.

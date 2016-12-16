@@ -1,12 +1,14 @@
 package com.attribes.push2beat.network;
 
-import com.attribes.push2beat.models.BodyParams.AddTrackParams;
-import com.attribes.push2beat.models.BodyParams.UserListParams;
 import com.attribes.push2beat.models.Response.AddTrackResponse;
-import com.attribes.push2beat.models.Response.ListOfUserResponse;
+import com.attribes.push2beat.models.Response.TrackList.ListOfTrackResponse;
+import com.attribes.push2beat.models.Response.UserList.ListOfUserResponse;
+
+import java.util.Map;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 /**
@@ -15,13 +17,19 @@ import retrofit2.http.POST;
 
 public interface ApiInterface {
 
+    @FormUrlEncoded
     @POST(EndPoints.Add_Track)
-    Call<AddTrackResponse> postTrack(@Body AddTrackParams data);
+    Call<AddTrackResponse> postTrack(@FieldMap Map<String,Object> params);
 
 
+    @FormUrlEncoded
     @POST(EndPoints.User_List)
-    Call<ListOfUserResponse> getUsers(@Body UserListParams params);
+    Call<ListOfUserResponse> getUsers(@FieldMap Map<String,Object> params);
 
+
+    @FormUrlEncoded
+    @POST(EndPoints.Track_List)
+    Call<ListOfTrackResponse> getTracks(@FieldMap Map<String,Object> params);
 
 
 }

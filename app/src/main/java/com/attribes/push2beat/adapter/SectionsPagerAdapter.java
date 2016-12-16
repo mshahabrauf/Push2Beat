@@ -11,8 +11,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.attribes.push2beat.fragments.GpsFragment;
 import com.attribes.push2beat.fragments.MusicFragment;
-import com.attribes.push2beat.fragments.PlaceholderFragment;
-import com.attribes.push2beat.mainnavigation.MainActivity;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -23,6 +21,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public SectionsPagerAdapter(FragmentManager fm) {
         super(fm);
     }
+
+
 
     @Override
     public Fragment getItem(int position) {

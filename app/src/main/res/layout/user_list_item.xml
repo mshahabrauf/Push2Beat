@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="@dimen/md_simplelistitem_padding_top"
+    android:weightSum="0.6"
+    android:layout_height="wrap_content">
+
 
     <LinearLayout
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         android:layout_width="match_parent"
+        android:layout_weight="0.3"
         android:background="@color/secondary_dark_grey"
         android:orientation="horizontal"
-         android:padding="@dimen/large_padding"
+        android:padding="@dimen/md_simplelistitem_padding_top"
         android:elevation="@dimen/normal_elevation"
         android:weightSum="5"
         android:layout_gravity="center">
@@ -18,29 +25,30 @@
             android:id="@+id/profile_image"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/placeholder"
+            android:src="@drawable/user_icon"
             android:layout_weight="1"
+            android:layout_gravity="center"
             app:civ_border_width="2dp"
             app:civ_border_color="#FF000000"/>
 
 
         <TextView
+            android:id="@+id/user_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:text="First name"
             android:textColor="@color/white"
-
             android:gravity="center"
-            android:layout_weight="2"
-            android:padding="@dimen/large_padding"
-            android:textSize="@dimen/md_title_textsize"
+            android:layout_weight="2.5"
+            android:textSize="@dimen/medium_text_size"
             />
         <Button
+            android:id="@+id/start_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#c91f57"
-            android:layout_weight="2"
-           android:text="Start"
+            android:background="@color/secondary_red"
+            android:layout_weight="1.5"
+            android:text="Start"
             android:textColor="@color/white"
             android:layout_gravity="center"
             />
@@ -49,54 +57,59 @@
         </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/item_bottom"
         android:layout_width="match_parent"
-
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         android:background="@color/secondary_dark_purple"
+        android:layout_weight="0.3"
         android:orientation="horizontal"
-        android:padding="@dimen/large_padding"
+        android:padding="@dimen/md_button_padding_frame_side"
         android:weightSum="5"
         >
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/p2b_icon"
-
+            android:layout_gravity="center"
             android:layout_weight="2"
             />
 
         <ImageView
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/large_margin"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/normal_margin"
             android:src="@drawable/rat_icon"
             />
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/distance"
             android:textColor="@color/white"
-
+            android:layout_gravity="center"
             android:gravity="center"
-            android:layout_weight="1"
-            android:padding="@dimen/large_padding"
+            android:layout_weight="1.5"
+
             android:textSize="@dimen/medium_text_size"
             />
 
         <TextView
+            android:id="@+id/distance"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="@string/distance"
-            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:text="28m"
 
+            android:maxLines="1"
+            android:textStyle="bold"
+            android:textColor="@color/secondary_red"
+            android:layout_gravity="center"
             android:gravity="center"
-            android:layout_weight="1"
-            android:padding="@dimen/large_padding"
+            android:layout_weight="0.7"
+            android:padding="@dimen/small_padding"
             android:textSize="@dimen/medium_text_size"
             />
     </LinearLayout>
-
-
 </LinearLayout>
+</layout>

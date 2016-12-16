@@ -22,6 +22,12 @@ android {
     }
 }
 
+repositories {
+    maven {
+        url "https://github.com/QuickBlox/quickblox-android-sdk-releases/raw/master/"
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -30,10 +36,14 @@ dependencies {
     compile group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.1.0'
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
-    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
-    compile 'de.hdodenhof:circleimageview:2.1.0' //for Circular ImageView
 
     testCompile 'junit:junit:4.12'
+}
+
+dependencies{
+    compile 'com.afollestad.material-dialogs:core:0.9.1.0' // Material Dialog
+    compile 'de.hdodenhof:circleimageview:2.1.0' //for Circular ImageView
+    compile 'com.github.anastr:speedviewlib:1.1.1' //for Speedometer
 }
 
 //play Services dependencies
@@ -51,4 +61,13 @@ dependencies {
 dependencies {
     compile 'com.android.support:support-v4:24.+'
     compile 'com.android.support:recyclerview-v7:24.0.0'
+    compile 'com.android.support:cardview-v7:24.0.+'
+
+}
+
+//QuickBLox
+dependencies {
+    compile "com.quickblox:quickblox-android-sdk-core:2.5.1@aar"
+    compile "com.quickblox:quickblox-android-sdk-location:2.5.1@aar" 
+
 }

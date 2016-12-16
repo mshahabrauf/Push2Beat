@@ -1,4 +1,4 @@
-package com.attribes.push2beat.models.Response;
+package com.attribes.push2beat.models.Response.UserList;
 
 import java.util.List;
 

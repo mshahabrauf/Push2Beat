@@ -1,18 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:id="@+id/timer_main_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/white">
-
-    <RelativeLayout
+        <RelativeLayout
+            android:id="@+id/timer_row"
             android:layout_width="match_parent"
+
             android:layout_height="55dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:padding="5dp">
 
 
-        <ImageView
+            <ImageView
                 android:id="@+id/clock"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -20,10 +23,10 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginStart="20dp"/>
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"/>
 
-        <TextView
+            <TextView
                 android:id="@+id/countTimer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,31 +39,108 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"/>
 
-        <ImageView
+            <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_toRightOf="@+id/countTimer"
                 android:layout_toEndOf="@+id/countTimer"
-                android:layout_marginLeft="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 android:background="@drawable/calorie_bg"
                 android:layout_centerVertical="true" />
-        <TextView
+            <TextView
+                android:id="@+id/calories_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5678"
+                android:text="0"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                android:id="@+id/calories_tv"
                 android:layout_centerVertical="true"
                 android:layout_alignRight="@+id/imageView"
                 android:layout_alignEnd="@+id/imageView"
                 android:layout_marginRight="10dp"
                 android:layout_marginEnd="10dp"/>
 
-    </RelativeLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/layout_add_trackname"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:visibility="gone"
+            android:gravity="center"
 
-</LinearLayout>
+            android:background="@color/white"
+            android:padding="@dimen/normal_padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/track_hint"
+
+                android:textSize="@dimen/above_medium_text_size"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/track_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:textColor="@color/black"
+                android:cursorVisible="true"
+                android:background="@color/white" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/user_row"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="0.3"
+            android:visibility="gone"
+            android:background="@color/secondary_dark_grey"
+            android:orientation="horizontal"
+            android:padding="@dimen/md_simplelistitem_padding_top"
+            android:elevation="@dimen/normal_elevation"
+            android:weightSum="5"
+            android:layout_gravity="center">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_img"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/user_icon"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#FF000000"/>
+
+
+            <TextView
+                android:id="@+id/user_fname"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text=""
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_weight="2.5"
+                android:textSize="@dimen/medium_text_size"
+                />
+            <Button
+                android:id="@+id/catch_distance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/secondary_red"
+                android:layout_weight="1.5"
+                android:text=""
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

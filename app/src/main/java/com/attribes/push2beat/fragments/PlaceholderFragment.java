@@ -46,4 +46,6 @@ public class PlaceholderFragment extends Fragment {
         textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
         return rootView;
     }
+
+
 }

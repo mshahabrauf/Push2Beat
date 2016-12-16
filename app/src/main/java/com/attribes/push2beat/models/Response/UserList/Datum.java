@@ -1,4 +1,4 @@
-package com.attribes.push2beat.models.Response;
+package com.attribes.push2beat.models.Response.UserList;
 
 /**
  * Created by android on 12/11/16.
@@ -9,9 +9,9 @@ package com.attribes.push2beat.models.Response;
 public class Datum {
     public String id;
 
-    public String userName;
+    public String user_name;
 
-    public String userLastname;
+    public String user_lastname;
 
     public String lat;
 
@@ -19,7 +19,7 @@ public class Datum {
 
     public String email;
 
-    public String profileImage;
+    public String profile_image;
 
     public String getId() {
         return id;
@@ -29,20 +29,20 @@ public class Datum {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUser_name() {
+        return user_name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 
-    public String getUserLastname() {
-        return userLastname;
+    public String getUser_lastname() {
+        return user_lastname;
     }
 
-    public void setUserLastname(String userLastname) {
-        this.userLastname = userLastname;
+    public void setUser_lastname(String user_lastname) {
+        this.user_lastname = user_lastname;
     }
 
     public String getLat() {
@@ -69,11 +69,11 @@ public class Datum {
         this.email = email;
     }
 
-    public String getProfileImage() {
-        return profileImage;
+    public String getProfile_image() {
+        return profile_image;
     }
 
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
+    public void setProfile_image(String profile_image) {
+        this.profile_image = profile_image;
     }
 }

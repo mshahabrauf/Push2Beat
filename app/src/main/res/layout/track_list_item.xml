@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:padding="@dimen/md_simplelistitem_padding_top"
+        android:weightSum="0.6"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="0.3"
+            android:background="@color/secondary_dark_grey"
+            android:orientation="horizontal"
+            android:padding="@dimen/md_simplelistitem_padding_top"
+            android:elevation="@dimen/normal_elevation"
+            android:weightSum="5"
+            android:layout_gravity="center">
+
+            <ImageView
+
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ghost_icon"
+                android:padding="@dimen/md_button_padding_frame_side"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+              />
+
+
+            <TextView
+                android:id="@+id/track_name"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="First name"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_weight="2.5"
+                android:textSize="@dimen/medium_text_size"
+                />
+            <Button
+                android:id="@+id/start_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/secondary_red"
+                android:layout_weight="1.5"
+                android:text="Start"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/secondary_dark_purple"
+            android:layout_weight="0.3"
+            android:orientation="horizontal"
+            android:padding="@dimen/md_button_padding_frame_side"
+            android:weightSum="5"
+            >
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/p2b_icon"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:layout_gravity="center"
+                android:padding="@dimen/normal_margin"
+                android:src="@drawable/calories_red"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/calories_burn"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_weight="1.5"
+
+                android:textSize="@dimen/small_text_size"
+                />
+
+            <TextView
+                android:id="@+id/burn_calories"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=""
+
+                android:maxLines="1"
+                android:textStyle="bold"
+                android:textColor="@color/secondary_red"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_weight="0.7"
+                android:padding="@dimen/small_padding"
+                android:textSize="@dimen/small_text_size"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</layout>
