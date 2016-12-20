@@ -24,6 +24,7 @@ import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.databinding.FragmentTimerBinding;
 import com.attribes.push2beat.models.BodyParams.AddTrackParams;
 import com.attribes.push2beat.models.Response.UserList.Datum;
+import com.attribes.push2beat.models.StatsData;
 import com.attribes.push2beat.network.DAL.AddTrackDAL;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -34,6 +35,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.google.android.gms.location.LocationRequest.create;
@@ -42,7 +44,7 @@ import static com.google.android.gms.location.LocationRequest.create;
  * Created by Moiz on 12/8/16.
  */
 
-public class GpsFragment extends android.support.v4.app.Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,CatchMeFragment.OnStartButtonListener{
+public class GpsFragment extends android.support.v4.app.Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,CatchMeFragment.OnStartButtonListener,GhostRiderFragment.OnStartButtonListener{
 
     private MapView mapView;
     private FragmentTimerBinding binding;
@@ -55,22 +57,29 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     private SpeedoMeterFragment speedMeterFragment;
 
     private double totalDistance = 0;
+    private int burntCalories = 0;
     private List<LatLng> track;
     private String trackPath = "";
     private boolean isSavedButtonClicked = false;
+    private String trackId;
+    public static final String SpeedTag= "speed";
 
 
     //Timer Constants
+    List<Integer> speedList;
+
     long starttime = 0L;
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
     long updatedtime = 0L;
     int t = 1;
+    double distanceInMeter = 0;
+
     int secs = 0;
     int mins = 0;
     int milliseconds = 0;
     Handler handler = new Handler();
-    private String SpeedTag =  "speed";
+
 
 
 
@@ -97,6 +106,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         speedMeterFragment = new SpeedoMeterFragment();
         FragmentManager fragment = getFragmentManager();
         FragmentTransaction transaction = fragment.beginTransaction();
+
         transaction.add(R.id.container_above, speedMeterFragment,SpeedTag);
         transaction.commit();
 
@@ -117,6 +127,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
     private void init() {
         track = new ArrayList<LatLng>();
+        speedList = new ArrayList<Integer>();
 
     }
 
@@ -148,6 +159,29 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         binding.layoutTimerSubReplace.timerStop.setOnClickListener(new StopButtonListener());
         binding.layoutCmiyc.cmGo.setOnClickListener(new CatchMeButtonListener());
         binding.layoutGhostrider.ghostGo.setOnClickListener(new GhostButtonListener());
+
+    }
+
+
+    public void resetScreensValues()
+    {
+
+        track.clear();
+        totalDistance = 0;
+        burntCalories = 0;
+        distanceInMeter = 0;
+
+
+        isSavedButtonClicked =false;
+        starttime = 0L;
+        timeInMilliseconds = 0L;
+        timeSwapBuff = 0L;
+        updatedtime = 0L;
+        t = 1;
+        secs = 0;
+        mins = 0;
+        milliseconds = 0;
+        timer_start();
 
     }
 
@@ -215,16 +249,58 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
     /**
-     * Todo // Convert according to this Format lat,lat_lng,lat_lng,lng
+     * Format : lng,lat_lng,lat_lng,lat_
      * Converting LatLng list into single String
      * @return
      */
     private String getTrackPath() {
+
+       trackPath = String.valueOf(track.get(0).longitude)+",";
+
         for(LatLng latLng:track)
         {
-            trackPath.concat(latLng.toString());
+          trackPath += String.valueOf(latLng.latitude)+"_";
+          trackPath += String.valueOf(latLng.longitude)+",";
         }
+        trackPath += String.valueOf(track.get(track.size()-1).latitude)+"_";
         return trackPath;
+    }
+
+
+    private List<LatLng> convertStringIntoLatlng(String path)
+    {
+
+        List<String> latitudes = new ArrayList<>();
+        List<String> longitudes = new ArrayList<>();
+        List<LatLng> tracker =  new ArrayList<LatLng>();
+        String[] commaSpliter = path.split(",");
+        boolean isFirstValue = true;
+        for (String latsLngs: commaSpliter)
+        {
+            if(isFirstValue)
+            {
+                 longitudes.add(latsLngs);
+                  isFirstValue = false;
+            }
+            else {
+                String[] underScoreSpliter = latsLngs.split("_");
+                latitudes.add(underScoreSpliter[0]);
+                if(commaSpliter[commaSpliter.length-1].equals(latsLngs) == false)
+                {
+                    longitudes.add(underScoreSpliter[1]);
+                }
+            }
+        }
+        latitudes.add(0,latitudes.get(latitudes.size()-1));
+        latitudes.remove(latitudes.size()-1);
+
+        for(int i=0;i<latitudes.size();i++)
+        {
+            LatLng latlng = new LatLng(Double.parseDouble(latitudes.get(i)),Double.parseDouble(longitudes.get(i)));
+            tracker.add(latlng);
+        }
+
+        return tracker;
     }
 
 
@@ -241,9 +317,11 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
     private void cal_setCalories(double distance){                      // calculate calories and set it on view
-       int burntCalories = (int)(160*0.75*distance);                      // distance in miles
+        burntCalories = (int)(160*0.75*distance);                      // distance in miles
         binding.layoutCounterCal.caloriesTv.setText(""+burntCalories);
     }
+
+
 
 
     private void timer_start() {
@@ -275,6 +353,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
     private void callAddTrackApi() {
+
         AddTrackParams model = new AddTrackParams();
         model.setTrack_name(binding.layoutCounterCal.trackName.getText().toString());
         model.setStart_latitude(startLocation.getLatitude());
@@ -282,25 +361,30 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         model.setEnd_latitude(track.get(track.size() - 1).latitude);
         model.setEnd_longitude(track.get(track.size() - 1).longitude);
         model.setTrack_path(getTrackPath());
+        model.setDistance(totalDistance * 1609.344); // converting miles into meter
+        model.setCaleries_burnt(burntCalories);
+        model.setTrack_time(""+ mins + ":" + String.format("%02d", secs) + ":" + String.format("%03d", milliseconds));
         // Dummy values
         //Todo change these dummy values to actual
         model.setTrack_type(1); // 1 for simple run, 2 for ghots rider and 3 for catch me if you can
-        model.setGenrated_by(48);
-        model.setDistance(12);
-        model.setCaleries_burnt(22);
-        model.setTrack_time(12);
+        model.setGenrated_by(48); // Todo get UserId after Login
+
         AddTrackDAL.postTrack(model,getContext());
+
 
     }
 
 
+    /**
+     * This is a callback of child fragment Catch Me if you can
+     * @param datum
+     */
     @Override
     public void onStartCmiyc(Datum datum) {
-
         updateUiforCmifyc();
+        resetScreensValues();
         showOpponentDetail(datum);
-
-
+        timer_start();
     }
 
     private void showOpponentDetail(Datum datum) {
@@ -317,6 +401,36 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         binding.layoutCmiyc.cmiycRow.setVisibility(View.GONE);
     }
 
+    /**
+     * Todo show the data and update UI
+     * this is a callback of child fragment Ghost Rider
+     * @param datum
+     */
+
+    public void onStartGhostRider(com.attribes.push2beat.models.Response.TrackList.Datum datum) {
+       Fragment fragment = getChildFragmentManager().findFragmentByTag(Constants.GHOST_TAG);
+       FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        ft.remove(fragment).commit();
+        updateUIforGhostRider();
+        resetScreensValues();
+        trackId = datum.getId();
+        if(datum.getTrack_path().equals("") == false) {
+            List<LatLng> traker = convertStringIntoLatlng(datum.getTrack_path());
+            if(getMapFragment().isHidden()) {
+                showHideFragment(getMapFragment(),speedMeterFragment);
+                getMapFragment().showRoute(traker);
+            }
+        }
+    }
+
+    private void updateUIforGhostRider() {
+        binding.layoutCounterCal.timerRow.setBackgroundColor(getResources().getColor(R.color.secondary_dark_grey));
+        binding.layoutCounterCal.countTimer.setTextColor(getResources().getColor(R.color.white));
+        binding.layoutCounterCal.clock.setImageDrawable(getResources().getDrawable(R.drawable.ghost_icon));
+        binding.layoutGhostrider.ghostRow.setVisibility(View.GONE);
+        binding.layoutCmiyc.cmiycRow.setVisibility(View.GONE);
+    }
+
 
     //====================================== Listeners==================================================================//
 
@@ -328,18 +442,27 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
             getMapFragment().addLocationToQb(curr);
 
             double distance = calculateDistance(curr,prev);
-          //  if(distance > 5) {
-                totalDistance += distance * 0.00062137;  // multiplying By this value is converting it into Miles
+          //  if(distance > 5) { Todo uncomment it for accuracy
+                totalDistance += distance / 1609.344; //miles
+                distanceInMeter += distance;
                 cal_setCalories(totalDistance);
+
+                speedList.add(calculateSpeed());
                 LatLng latLng = new LatLng(curr.getLatitude(),curr.getLongitude());
                 track.add(latLng);
                 prev = curr;
            // }
 
 
-            //getSpeedMeterFragment().setSpeed((int) curr.getSpeed()); //For Speed
 
         }
+    }
+
+    private int calculateSpeed() {
+      int hours = mins /60 + secs;
+      int km = (int) (distanceInMeter / 1000);
+      int speed = km/hours;
+        return speed;
     }
 
 
@@ -358,10 +481,14 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                 if (isSavedButtonClicked) {
 
                     if (binding.layoutCounterCal.trackName.getText().toString().equals("")) {
+                        Toast.makeText(getContext(), "Track name is empty", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                       callAddTrackApi();
+                        startStatsScreen();
 
-                    } else {
-                        callAddTrackApi();
-                    }//apiClient.connect();
+
+                    }
                 } else {
                     binding.layoutCounterCal.layoutAddTrackname.setVisibility(View.VISIBLE);
                     binding.layoutCounterCal.timerRow.setVisibility(View.GONE);
@@ -372,11 +499,40 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
         }
 
+    private void startStatsScreen() {
+        StatsData data = new StatsData();
+
+        data.setPath(track);
+        data.setTopSpeed(Collections.max(speedList));
+        data.setAverageSpeed(calculateAverageSpeed(speedList));
+        data.setTraveledDistance(totalDistance);
+        data.setCalories(burntCalories);
+
+        StatsFragment fragment = new StatsFragment(data);
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        ft.add(R.id.container_full,fragment,Constants.STATS_TAG).commit();
+
+    }
+
+    private double calculateAverageSpeed(List <Integer> speedList) {
+        Integer sum = 0;
+        if(!speedList.isEmpty()) {
+            for (Integer mark : speedList) {
+                sum += mark;
+            }
+            return sum.doubleValue() / speedList.size();
+        }
+        return sum;
+    }
+
 
     private class GhostButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
 
+            Fragment fragment = new GhostRiderFragment();
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.add(R.id.container_full,fragment,Constants.GHOST_TAG).commit();
         }
     }
 

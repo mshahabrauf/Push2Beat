@@ -5,6 +5,7 @@
         android:id="@+id/timer_main_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="@dimen/small_elevation"
         android:background="@color/white">
 
         <RelativeLayout
@@ -69,9 +70,9 @@
             android:id="@+id/layout_add_trackname"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:visibility="gone"
-            android:gravity="center"
 
+            android:gravity="center"
+            android:visibility="gone"
             android:background="@color/white"
             android:padding="@dimen/normal_padding">
 

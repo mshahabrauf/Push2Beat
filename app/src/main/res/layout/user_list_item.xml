@@ -5,19 +5,19 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:padding="@dimen/md_simplelistitem_padding_top"
-    android:weightSum="0.6"
+    android:elevation="@dimen/normal_elevation"
     android:layout_height="wrap_content">
 
 
     <LinearLayout
         android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:layout_weight="0.3"
+        android:layout_weight="1"
         android:background="@color/secondary_dark_grey"
         android:orientation="horizontal"
         android:padding="@dimen/md_simplelistitem_padding_top"
         android:elevation="@dimen/normal_elevation"
-        android:weightSum="5"
+
         android:layout_gravity="center">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/secondary_dark_purple"
-        android:layout_weight="0.3"
+        android:layout_weight="1"
         android:orientation="horizontal"
         android:padding="@dimen/md_button_padding_frame_side"
         android:weightSum="5"

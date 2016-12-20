@@ -8,7 +8,7 @@ public class AddTrackParams {
     private String track_name;
     private int genrated_by;
     private double distance;
-    private  int track_time;
+    private  String track_time;
     private int caleries_burnt;
     private double start_latitude;
     private double start_longitude;
@@ -29,7 +29,7 @@ public class AddTrackParams {
         return distance;
     }
 
-    public int getTrack_time() {
+    public String getTrack_time() {
         return track_time;
     }
 
@@ -73,7 +73,7 @@ public class AddTrackParams {
         this.distance = distance;
     }
 
-    public void setTrack_time(int track_time) {
+    public void setTrack_time(String track_time) {
         this.track_time = track_time;
     }
 

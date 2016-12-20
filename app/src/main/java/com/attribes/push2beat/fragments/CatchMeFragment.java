@@ -15,13 +15,13 @@ import android.widget.Toast;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
-import com.attribes.push2beat.Utils.CatchMeAdapterInterface;
+import com.attribes.push2beat.Utils.RecyclerAdapterInterface;
 import com.attribes.push2beat.adapter.UserListAdapter;
 import com.attribes.push2beat.databinding.FragmentCatchMeBinding;
 import com.attribes.push2beat.models.BodyParams.GetListRequestParams;
 import com.attribes.push2beat.models.Response.UserList.Datum;
 import com.attribes.push2beat.network.DAL.ListOfUserDAL;
-import com.attribes.push2beat.network.interfaces.ArrivalListener;
+import com.attribes.push2beat.network.interfaces.UsersArrivalListener;
 
 import java.util.List;
 
@@ -81,13 +81,13 @@ public class CatchMeFragment extends Fragment {
         params.setLat(Common.getInstance().getLocation().getLatitude());
         params.setLng(Common.getInstance().getLocation().getLongitude());
 
-        ListOfUserDAL.getUserList(params, new ArrivalListener() {
+        ListOfUserDAL.getUserList(params, new UsersArrivalListener() {
             @Override
             public void onDataRecieved(final List<Datum> data)
             {
 
 
-                mRecycle.setAdapter(new UserListAdapter(data, new CatchMeAdapterInterface() {
+                mRecycle.setAdapter(new UserListAdapter(data, new RecyclerAdapterInterface() {
                     @Override
                     public void onstartCallback(int position) {
 

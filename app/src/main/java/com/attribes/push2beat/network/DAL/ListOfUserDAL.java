@@ -4,7 +4,7 @@ import com.attribes.push2beat.models.BodyParams.GetListRequestParams;
 import com.attribes.push2beat.models.Response.UserList.Datum;
 import com.attribes.push2beat.models.Response.UserList.ListOfUserResponse;
 import com.attribes.push2beat.network.RestClient;
-import com.attribes.push2beat.network.interfaces.ArrivalListener;
+import com.attribes.push2beat.network.interfaces.UsersArrivalListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +18,7 @@ import retrofit2.Response;
  */
 
 public class ListOfUserDAL {
-    public static void getUserList(GetListRequestParams params, final ArrivalListener listener)
+    public static void getUserList(GetListRequestParams params, final UsersArrivalListener listener)
     {
 
         HashMap<String,Object> body = new HashMap<>();

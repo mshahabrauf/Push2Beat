@@ -46,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         binding.tabs.setupWithViewPager(mViewPager);
 
+        binding.tabs.getTabAt(0).setIcon(R.drawable.ic_gps);
+        binding.tabs.getTabAt(1).setIcon(R.drawable.ic_music);
+        binding.tabs.getTabAt(2).setIcon(R.drawable.ic_stats);
+        binding.tabs.getTabAt(3).setIcon(R.drawable.ic_action_name);
+
 
     }
 

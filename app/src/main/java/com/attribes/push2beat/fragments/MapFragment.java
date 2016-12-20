@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.QBSettings;
+import com.quickblox.core.account.model.QBAccountSettings;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.location.QBLocations;
 import com.quickblox.location.model.QBLocation;
@@ -223,6 +224,7 @@ public class MapFragment extends android.support.v4.app.Fragment {
             }
             addTrackMarker(track);
         }
+        moveMapCamera(track.get(0).latitude,track.get(0).longitude);
     }
 
     /**

@@ -4,7 +4,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-
+              android:id="@+id/container_full"
               android:weightSum = "3"
               >
 
@@ -24,17 +24,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="10dp"
+            android:weightSum="5"
             android:layout_weight="1.8"
-            android:weightSum="0.61"
+
             android:orientation="vertical">
 
 
         <include android:id="@+id/layout_counter_cal"
             layout="@layout/timer_main"
             android:layout_width="match_parent"
-
             android:layout_height="0dp"
-            android:layout_weight="0.12"/>
+            android:layout_weight="1"/>
 
 
         <include
@@ -42,7 +42,7 @@
             layout="@layout/timer_sub_replace"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.2"
+            android:layout_weight="2"
             />
 
 
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
 
             android:layout_height="0dp"
-            android:layout_weight="0.13"
+            android:layout_weight="1"
             />
 
 
@@ -62,7 +62,7 @@
             layout="@layout/timer_cmiyc"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.13"/>
+            android:layout_weight="1"/>
 
     </LinearLayout>
 

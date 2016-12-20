@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.RecyclerAdapterInterface;
 import com.attribes.push2beat.adapter.viewholders.TrackListHolder;
 import com.attribes.push2beat.models.Response.TrackList.Datum;
 
@@ -19,11 +20,13 @@ import java.util.List;
 public class TrackListAdapter extends RecyclerView.Adapter<TrackListHolder> {
     private Context mContext;
     private List<Datum> data;
+    private RecyclerAdapterInterface listener;
 
 
-    public TrackListAdapter(List<Datum> data)
+    public TrackListAdapter(List<Datum> data,RecyclerAdapterInterface listener)
     {
         this.data = data;
+        this.listener = listener;
     }
 
 
@@ -38,20 +41,26 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListHolder> {
     @Override
     public void onBindViewHolder(TrackListHolder holder, int position) {
 
-        holder.calories.setText(data.get(position).getCaleriesBurnt());
-        holder.trackName.setText(data.get(position).getTrackName());
-        holder.startBtn.setOnClickListener(new OnStartListener());
+        holder.calories.setText(data.get(position).getCaleries_burnt());
+        holder.trackName.setText(data.get(position).getTrack_name());
+        holder.startBtn.setOnClickListener(new OnStartListener(position));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return data.size();
     }
 
     private class OnStartListener implements View.OnClickListener {
+        private int position;
+
+        public OnStartListener(int position) {
+            this.position = position;
+        }
+
         @Override
         public void onClick(View view) {
-            //Todo implement interface
+            listener.onstartCallback(position);
         }
     }
 }

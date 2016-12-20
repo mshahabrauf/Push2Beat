@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by android on 12/11/16.
  */
-public interface ArrivalListener {
+public interface UsersArrivalListener {
     void onDataRecieved(List<Datum> data);
     void onEmptyData(String msg);
 }

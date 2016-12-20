@@ -4,26 +4,67 @@
               android:orientation="vertical"
               android:id="@+id/time_sub_replace_row"
               android:layout_width="match_parent"
+              android:elevation="@dimen/normal_elevation"
               android:layout_height="wrap_content"
               android:paddingTop="10dp"
-              android:weightSum="2"
               android:paddingBottom="10dp"
               android:background="@color/secondary_dark_purple">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+
+        android:padding="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal"
+        >
+
+
+
 
     <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-        android:layout_weight="1"
-            android:background="@drawable/bg_cal"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:layout_weight="2"
+            android:background="@drawable/p2b_icon"/>
 
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/normal_margin"
+            android:src="@drawable/calories_red"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="@dimen/small_text_size"
+            android:text="@string/calories_burn"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:textColor="@color/secondary_red"
+            android:gravity="center"
+            android:textSize="@dimen/small_text_size"
+            android:text="250+" />
+
+    </LinearLayout>
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
             android:gravity="center"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
             android:weightSum="3"
 
         >
@@ -32,16 +73,17 @@
         <ImageView
                 android:id="@+id/timer_stop"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="30dp"
                 android:background="@drawable/stop_button"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="@dimen/fab_margin"
                 android:layout_weight="1"
-                android:layout_marginEnd="20dp"/>
+               />
 
         <ImageView
                 android:id="@+id/btn_gps"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+            android:padding="@dimen/md_button_padding_horizontal"
+                android:layout_height="30dp"
                 android:layout_weight="1"
                 android:background="@drawable/gps_button"
                 />
@@ -49,7 +91,7 @@
         <ImageView
             android:id="@+id/btn_add_track"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:visibility="gone"
             android:layout_weight="1"
             android:background="@drawable/save_track"

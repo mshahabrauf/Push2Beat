@@ -6,19 +6,19 @@ package com.attribes.push2beat.models.Response.TrackList;
 
 public class Datum {
 
-    public String id;
-    public String trackName;
-    public String totalTime;
-    public String genratedBy;
-    public String distance;
-    public String trackTime;
-    public String caleriesBurnt;
-    public String startLattitude;
-    public String startLongitude;
-    public String endLattitude;
-    public String endLongitude;
-    public String trackPath;
-    public String trackType;
+    private String id;
+    private String track_name;
+    private String total_time;
+    private String genrated_by;
+    private String distance;
+    private String track_time;
+    private String caleries_burnt;
+    private String start_lattitude;
+    private String start_longitude;
+    private String end_lattitude;
+    private String end_longitude;
+    private String track_path;
+    private String track_type;
 
     public String getId() {
         return id;
@@ -28,28 +28,28 @@ public class Datum {
         this.id = id;
     }
 
-    public String getTrackName() {
-        return trackName;
+    public String getTrack_name() {
+        return track_name;
     }
 
-    public void setTrackName(String trackName) {
-        this.trackName = trackName;
+    public void setTrack_name(String track_name) {
+        this.track_name = track_name;
     }
 
-    public String getTotalTime() {
-        return totalTime;
+    public String getTotal_time() {
+        return total_time;
     }
 
-    public void setTotalTime(String totalTime) {
-        this.totalTime = totalTime;
+    public void setTotal_time(String total_time) {
+        this.total_time = total_time;
     }
 
-    public String getGenratedBy() {
-        return genratedBy;
+    public String getGenrated_by() {
+        return genrated_by;
     }
 
-    public void setGenratedBy(String genratedBy) {
-        this.genratedBy = genratedBy;
+    public void setGenrated_by(String genrated_by) {
+        this.genrated_by = genrated_by;
     }
 
     public String getDistance() {
@@ -60,67 +60,67 @@ public class Datum {
         this.distance = distance;
     }
 
-    public String getTrackTime() {
-        return trackTime;
+    public String getTrack_time() {
+        return track_time;
     }
 
-    public void setTrackTime(String trackTime) {
-        this.trackTime = trackTime;
+    public void setTrack_time(String track_time) {
+        this.track_time = track_time;
     }
 
-    public String getCaleriesBurnt() {
-        return caleriesBurnt;
+    public String getCaleries_burnt() {
+        return caleries_burnt;
     }
 
-    public void setCaleriesBurnt(String caleriesBurnt) {
-        this.caleriesBurnt = caleriesBurnt;
+    public void setCaleries_burnt(String caleries_burnt) {
+        this.caleries_burnt = caleries_burnt;
     }
 
-    public String getStartLattitude() {
-        return startLattitude;
+    public String getStart_lattitude() {
+        return start_lattitude;
     }
 
-    public void setStartLattitude(String startLattitude) {
-        this.startLattitude = startLattitude;
+    public void setStart_lattitude(String start_lattitude) {
+        this.start_lattitude = start_lattitude;
     }
 
-    public String getStartLongitude() {
-        return startLongitude;
+    public String getStart_longitude() {
+        return start_longitude;
     }
 
-    public void setStartLongitude(String startLongitude) {
-        this.startLongitude = startLongitude;
+    public void setStart_longitude(String start_longitude) {
+        this.start_longitude = start_longitude;
     }
 
-    public String getEndLattitude() {
-        return endLattitude;
+    public String getEnd_lattitude() {
+        return end_lattitude;
     }
 
-    public void setEndLattitude(String endLattitude) {
-        this.endLattitude = endLattitude;
+    public void setEnd_lattitude(String end_lattitude) {
+        this.end_lattitude = end_lattitude;
     }
 
-    public String getEndLongitude() {
-        return endLongitude;
+    public String getEnd_longitude() {
+        return end_longitude;
     }
 
-    public void setEndLongitude(String endLongitude) {
-        this.endLongitude = endLongitude;
+    public void setEnd_longitude(String end_longitude) {
+        this.end_longitude = end_longitude;
     }
 
-    public String getTrackPath() {
-        return trackPath;
+    public String getTrack_path() {
+        return track_path;
     }
 
-    public void setTrackPath(String trackPath) {
-        this.trackPath = trackPath;
+    public void setTrack_path(String track_path) {
+        this.track_path = track_path;
     }
 
-    public String getTrackType() {
-        return trackType;
+    public String getTrack_type() {
+        return track_type;
     }
 
-    public void setTrackType(String trackType) {
-        this.trackType = trackType;
+    public void setTrack_type(String track_type) {
+        this.track_type = track_type;
     }
 }
