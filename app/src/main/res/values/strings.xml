@@ -2,4 +2,7 @@
     <string name="app_name">Push2Beat</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="track_hint">Track name: </string>
+    <string name="distance">Distance:</string>
 </resources>

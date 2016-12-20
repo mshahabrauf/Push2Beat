@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/bg"
+              android:weightSum = "3.8">
+
+    <FrameLayout
+            android:id="@+id/timer_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+
+            android:padding="20dp"
+            android:layout_weight="1.8"/>
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:paddingRight="20dp"
+            android:paddingEnd="20dp"
+            android:orientation="vertical"
+            android:layout_weight="2.0" >
+
+        <include android:id="@+id/layout_counter_cal"
+                layout="@layout/timer_main"
+                 android:layout_width="match_parent"
+                 android:layout_height="0dp"
+                 android:layout_weight="0.4"/>
+
+        <include android:id="@+id/layoutTimerSubReplace"
+                layout="@layout/timer_sub_replace"
+                 android:layout_width="match_parent"
+                 android:layout_height="0dp"
+                 android:layout_weight="0.6"/>
+
+        <include layout="@layout/timer_ghost"
+                 android:layout_width="match_parent"
+                 android:layout_height="0dp"
+                 android:layout_weight="0.4"/>
+
+        <include layout="@layout/timer_cmiyc"
+                 android:layout_width="match_parent"
+                 android:layout_height="0dp"
+                 android:layout_weight="0.4"/>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+</layout>
