@@ -73,7 +73,7 @@
         <ImageView
                 android:id="@+id/timer_stop"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:background="@drawable/stop_button"
                 android:layout_marginRight="@dimen/fab_margin"
                 android:layout_weight="1"
@@ -83,7 +83,7 @@
                 android:id="@+id/btn_gps"
                 android:layout_width="0dp"
             android:padding="@dimen/md_button_padding_horizontal"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:layout_weight="1"
                 android:background="@drawable/gps_button"
                 />
@@ -91,7 +91,7 @@
         <ImageView
             android:id="@+id/btn_add_track"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:visibility="gone"
             android:layout_weight="1"
             android:background="@drawable/save_track"

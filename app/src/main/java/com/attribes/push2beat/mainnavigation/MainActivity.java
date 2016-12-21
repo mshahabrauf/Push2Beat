@@ -1,15 +1,18 @@
 package com.attribes.push2beat.mainnavigation;
 
+import android.app.FragmentManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Toast;
 
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.adapter.SectionsPagerAdapter;
 import com.attribes.push2beat.databinding.ActivityMainBinding;
-import com.attribes.push2beat.fragments.GpsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,22 +41,47 @@ public class MainActivity extends AppCompatActivity {
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-          GpsFragment fragment = (GpsFragment) mSectionsPagerAdapter.getItem(0);
+       //   GpsFragment fragment = (GpsFragment) mSectionsPagerAdapter.getItem(0);
 
+        binding.appbar.backButton.setOnClickListener(new BackButtonListener());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         binding.tabs.setupWithViewPager(mViewPager);
 
-        binding.tabs.getTabAt(0).setIcon(R.drawable.ic_gps);
-        binding.tabs.getTabAt(1).setIcon(R.drawable.ic_music);
-        binding.tabs.getTabAt(2).setIcon(R.drawable.ic_stats);
-        binding.tabs.getTabAt(3).setIcon(R.drawable.ic_action_name);
+
+        addTabsIcons();
 
 
     }
 
 
 
+    private void addTabsIcons() {
+
+        binding.tabs.getTabAt(0).setIcon(R.drawable.ic_gps);
+        binding.tabs.getTabAt(1).setIcon(R.drawable.ic_music);
+        binding.tabs.getTabAt(2).setIcon(R.drawable.ic_stats);
+        binding.tabs.getTabAt(3).setIcon(R.drawable.ic_action_name);
+
+    }
+
+
+    private class BackButtonListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+         //   Fragment ghostFragment = getSupportFragmentManager().findFragmentByTag(Constants.GHOST_TAG);
+//            if( ghostFragment!=null && ghostFragment.isVisible() )
+//            {
+//                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                ft.remove(ghostFragment).commit();
+//            }
+
+            //getFragmentManager().popBackStack(Constants.GHOST_TAG,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            getFragmentManager().popBackStack(Constants.CMIYC_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            Toast.makeText(MainActivity.this, "Back BUtton", Toast.LENGTH_SHORT).show();
+
+        }
+    }
 }

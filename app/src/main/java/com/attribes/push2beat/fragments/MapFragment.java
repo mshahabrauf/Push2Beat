@@ -30,7 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.quickblox.core.QBEntityCallback;
-import com.quickblox.core.QBSettings;
+
 import com.quickblox.core.account.model.QBAccountSettings;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.location.QBLocations;
@@ -80,8 +80,8 @@ public class MapFragment extends android.support.v4.app.Fragment {
     }
 
     private void initQuickBlox() {
-        QBSettings.getInstance().init(getContext(), Constants.APP_ID, Constants.AUTH_KEY, Constants.AUTH_SECRET);
-        QBSettings.getInstance().setAccountKey(Constants.ACCOUNT_KEY);
+//        QBSettings.getInstance().init(getContext(), Constants.APP_ID, Constants.AUTH_KEY, Constants.AUTH_SECRET);
+//        QBSettings.getInstance().setAccountKey(Constants.ACCOUNT_KEY);
     }
 
 
@@ -155,19 +155,19 @@ public class MapFragment extends android.support.v4.app.Fragment {
     public void addLocationToQb(Location sLocation)
     {
 
-        QBLocation location = new QBLocation(sLocation.getLatitude(), sLocation.getLongitude(),"");
-        QBLocations.createLocation(location, new QBEntityCallback<QBLocation>() {
-            @Override
-            public void onSuccess(QBLocation qbLocation, Bundle args) {
-                 Toast.makeText(getContext(), "updated", Toast.LENGTH_SHORT).show();
-                Log.d("Qb","Location is added successfully");
-            }
-
-            @Override
-            public void onError(QBResponseException errors) {
-                Log.d("Qb","failed");
-            }
-        });
+//        QBLocation location = new QBLocation(sLocation.getLatitude(), sLocation.getLongitude(),"");
+//        QBLocations.createLocation(location, new QBEntityCallback<QBLocation>() {
+//            @Override
+//            public void onSuccess(QBLocation qbLocation, Bundle args) {
+//                 Toast.makeText(getContext(), "updated", Toast.LENGTH_SHORT).show();
+//                Log.d("Qb","Location is added successfully");
+//            }
+//
+//            @Override
+//            public void onError(QBResponseException errors) {
+//                Log.d("Qb","failed");
+//            }
+//        });
     }
 
 
@@ -177,22 +177,22 @@ public class MapFragment extends android.support.v4.app.Fragment {
         buider.setPerPage(100);
         buider.setLastOnly();
 
-        QBLocations.getLocations(buider, new QBEntityCallback<ArrayList<QBLocation>>() {
-            @Override
-            public void onSuccess(ArrayList<QBLocation> qbLocations, Bundle bundle) {
-                for(QBLocation location: qbLocations)
-                {
-
-                    map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_profile_overlay)).position(new LatLng(location.getLatitude(),location.getLongitude())));
-                }
-
-            }
-
-            @Override
-            public void onError(QBResponseException e) {
-
-            }
-        });
+//        QBLocations.getLocations(buider, new QBEntityCallback<ArrayList<QBLocation>>() {
+//            @Override
+//            public void onSuccess(ArrayList<QBLocation> qbLocations, Bundle bundle) {
+//                for(QBLocation location: qbLocations)
+//                {
+//
+//                    map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_profile_overlay)).position(new LatLng(location.getLatitude(),location.getLongitude())));
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onError(QBResponseException e) {
+//
+//            }
+//        });
     }
 
 

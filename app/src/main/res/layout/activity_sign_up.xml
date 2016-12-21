@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/activity_main_start"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:background="@drawable/bg"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+
+        >
+
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+
+        <ImageView android:layout_width="290dp" android:layout_height="60dp"
+                   android:background="@drawable/p2b_icon"
+                   android:layout_marginTop="20dp"
+                   android:layout_marginLeft="25dp"
+                   android:layout_marginRight="25dp"
+        />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_marginTop="90dp"
+
+    >
+
+
+        <EditText android:layout_width="250dp" android:layout_height="50dp"
+                  android:background="#ffffff"
+                  android:id="@+id/username"
+                  android:drawableLeft="@drawable/ic_action_name"
+                  android:layout_marginTop="24dp"
+android:drawablePadding="@dimen/medium_text_size"
+                  android:paddingLeft="10dp"
+                  android:hint="Username"
+                  android:layout_marginLeft="50dp"
+                  android:inputType="text"/>
+
+
+
+        <EditText android:layout_width="250dp" android:layout_height="50dp"
+                  android:background="#ffffff"
+                  android:drawablePadding="@dimen/medium_text_size"
+                   android:paddingLeft="5dp"
+                  android:drawableLeft="@drawable/email"
+                  android:layout_marginTop="15dp"
+                  android:id="@+id/email"
+                  android:hint="Email"
+                  android:layout_marginLeft="50dp"
+                  android:inputType="textWebEmailAddress"/>
+        <EditText android:layout_width="250dp" android:layout_height="50dp"
+                  android:background="#ffffff"
+                  android:id="@+id/password"
+                  android:drawableLeft="@drawable/lockicon"
+                  android:layout_marginTop="15dp"
+                  android:drawablePadding="@dimen/medium_text_size"
+android:paddingLeft="12dp"
+                  android:hint="Password"
+                  android:layout_marginLeft="50dp"
+                  android:inputType="textPassword"/>
+
+
+
+        <EditText android:layout_width="250dp" android:layout_height="50dp"
+                  android:background="#ffffff"
+                  android:id="@+id/repeatpassword"
+                  android:drawableLeft="@drawable/lockicon"
+                  android:layout_marginTop="15dp"
+                  android:hint="Repeat password"
+                  android:paddingLeft="12dp"
+                  android:drawablePadding="@dimen/above_medium_text_size"
+                  android:layout_marginLeft="50dp"
+                  android:inputType="textPassword"/>
+
+
+
+
+
+
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent"
+                      android:orientation="horizontal"
+        >
+            <CheckBox android:layout_width="30dp" android:layout_height="30dp"
+                      android:layout_marginTop="30dp"
+                      android:id="@+id/checkbox"
+                      android:layout_marginLeft="45dp"
+                      android:background="#ffffff"
+
+            />
+
+            <TextView android:layout_width="wrap_content" android:layout_height="30dp"
+                      android:text="I have read a I agree to the terms and conditions"
+                      android:layout_marginTop="30dp"
+                      android:layout_marginLeft="10dp"
+                      android:textColor="#ffffff"
+                      android:maxLines="1"
+android:textSize="@dimen/very_small_text_size"
+
+            />
+
+
+
+
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                      android:orientation="vertical">
+                  </LinearLayout>
+
+        <Button android:layout_width="200dp" android:layout_height="50dp"
+                     android:layout_marginLeft="76dp"
+                     android:layout_marginTop="10dp"
+                     android:id="@+id/create"
+                android:clickable="false"
+                     android:background="@drawable/createacount"
+
+        />
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
+
+
+

@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/bg"
+              tools:context="com.attribes.push2beat.fragments.PrepareYourself" android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="50dp">
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#ffffff"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:text="Prepare Yourself"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                  android:weightSum="10"
+    android:orientation="vertical"
+ >
+       <TextView android:layout_width="match_parent" android:layout_height="0dp"
+                 android:textColor="#ffffff"
+                 android:textSize="20dp"
+                 android:textAlignment="center"
+                 android:layout_weight="1.31"
+                 android:maxLines="2"
+                 android:layout_marginTop="1dp"
+                 android:text="The first minute is your warm up \n Try and ride 25-50% of your maximum"
+
+       />
+        <TextView android:layout_width="match_parent" android:layout_height="0dp"
+                  android:textColor="#ffffff"
+                  android:textSize="20dp"
+                  android:textAlignment="center"
+                  android:layout_weight="2"
+                  android:maxLines="2"
+                  android:layout_marginTop="1dp"
+                  android:text="A countdown will let you know "
+
+        />
+
+
+
+    </LinearLayout>
+</LinearLayout>

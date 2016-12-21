@@ -11,7 +11,6 @@ import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.RecyclerAdapterInterface;
 import com.attribes.push2beat.adapter.viewholders.UserListHolder;
 import com.attribes.push2beat.models.Response.UserList.Datum;
-import com.google.common.eventbus.EventBus;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ import java.util.List;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListHolder> {
 
-    EventBus bus;
+
 
     public List<Datum> mData;
     private Context mContext;

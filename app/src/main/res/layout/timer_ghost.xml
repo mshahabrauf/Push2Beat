@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:id="@+id/ghost_row"
-              android:background="@color/secondary_dark_black">
+              android:background="@color/secondary_dark_grey">
 
     <RelativeLayout
             android:layout_width="match_parent"

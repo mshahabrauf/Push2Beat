@@ -3,6 +3,8 @@ package com.attribes.push2beat.network;
 import com.attribes.push2beat.models.Response.AddTrackResponse;
 import com.attribes.push2beat.models.Response.TrackList.ListOfTrackResponse;
 import com.attribes.push2beat.models.Response.UserList.ListOfUserResponse;
+import com.attribes.push2beat.models.Response.UserSignUp.SigninResponse;
+import com.attribes.push2beat.models.Response.UserSignUp.SignupResponse;
 
 import java.util.Map;
 
@@ -31,5 +33,13 @@ public interface ApiInterface {
     @POST(EndPoints.Track_List)
     Call<ListOfTrackResponse> getTracks(@FieldMap Map<String,Object> params);
 
+
+    @FormUrlEncoded
+    @POST(EndPoints.User_Details)
+    Call<SignupResponse> signup(@FieldMap Map<String,Object> params);
+
+    @FormUrlEncoded
+    @POST(EndPoints.User_Signin)
+    Call<SigninResponse> signin(@FieldMap Map<String,Object> params);
 
 }

@@ -12,4 +12,7 @@ public class EndPoints {
     public static final String User_List ="list_of_users";
     public static final String Track_List ="gettracks";
 
+    public static final String User_Details ="signup";
+    public static final String User_Signin ="login";
+
 }

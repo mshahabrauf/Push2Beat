@@ -68,6 +68,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     //Timer Constants
     List<Integer> speedList;
 
+    int speed = 0;
     long starttime = 0L;
     long timeInMilliseconds = 0L;
     long timeSwapBuff = 0L;
@@ -459,9 +460,12 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     }
 
     private int calculateSpeed() {
-      int hours = mins /60 + secs;
-      int km = (int) (distanceInMeter / 1000);
-      int speed = km/hours;
+
+        int hours = mins /60 + secs;
+        int km = (int) (distanceInMeter / 1000);
+        if(hours > 0) {
+            speed = km / hours;
+        }
         return speed;
     }
 
@@ -532,7 +536,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
             Fragment fragment = new GhostRiderFragment();
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            ft.add(R.id.container_full,fragment,Constants.GHOST_TAG).commit();
+            ft.add(R.id.container_full,fragment,Constants.GHOST_TAG).addToBackStack(Constants.GHOST_TAG).commit();
         }
     }
 
@@ -546,7 +550,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
             Fragment fragment = new CatchMeFragment();
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
 
-            ft.add(R.id.container_below,fragment,Constants.CMIYC_TAG).commit();
+            ft.add(R.id.container_below,fragment,Constants.CMIYC_TAG).addToBackStack(Constants.CMIYC_TAG).commit();
             binding.layoutBelow.setVisibility(View.GONE);
             getMapFragment().moveMapCamera(Common.getInstance().getLocation().getLatitude(),Common.getInstance().getLocation().getLatitude());
         }

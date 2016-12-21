@@ -60,7 +60,7 @@ public class StatsFragment extends Fragment {
 
     private MapFragment getMapFragment()
     {
-        FragmentManager fm = getChildFragmentManager();
+        FragmentManager fm = getFragmentManager();
         MapFragment fragment = (MapFragment)fm.findFragmentByTag(Constants.MAP_TAG);
         return fragment;
     }
