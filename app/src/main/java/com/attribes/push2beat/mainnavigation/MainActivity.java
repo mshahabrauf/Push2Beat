@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.adapter.SectionsPagerAdapter;
 import com.attribes.push2beat.databinding.ActivityMainBinding;
@@ -41,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-       //   GpsFragment fragment = (GpsFragment) mSectionsPagerAdapter.getItem(0);
+
+        Common.getInstance().initializeQBInstance(getApplicationContext());
 
         binding.appbar.backButton.setOnClickListener(new BackButtonListener());
 
@@ -67,16 +69,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        getFragmentManager().popBackStack();
+        Toast.makeText(MainActivity.this, "Back BUtton", Toast.LENGTH_SHORT).show();
+
+        super.onBackPressed();
+    }
 
     private class BackButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-         //   Fragment ghostFragment = getSupportFragmentManager().findFragmentByTag(Constants.GHOST_TAG);
-//            if( ghostFragment!=null && ghostFragment.isVisible() )
-//            {
-//                android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                ft.remove(ghostFragment).commit();
-//            }
 
             //getFragmentManager().popBackStack(Constants.GHOST_TAG,FragmentManager.POP_BACK_STACK_INCLUSIVE);
             getFragmentManager().popBackStack(Constants.CMIYC_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);

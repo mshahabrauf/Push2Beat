@@ -9,11 +9,11 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.attribes.push2beat.R;
-import com.attribes.push2beat.Utils.Constants;
+import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.OnSignUpSuccess;
 import com.attribes.push2beat.models.BodyParams.UserLoginDetailParams;
 import com.attribes.push2beat.network.DAL.LoginDAL;
-import com.quickblox.auth.session.QBSettings;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.QBUsers;
@@ -29,8 +29,8 @@ public class SignIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        QBSettings.getInstance().init(getApplicationContext(), Constants.APP_ID, Constants.AUTH_KEY, Constants.AUTH_SECRET);
-        QBSettings.getInstance().setAccountKey(Constants.ACCOUNT_KEY);
+
+        Common.getInstance().initializeQBInstance(getApplicationContext());
 
         signin = (ImageButton) findViewById(R.id.signinuser);
         username = (EditText) findViewById(R.id.usersignin);
@@ -41,8 +41,8 @@ public class SignIn extends AppCompatActivity {
 
                 UserLoginDetailParams detail = new UserLoginDetailParams();
                 detail.setUser_email(username.getText().toString());
-                detail.setDevice_type("samsung");
-                detail.setDevice_token("abc123");
+                detail.setDevice_type(FirebaseInstanceId.getInstance().getToken());
+                detail.setDevice_token("1");
                 detail.setPassword(password.getText().toString());
 
                 LoginDAL.userLogin(detail, new OnSignUpSuccess() {
@@ -73,7 +73,7 @@ public class SignIn extends AppCompatActivity {
         QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {
             @Override
             public void onSuccess(QBUser qbUser, Bundle bundle) {
-                qbUser.getId();
+                Common.getInstance().setQbUser(qbUser);
 
                 Toast.makeText(getApplicationContext(), "QuickBlox SignIn Success", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(SignIn.this,SelectActivity.class));

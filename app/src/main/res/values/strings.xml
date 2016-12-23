@@ -8,4 +8,13 @@
     <string name="track_hint">Track name: </string>
     <string name="distance">Distance:</string>
     <string name="calories_burn">Calories to Burn:</string>
+
+
+    <string name="test">A countdown will let you know when to \n begin... so GOHARD! </string>
+    <string name="text">Try and ride at 75-100% of your maximum</string>
+    <string name="text2">Braking sounds or screeching tyres will signify the of that interval.</string>
+    <string name="text4">The HIT workout is great for \n Indoor/Outdoor cycling (GPS) \n Rowing <GPS/></string>
+    <string name="text5">Outdoor Jog/Walk (GPS) \n Stair-Masterx/X-Trainer \n Rowing Machines</string>
+    <string name="text6">Share your workout on \n social media when you finish </string>
+
 </resources>

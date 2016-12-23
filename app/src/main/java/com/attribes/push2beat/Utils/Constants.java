@@ -19,4 +19,5 @@ public class Constants {
     public static final String ACCOUNT_KEY = "pMnxR6q8Pt3hDQ9eXJEw";
 
     public static final String GHOST_TAG = "ghost";
+    public static String GPS_TAG = "gps";
 }

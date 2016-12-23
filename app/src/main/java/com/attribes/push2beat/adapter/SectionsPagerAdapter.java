@@ -9,8 +9,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.attribes.push2beat.fragments.GpsFragment;
 import com.attribes.push2beat.fragments.MusicFragment;
+import com.attribes.push2beat.fragments.MyProfileFragment;
+import com.attribes.push2beat.fragments.PrepareFragment;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -31,13 +32,16 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         switch (position)
         {
             case 0:
-                GpsFragment gpsFragment = new GpsFragment();
-                return gpsFragment;
+                PrepareFragment prepareFragment = new PrepareFragment();
+
+                return prepareFragment;
             case 1:
             case 2:
-            case 3:
                 MusicFragment musicFragment = new MusicFragment();
                 return musicFragment;
+            case 3:
+                MyProfileFragment fragment = new MyProfileFragment();
+                return  fragment;
 
             default:
                 return null;

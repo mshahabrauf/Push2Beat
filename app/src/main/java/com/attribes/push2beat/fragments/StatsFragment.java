@@ -52,9 +52,9 @@ public class StatsFragment extends Fragment {
     }
 
     private void initMapFragment() {
-        MapFragment fragment = new MapFragment();
+        MapFragment fragment = getMapFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.add(R.id.stats_map_view,fragment, Constants.MAP_TAG).commit();
+        ft.replace(R.id.stats_map_view,fragment, Constants.MAP_TAG).commit();
     }
 
 

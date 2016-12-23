@@ -10,7 +10,13 @@ import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.RecyclerAdapterInterface;
 import com.attribes.push2beat.adapter.viewholders.UserListHolder;
+import com.attribes.push2beat.models.Response.MyProfileResponse;
+import com.attribes.push2beat.models.Response.PushFireBase.Data;
+import com.attribes.push2beat.models.Response.PushFireBase.PushData;
 import com.attribes.push2beat.models.Response.UserList.Datum;
+import com.attribes.push2beat.network.DAL.GetProfileDAL;
+import com.attribes.push2beat.network.DAL.SendPush;
+import com.attribes.push2beat.network.interfaces.ProfileDataArrivalListner;
 
 import java.util.List;
 
@@ -71,7 +77,27 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListHolder> {
         @Override
         public void onClick(View view) {
 
-        listener.onstartCallback(position);
+            listener.onstartCallback(position);
+            GetProfileDAL.getProfileData(mData.get(position).getId(), new ProfileDataArrivalListner() {
+                @Override
+                public void onDataRecieved(MyProfileResponse.Data data) {
+                    PushData push = new PushData();
+                    Data dataa = new Data();
+                    dataa.setMessage("ye le beta chal");
+                    push.setData(dataa);
+              //      if (data.getDevice_token().equals("") == false) {
+                    push.setTo(data.getDevice_token());
+                //    }
+                    SendPush.sendPushToUser(push);
+
+                }
+
+                @Override
+                public void onEmptyData(String msg) {
+
+                }
+            });
+//
 
         }
     }

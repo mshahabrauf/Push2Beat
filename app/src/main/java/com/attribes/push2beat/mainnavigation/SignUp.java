@@ -10,11 +10,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.attribes.push2beat.R;
-import com.attribes.push2beat.Utils.Constants;
+import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.OnSignUpSuccess;
 import com.attribes.push2beat.models.BodyParams.SignUpParams;
 import com.attribes.push2beat.network.DAL.SignUpDAL;
-import com.quickblox.auth.session.QBSettings;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.QBUsers;
@@ -36,8 +35,9 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_sign_up);
-        QBSettings.getInstance().init(getApplicationContext(), Constants.APP_ID, Constants.AUTH_KEY, Constants.AUTH_SECRET);
-        QBSettings.getInstance().setAccountKey(Constants.ACCOUNT_KEY);
+
+        Common.getInstance().initializeQBInstance(getApplicationContext());
+
         checkBox = (CheckBox) findViewById(R.id.checkbox);
         username = (EditText) findViewById(R.id.username);
         email = (EditText) findViewById(R.id.email);
@@ -108,7 +108,7 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onSuccess(QBUser qbUser, Bundle bundle)
             {
-
+             Common.getInstance().setQbUser(qbUser);
               startActivity(new Intent(SignUp.this,SelectActivity.class));
             }
 

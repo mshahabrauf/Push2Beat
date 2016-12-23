@@ -1,47 +1,174 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@drawable/bg"
-              tools:context="com.attribes.push2beat.fragments.PrepareYourself" android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
 
-    <!-- TODO: Update blank fragment layout -->
-    <LinearLayout android:layout_width="match_parent" android:layout_height="50dp">
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="#ffffff"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:text="Prepare Yourself"/>
-    </LinearLayout>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
-                  android:weightSum="10"
-    android:orientation="vertical"
- >
-       <TextView android:layout_width="match_parent" android:layout_height="0dp"
-                 android:textColor="#ffffff"
-                 android:textSize="20dp"
-                 android:textAlignment="center"
-                 android:layout_weight="1.31"
-                 android:maxLines="2"
-                 android:layout_marginTop="1dp"
-                 android:text="The first minute is your warm up \n Try and ride 25-50% of your maximum"
+    >
 
-       />
-        <TextView android:layout_width="match_parent" android:layout_height="0dp"
-                  android:textColor="#ffffff"
-                  android:textSize="20dp"
-                  android:textAlignment="center"
-                  android:layout_weight="2"
-                  android:maxLines="2"
-                  android:layout_marginTop="1dp"
-                  android:text="A countdown will let you know "
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/prepare_container"
 
-        />
+    >
+
+        <LinearLayout
+                      android:layout_width="match_parent"
+                      android:id="@+id/root"
+                      android:padding="@dimen/large_padding"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical">
+            <!--<FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"-->
+            <!--android:id="@+id/frag"-->
+            <!--&gt;-->
+
+            <!--</FrameLayout>-->
 
 
+            <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fillViewport="true">
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent" android:layout_height="match_parent">
+            <!-- TODO: Update blank fragment layout -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="50dp">
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="#ffffff"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:text="Prepare Yourself"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
 
-    </LinearLayout>
+                          android:orientation="vertical"
+            >
+                <TextView android:layout_width="match_parent" android:layout_height="0dp"
+                          android:textColor="#ffffff"
+                          android:textSize="20dp"
+                          android:textAlignment="center"
+                          android:layout_weight="1.25"
+                          android:maxLines="2"
+                          android:layout_marginTop="1dp"
+                          android:text="The first minute is your warm up /n Try and ride 25-50% of your maximum"
+
+                />
+                <TextView android:layout_width="match_parent" android:layout_height="0dp"
+                          android:textColor="#ffffff"
+                          android:textSize="20dp"
+                          android:textAlignment="center"
+                          android:layout_weight="1.31"
+                          android:maxLines="2"
+                          android:layout_marginTop="1dp"
+                          android:text="@string/test"
+
+                />
+                <TextView android:layout_width="match_parent" android:layout_height="0dp"
+                          android:textColor="#ffffff"
+                          android:textSize="20dp"
+                          android:textAlignment="center"
+                          android:layout_weight="0.70"
+                          android:maxLines="1"
+                          android:layout_marginTop="1dp"
+                          android:text="@string/text"
+
+                />
+                <TextView android:layout_width="match_parent" android:layout_height="0dp"
+                          android:textColor="#ffffff"
+                          android:textSize="20dp"
+                          android:textAlignment="center"
+                          android:layout_weight="1.15"
+                          android:maxLines="2"
+                          android:textStyle="bold"
+                          android:layout_marginTop="1dp"
+                          android:text="@string/text2"
+
+                />
+                <TextView android:layout_width="match_parent" android:layout_height="0dp"
+                          android:textColor="#ffffff"
+                          android:textSize="20dp"
+                          android:textAlignment="center"
+                          android:layout_weight="1.35"
+                          android:maxLines="2"
+                          android:layout_marginTop="1dp"
+                          android:text="Intervals range from 10-40 sec,\n don't forget to hydrate throughout."
+
+                />
+
+                <TextView android:layout_width="match_parent" android:layout_height="0dp"
+                          android:textColor="#ffffff"
+                          android:textSize="20dp"
+                          android:textAlignment="center"
+                          android:layout_weight="0.91"
+                          android:maxLines="1"
+                          android:layout_marginTop="1dp"
+                          android:text="REMEMBER!"
+
+                />
+                <TextView android:layout_width="match_parent" android:layout_height="0dp"
+                          android:textColor="#ffffff"
+                          android:textSize="15dp"
+                          android:textAlignment="center"
+                          android:layout_weight="1.31"
+                          android:maxLines="3"
+                          android:layout_marginTop="1dp"
+                          android:text="@string/text4"
+
+                />
+                <TextView android:layout_width="match_parent" android:layout_height="0dp"
+                          android:textColor="#ffffff"
+                          android:textSize="15dp"
+                          android:textAlignment="center"
+                          android:layout_weight="1.31"
+                          android:maxLines="3"
+                          android:layout_marginTop="1dp"
+                          android:text="@string/text5"
+
+                />
+
+                <TextView android:layout_width="match_parent" android:layout_height="0dp"
+                    android:textColor="#ffffff"
+                    android:textSize="15dp"
+                    android:textAlignment="center"
+                    android:layout_weight="1.31"
+                    android:maxLines="3"
+                    android:layout_marginTop="1dp"
+                    android:text="@string/text6"
+
+                    />
+                <TextView android:layout_width="match_parent" android:layout_height="0dp"
+                    android:textColor="#ffffff"
+                    android:textSize="15dp"
+                    android:textAlignment="center"
+                    android:layout_weight="1.31"
+                    android:maxLines="1"
+                    android:layout_marginTop="1dp"
+                    android:text="#beastmode"
+
+                    />
+
+
+
+
+
+
+            </LinearLayout>
+                    <ImageView android:layout_width="match_parent"
+                        android:layout_height="100dp"
+
+                        android:src="@drawable/hearbeat"
+                         />
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:id="@+id/start"
+                        android:background="@drawable/start_button"
+                        />
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
 </LinearLayout>
+</layout>

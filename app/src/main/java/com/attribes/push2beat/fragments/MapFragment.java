@@ -33,9 +33,6 @@ import com.quickblox.core.QBEntityCallback;
 
 import com.quickblox.core.account.model.QBAccountSettings;
 import com.quickblox.core.exception.QBResponseException;
-import com.quickblox.location.QBLocations;
-import com.quickblox.location.model.QBLocation;
-import com.quickblox.location.request.QBLocationRequestBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,9 +170,9 @@ public class MapFragment extends android.support.v4.app.Fragment {
 
     public void showQBLocationMap()
     {
-        QBLocationRequestBuilder buider = new QBLocationRequestBuilder();
-        buider.setPerPage(100);
-        buider.setLastOnly();
+//        QBLocationRequestBuilder buider = new QBLocationRequestBuilder();
+//        buider.setPerPage(100);
+//        buider.setLastOnly();
 
 //        QBLocations.getLocations(buider, new QBEntityCallback<ArrayList<QBLocation>>() {
 //            @Override

@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
+import com.attribes.push2beat.Utils.CustomConnectionListener;
 import com.attribes.push2beat.databinding.FragmentTimerBinding;
 import com.attribes.push2beat.models.BodyParams.AddTrackParams;
 import com.attribes.push2beat.models.Response.UserList.Datum;
@@ -33,6 +34,16 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
+import com.quickblox.chat.QBChatService;
+import com.quickblox.chat.QBIncomingMessagesManager;
+import com.quickblox.chat.exception.QBChatException;
+import com.quickblox.chat.listeners.QBChatDialogMessageListener;
+import com.quickblox.chat.model.QBChatDialog;
+import com.quickblox.chat.model.QBChatMessage;
+import com.quickblox.chat.model.QBDialogType;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,20 +77,21 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
     //Timer Constants
-    List<Integer> speedList;
+    private List<Integer> speedList;
 
-    int speed = 0;
-    long starttime = 0L;
-    long timeInMilliseconds = 0L;
-    long timeSwapBuff = 0L;
-    long updatedtime = 0L;
-    int t = 1;
-    double distanceInMeter = 0;
+    private int speed = 0;
+    private  long starttime = 0L;
+    private  long timeInMilliseconds = 0L;
+    private  long timeSwapBuff = 0L;
+    private  long updatedtime = 0L;
+    private  int t = 1;
+    private  double distanceInMeter = 0;
 
-    int secs = 0;
-    int mins = 0;
-    int milliseconds = 0;
-    Handler handler = new Handler();
+    private   int secs = 0;
+    private   int mins = 0;
+    private   int milliseconds = 0;
+    private   Handler handler = new Handler();
+
 
 
 
@@ -120,7 +132,6 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         else {mapFragment = new MapFragment();}
         showHideFragment(mapFragment,speedMeterFragment);
 
-
     }
 
 
@@ -129,7 +140,6 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     private void init() {
         track = new ArrayList<LatLng>();
         speedList = new ArrayList<Integer>();
-
     }
 
 
@@ -233,7 +243,6 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
-                    .enableAutoManage(getActivity(), this)
                     .build();
         }
         apiClient.connect();
@@ -265,43 +274,6 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         }
         trackPath += String.valueOf(track.get(track.size()-1).latitude)+"_";
         return trackPath;
-    }
-
-
-    private List<LatLng> convertStringIntoLatlng(String path)
-    {
-
-        List<String> latitudes = new ArrayList<>();
-        List<String> longitudes = new ArrayList<>();
-        List<LatLng> tracker =  new ArrayList<LatLng>();
-        String[] commaSpliter = path.split(",");
-        boolean isFirstValue = true;
-        for (String latsLngs: commaSpliter)
-        {
-            if(isFirstValue)
-            {
-                 longitudes.add(latsLngs);
-                  isFirstValue = false;
-            }
-            else {
-                String[] underScoreSpliter = latsLngs.split("_");
-                latitudes.add(underScoreSpliter[0]);
-                if(commaSpliter[commaSpliter.length-1].equals(latsLngs) == false)
-                {
-                    longitudes.add(underScoreSpliter[1]);
-                }
-            }
-        }
-        latitudes.add(0,latitudes.get(latitudes.size()-1));
-        latitudes.remove(latitudes.size()-1);
-
-        for(int i=0;i<latitudes.size();i++)
-        {
-            LatLng latlng = new LatLng(Double.parseDouble(latitudes.get(i)),Double.parseDouble(longitudes.get(i)));
-            tracker.add(latlng);
-        }
-
-        return tracker;
     }
 
 
@@ -382,10 +354,96 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
      */
     @Override
     public void onStartCmiyc(Datum datum) {
+       // initQBChat();
         updateUiforCmifyc();
         resetScreensValues();
         showOpponentDetail(datum);
         timer_start();
+    }
+
+    private void initQBChat() {
+        QBChatService.setDebugEnabled(true); // enable chat logging
+        QBChatService.setDefaultAutoSendPresenceInterval(10); //enable sending online status every 60 sec to keep connection alive
+
+        QBChatService.ConfigurationBuilder chatServiceConfigurationBuilder = new QBChatService.ConfigurationBuilder();
+        chatServiceConfigurationBuilder.setSocketTimeout(60); //Sets chat socket's read timeout in seconds
+        chatServiceConfigurationBuilder.setKeepAlive(true); //Sets connection socket's keepAlive option.
+        chatServiceConfigurationBuilder.setUseTls(true); //Sets the TLS security mode used when making the connection. By default TLS is disabled.
+        QBChatService.setConfigurationBuilder(chatServiceConfigurationBuilder);
+
+        QBChatService qbChatService = QBChatService.getInstance();
+        QBUser user = new QBUser();
+        user.setId(21938224);
+        user.setLogin("junaidaman@gmail.com");
+        user.setPassword("12345678");
+        qbChatService.login(user, new QBEntityCallback() {
+            @Override
+            public void onSuccess(Object o, Bundle bundle) {
+                Toast.makeText(getContext(), "login succesfully", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+
+            }
+        });
+
+
+        //int id = 4;
+        QBChatService.getInstance().addConnectionListener(new CustomConnectionListener());
+        List<Integer> occupantIdsList = new ArrayList<>();
+        occupantIdsList.add(21938224);
+
+        QBChatDialog dialog = new QBChatDialog();
+
+        dialog.setDialogId("1234");
+        dialog.setName("Chat with Garry and John");
+        dialog.setPhoto("1786");
+        dialog.setType(QBDialogType.PRIVATE);
+        dialog.setOccupantsIds(occupantIdsList);
+
+
+
+        QBChatMessage message = new QBChatMessage();
+        message.setDialogId(dialog.getDialogId());
+        message.setRecipientId(21938224);
+        message.setBody("test message");
+
+
+//        message.setProperty(PROPERTY_OCCUPANTS_IDS, QbDialogUtils.getOccupantsIdsStringFromList(dialog.getOccupants()));
+//        message.setProperty(PROPERTY_DIALOG_TYPE, String.valueOf(dialog.getType().getCode()));
+//        message.setProperty(PROPERTY_DIALOG_NAME, String.valueOf(dialog.getName()));
+//        message.setProperty(PROPERTY_NOTIFICATION_TYPE, CREATING_DIALOG);
+
+        dialog.deliverMessage(message, new QBEntityCallback() {
+            @Override
+            public void onSuccess(Object o, Bundle bundle) {
+                Toast.makeText(getContext(), "Message Send Succesfully", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+
+            }
+        });
+
+        // chatDialog.setOccupantsId();
+
+
+        QBIncomingMessagesManager manager = qbChatService.getIncomingMessagesManager();
+        manager.addDialogMessageListener(new QBChatDialogMessageListener() {
+            @Override
+            public void processMessage(String s, QBChatMessage qbChatMessage, Integer integer) {
+                Toast.makeText(getContext(), qbChatMessage.getBody().toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void processError(String s, QBChatException e, QBChatMessage qbChatMessage, Integer integer) {
+
+            }
+        });
+
+
     }
 
     private void showOpponentDetail(Datum datum) {
@@ -416,7 +474,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         resetScreensValues();
         trackId = datum.getId();
         if(datum.getTrack_path().equals("") == false) {
-            List<LatLng> traker = convertStringIntoLatlng(datum.getTrack_path());
+            List<LatLng> traker = Common.getInstance().convertStringIntoLatlng(datum.getTrack_path());
             if(getMapFragment().isHidden()) {
                 showHideFragment(getMapFragment(),speedMeterFragment);
                 getMapFragment().showRoute(traker);
@@ -440,7 +498,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         @Override
         public void onLocationChanged(Location curr) {
             Common.getInstance().setLocation(curr);
-            getMapFragment().addLocationToQb(curr);
+           // getMapFragment().addLocationToQb(curr);
 
             double distance = calculateDistance(curr,prev);
           //  if(distance > 5) { Todo uncomment it for accuracy
@@ -646,7 +704,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     @Override
     public void onDestroy() {
         super.onDestroy();
-        apiClient.stopAutoManage(getActivity());
+
         apiClient.disconnect();
     }
 
