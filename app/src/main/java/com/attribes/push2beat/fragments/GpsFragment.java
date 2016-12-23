@@ -78,6 +78,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     int secs = 0;
     int mins = 0;
     int milliseconds = 0;
+    int speed = 0;
     Handler handler = new Handler();
 
 
@@ -453,15 +454,19 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                 prev = curr;
            // }
 
-
-
+//            if(getSpeedMeterFragment().isVisible()) {
+//                getSpeedMeterFragment().setSpeed(calculateSpeed());
+//            }
         }
     }
 
     private int calculateSpeed() {
       int hours = mins /60 + secs;
       int km = (int) (distanceInMeter / 1000);
-      int speed = km/hours;
+        if(hours > 0){
+          speed = km/hours;
+            Common.getInstance().setSpeedValue(speed);
+           }
         return speed;
     }
 

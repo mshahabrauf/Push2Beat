@@ -11,6 +11,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.attribes.push2beat.fragments.GpsFragment;
 import com.attribes.push2beat.fragments.MusicFragment;
+import com.attribes.push2beat.fragments.MyProfileFragment;
+import com.attribes.push2beat.fragments.MyStatsFragment;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -34,11 +36,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 GpsFragment gpsFragment = new GpsFragment();
                 return gpsFragment;
             case 1:
-            case 2:
-            case 3:
                 MusicFragment musicFragment = new MusicFragment();
                 return musicFragment;
-
+            case 2:
+                MyStatsFragment myStatsFragment = new MyStatsFragment();
+                return myStatsFragment;
+            case 3:
+                MyProfileFragment myProfileFragment = new MyProfileFragment();
+                return myProfileFragment;
             default:
                 return null;
 

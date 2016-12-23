@@ -1,12 +1,14 @@
 package com.attribes.push2beat.network;
 
 import com.attribes.push2beat.models.Response.AddTrackResponse;
+import com.attribes.push2beat.models.Response.MyProfileResponse;
 import com.attribes.push2beat.models.Response.TrackList.ListOfTrackResponse;
 import com.attribes.push2beat.models.Response.UserList.ListOfUserResponse;
 
 import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -31,5 +33,7 @@ public interface ApiInterface {
     @POST(EndPoints.Track_List)
     Call<ListOfTrackResponse> getTracks(@FieldMap Map<String,Object> params);
 
-
+    @FormUrlEncoded
+    @POST(EndPoints.Get_Profile)
+    Call<MyProfileResponse> getProfile(@Field("user_id")String user_id);
 }

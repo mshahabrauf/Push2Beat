@@ -9,6 +9,7 @@ import android.location.Location;
 public class Common {
     private static Common Instance = null;
     private Location location;
+    private int SpeedValue;
 
 
     private Common() {
@@ -39,6 +40,14 @@ public class Common {
         userLocation.setLongitude(Double.parseDouble(lng));
         int distance = (int) userLocation.distanceTo(Common.getInstance().getLocation());
         return String.valueOf(distance)+"m";
+    }
+
+    public int getSpeedValue() {
+        return SpeedValue;
+    }
+
+    public void setSpeedValue(int speedValue) {
+        SpeedValue = speedValue;
     }
 
 }
