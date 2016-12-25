@@ -10,6 +10,7 @@ public class Common {
     private static Common Instance = null;
     private Location location;
     private int SpeedValue;
+    private String profile_image;
 
 
     private Common() {
@@ -48,6 +49,14 @@ public class Common {
 
     public void setSpeedValue(int speedValue) {
         SpeedValue = speedValue;
+    }
+
+    public String getProfile_image() {
+        return profile_image;
+    }
+
+    public void setProfile_image(String profile_image) {
+        this.profile_image = profile_image;
     }
 
 }

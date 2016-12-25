@@ -12,4 +12,6 @@ public class EndPoints {
     public static final String User_List ="list_of_users";
     public static final String Track_List ="gettracks";
     public static final String Get_Profile ="get_profile";
+    public static final String MyStats_List ="get_Stats";
+    public static final String Update_Profile ="update_profile";
 }
