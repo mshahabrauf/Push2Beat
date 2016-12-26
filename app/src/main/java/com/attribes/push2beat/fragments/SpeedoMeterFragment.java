@@ -1,17 +1,22 @@
 package com.attribes.push2beat.fragments;
 
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.databinding.FragmentSpeedometerBinding;
 
+import com.github.anastr.speedviewlib.SpeedView;
+
+
 /**
- * Created by android on 12/14/16.
+ * Created by Maaz on 12/14/16.
  */
 public class SpeedoMeterFragment extends android.support.v4.app.Fragment {
 
@@ -20,18 +25,17 @@ public class SpeedoMeterFragment extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_speedometer,container,false);
-        View view = binding.getRoot();
-        return view;
+        View rootView = inflater.inflate(R.layout.fragment_speedometer, container, false);
+//        binding.speedometer = DataBindingUtil.inflate(inflater,R.layout.fragment_speedometer,container,false);
+//        View view = binding.getRoot();
+        initSpeednMeter(rootView);
+        return rootView;
     }
 
-
-
-    public void setSpeed(int speed)
-    {
-        binding.pointerSpeedometer.speedTo(speed);
-
+    private void initSpeednMeter(View rootView) {
+        SpeedView speedView = (SpeedView)rootView.findViewById(R.id.speedView);
+        speedView.setMaxSpeed(80);   // change MAX speed to 320
+        speedView.speedTo(40,4000);      // change speed to 140 Km/h   Common.getInstance().getSpeedValue()
     }
-
 
 }

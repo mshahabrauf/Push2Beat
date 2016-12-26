@@ -1,21 +1,29 @@
 package com.attribes.push2beat.fragments;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.databinding.FragmentMyProfileBinding;
+import com.attribes.push2beat.models.BodyParams.UpdateProfileParams;
 import com.attribes.push2beat.models.Response.MyProfileResponse;
 import com.attribes.push2beat.network.DAL.GetProfileDAL;
+import com.attribes.push2beat.network.DAL.UpdateProfileDAL;
 import com.attribes.push2beat.network.interfaces.ProfileDataArrivalListner;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,7 +32,11 @@ import java.util.Locale;
  */
 public class MyProfileFragment extends android.support.v4.app.Fragment {
 
+    private static int PROFILE_PIC_COUNT = 0 ;
     FragmentMyProfileBinding mpBinding;
+    private static final int REQUEST_CAMERA = 1;
+    private static final int SELECT_FILE = 2;
+    UpdateProfileParams profileParams = new UpdateProfileParams();
 
     public MyProfileFragment() {
     }
@@ -34,9 +46,70 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mpBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_profile,container,false);
         View view = mpBinding.getRoot();
-
         getMyProfileData();
+        init();
         return view;
+    }
+
+    private void init() {
+        mpBinding.profileImage.setOnClickListener(new ImageUploadListner());
+        mpBinding.userProfile.userNameTv.setOnClickListener(new NameEditListner());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode) {
+            case 1:
+                if(requestCode == REQUEST_CAMERA){
+                    Uri selectedImage = data.getData();
+                    updateProfilePic(selectedImage);
+                    //mpBinding.profileImage.setImageURI(selectedImage);
+                }
+
+                break;
+            case 2:
+                if(requestCode == SELECT_FILE){
+                    Uri selectedImage = data.getData();
+                    updateProfilePic(selectedImage);
+                    //mpBinding.profileImage.setImageURI(selectedImage);
+                }
+                break;
+        }
+    }
+
+    private void updateProfilePic(Uri selectedImage) {
+        String encodedProfileImageString = conversionInBase64Format(selectedImage);
+        profileParams.setUser_id("48");
+        profileParams.setProfile_image(encodedProfileImageString);
+        UpdateProfileDAL.updateProfile(profileParams,getActivity());
+        //TODO : Get the data of user from a centralized aspect
+    }
+
+    private String conversionInBase64Format(Uri selectedImage) {
+
+        InputStream inputStream = null;//You can get an inputStream using any IO API
+        try {
+            inputStream = new FileInputStream(String.valueOf(selectedImage));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        byte[] bytes;
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try {
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bytes = output.toByteArray();
+        String encodedString = Base64.encodeToString(bytes, Base64.DEFAULT);
+
+        return encodedString;
     }
 
     private void getMyProfileData() {
@@ -48,6 +121,7 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
                 mpBinding.userProfile.userMailTv.setText("" + data.getEmail());
                 makeAddressFromLatLong(data.getLattitude(),data.getLongitude());
                 setProfileImage(data.getProfile_image());
+                Common.getInstance().setProfile_image(data.getProfile_image());
             }
 
             @Override
@@ -83,6 +157,65 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
             mpBinding.userProfile.userLocTv.setText(""+completeAddress);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void UpdateProfilePic() {
+        selectImage();
+    }
+
+    private void selectImage() {
+        final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (items[item].equals("Take Photo")) {
+                    PROFILE_PIC_COUNT = 1;
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, REQUEST_CAMERA);
+                } else if (items[item].equals("Choose from Library")) {
+                    PROFILE_PIC_COUNT = 1;
+                    Intent intent = new Intent(
+                            Intent.ACTION_PICK,
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent,SELECT_FILE);
+                } else if (items[item].equals("Cancel")) {
+                    PROFILE_PIC_COUNT = 0;
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private class ImageUploadListner implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            UpdateProfilePic();
+        }
+    }
+
+    private class NameEditListner implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            mpBinding.userProfile.userNameTv.setVisibility(View.GONE);
+            mpBinding.userProfile.userNameEdittv.setVisibility(View.VISIBLE);
+            mpBinding.userProfile.userNameEdittv.setOnClickListener(new EditListner());
+        }
+    }
+
+    private class EditListner implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+           String editedName = mpBinding.userProfile.userNameEdittv.getText().toString();
+            UpdateProfileParams params = new UpdateProfileParams();
+            params.setUser_id("48");
+            params.setFirst_name(editedName);
+            params.setProfile_image(Common.getInstance().getProfile_image());
+            UpdateProfileDAL.updateProfile(params,getActivity());
         }
     }
 }

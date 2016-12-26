@@ -1,45 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
 
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/user_icon"/>
+    <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/user_icon"/>
 
-            <TextView
-                android:id="@+id/user_name_tv"
+    <TextView
+            android:id="@+id/user_name_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MBK Alam"
+            android:layout_gravity="center"
+            android:gravity="center|left"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:textColor="@color/black"/>
+
+        <EditText
+                android:id="@+id/user_name_edittv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="MBK Alam"
                 android:layout_gravity="center"
                 android:gravity="center|left"
                 android:paddingLeft="20dp"
                 android:paddingStart="20dp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:visibility="gone"/>
 
-        </LinearLayout>
+    </LinearLayout>
 
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="25dp">
 
-            <ImageView
+        <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/mail_icon"/>
 
-            <TextView
+        <TextView
                 android:id="@+id/user_mail_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,20 +61,20 @@
                 android:paddingStart="20dp"
                 android:textColor="@color/black"/>
 
-        </LinearLayout>
+    </LinearLayout>
 
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="25dp">
 
-            <ImageView
+        <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/loc_icon"/>
 
-            <TextView
+        <TextView
                 android:id="@+id/user_loc_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,6 +85,6 @@
                 android:paddingStart="20dp"
                 android:textColor="@color/black"/>
 
-        </LinearLayout>
     </LinearLayout>
+</LinearLayout>
 </layout>

@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Constants;
-import com.attribes.push2beat.databinding.FragmentMyStatsBinding;
+import com.attribes.push2beat.databinding.FragmentStatsBinding;
 import com.attribes.push2beat.models.StatsData;
 
 /**
@@ -21,7 +21,7 @@ import com.attribes.push2beat.models.StatsData;
 
 public class StatsFragment extends Fragment {
 
-    private FragmentMyStatsBinding binding;
+    private FragmentStatsBinding binding;
 
     private StatsData data;
     public StatsFragment() {}
@@ -33,7 +33,7 @@ public class StatsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_my_stats,container,false);
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_stats,container,false);
         View view = binding.getRoot();
         initMapFragment();
         initUi();

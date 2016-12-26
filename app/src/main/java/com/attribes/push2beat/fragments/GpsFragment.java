@@ -13,7 +13,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
-import com.attribes.push2beat.Utils.QBHandler;
 import com.attribes.push2beat.databinding.FragmentTimerBinding;
 import com.attribes.push2beat.models.BodyParams.AddTrackParams;
 import com.attribes.push2beat.models.Response.UserList.Datum;
@@ -87,6 +85,11 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     private   int milliseconds = 0;
     private   Handler handler = new Handler();
 
+    int secs = 0;
+    int mins = 0;
+    int milliseconds = 0;
+    int speed = 0;
+    Handler handler = new Handler();
 
 
 
@@ -102,10 +105,8 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         View view = binding.getRoot();
         initGoogleApi();
         init();
-
         initFragments();
         startButtons();
-
         timer_start();
 
         return view;
@@ -443,12 +444,6 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     //====================================== Listeners==================================================================//
 
 
-    public void startMessageListener()
-    {
-
-
-    }
-
     private class CustomLocationListener implements LocationListener {
         @Override
         public void onLocationChanged(Location curr) {
@@ -488,12 +483,12 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     }
 
     private int calculateSpeed() {
-
-        int hours = mins /60 + secs;
-        int km = (int) (distanceInMeter / 1000);
-        if(hours > 0) {
-            speed = km / hours;
-        }
+      int hours = mins /60 + secs;
+      int km = (int) (distanceInMeter / 1000);
+        if(hours > 0){
+          speed = km/hours;
+            Common.getInstance().setSpeedValue(speed);
+           }
         return speed;
     }
 
@@ -564,7 +559,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
             Fragment fragment = new GhostRiderFragment();
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            ft.add(R.id.container_full,fragment,Constants.GHOST_TAG).addToBackStack(Constants.GHOST_TAG).commit();
+            ft.add(R.id.container_full,fragment,Constants.GHOST_TAG).commit();
         }
     }
 
@@ -578,7 +573,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
             Fragment fragment = new CatchMeFragment();
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
 
-            ft.add(R.id.container_below,fragment,Constants.CMIYC_TAG).addToBackStack(Constants.CMIYC_TAG).commit();
+            ft.add(R.id.container_below,fragment,Constants.CMIYC_TAG).commit();
             binding.layoutBelow.setVisibility(View.GONE);
             getMapFragment().moveMapCamera(Common.getInstance().getLocation().getLatitude(),Common.getInstance().getLocation().getLatitude());
         }

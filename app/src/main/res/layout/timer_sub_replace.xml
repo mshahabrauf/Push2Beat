@@ -1,86 +1,87 @@
+
 <layout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:id="@+id/time_sub_replace_row"
-        android:layout_width="match_parent"
-        android:elevation="@dimen/normal_elevation"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:background="@color/secondary_dark_purple">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:id="@+id/time_sub_replace_row"
+              android:layout_width="match_parent"
+              android:elevation="@dimen/normal_elevation"
+              android:layout_height="wrap_content"
+              android:paddingTop="10dp"
+              android:paddingBottom="10dp"
+              android:background="@color/secondary_dark_purple">
 
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_cal"/>
-
-        <LinearLayout
-            android:id="@+id/layout_add_trackname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:background="@color/white"
-            android:padding="@dimen/normal_padding"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/track_hint"
-                android:textSize="@dimen/above_medium_text_size"
-                android:textStyle="bold"
-                />
-            <EditText
-                android:id="@+id/track_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:textColor="@color/black"
-                android:cursorVisible="true"
-                android:background="@color/white"
-
-
-                />
-
-        </LinearLayout>
+                android:background="@drawable/bg_cal"/>
 
         <LinearLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/btn_add_track"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
+                android:id="@+id/layout_add_trackname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="gone"
-                android:background="@drawable/save_track"/>
+                android:background="@color/white"
+                android:padding="@dimen/normal_padding"
+        >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/track_hint"
+                    android:textSize="@dimen/above_medium_text_size"
+                    android:textStyle="bold"
+            />
+            <EditText
+                    android:id="@+id/track_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:textColor="@color/black"
+                    android:cursorVisible="true"
+                    android:background="@color/white"
+
+
+            />
+
+        </LinearLayout>
+
+        <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:id="@+id/btn_add_track"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:visibility="gone"
+                    android:background="@drawable/save_track"/>
 
         </LinearLayout>
 
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
 
             <ImageView
-                android:id="@+id/timer_stop"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:background="@drawable/stop_button"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"/>
+                    android:id="@+id/timer_stop"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/stop_button"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginEnd="20dp"/>
 
             <ImageView
-                android:id="@+id/btnGps"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:background="@drawable/gps_button"
-                />
+                    android:id="@+id/btnGps"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/gps_button"
+            />
 
         </LinearLayout>
 

@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.attribes.push2beat.fragments.MusicFragment;
 import com.attribes.push2beat.fragments.MyProfileFragment;
+import com.attribes.push2beat.fragments.MyStatsFragment;
 import com.attribes.push2beat.fragments.PrepareFragment;
 
 /**
@@ -36,13 +37,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
                 return prepareFragment;
             case 1:
-            case 2:
                 MusicFragment musicFragment = new MusicFragment();
                 return musicFragment;
+            case 2:
+                MyStatsFragment myStatsFragment = new MyStatsFragment();
+                return myStatsFragment;
             case 3:
-                MyProfileFragment fragment = new MyProfileFragment();
-                return  fragment;
-
+                MyProfileFragment myProfileFragment = new MyProfileFragment();
+                return myProfileFragment;
             default:
                 return null;
 

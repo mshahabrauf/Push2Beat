@@ -5,15 +5,18 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:id="@+id/container_full"
-              android:weightSum = "3"
+              android:weightSum = "3.8"
               >
 
     <FrameLayout
             android:id="@+id/container_above"
-              android:padding="@dimen/md_simplelistitem_padding_top"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:paddingRight="20dp"
+            android:paddingEnd="20dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.2"
+            android:layout_weight="1.8"
             />
 
 
@@ -23,18 +26,19 @@
             android:id="@+id/layout_below"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="10dp"
-            android:weightSum="5"
-            android:layout_weight="1.8"
-
-            android:orientation="vertical">
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:paddingRight="20dp"
+            android:paddingEnd="20dp"
+            android:orientation="vertical"
+            android:layout_weight="2.0">
 
 
         <include android:id="@+id/layout_counter_cal"
             layout="@layout/timer_main"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="0.4"/>
 
 
         <include
@@ -42,7 +46,7 @@
             layout="@layout/timer_sub_replace"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_weight="0.6"
             />
 
 
@@ -51,9 +55,8 @@
             android:id="@+id/layout_ghostrider"
             layout="@layout/timer_ghost"
             android:layout_width="match_parent"
-
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="0.4"
             />
 
 
@@ -62,7 +65,7 @@
             layout="@layout/timer_cmiyc"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="0.4"/>
 
     </LinearLayout>
 
@@ -71,7 +74,7 @@
         android:id="@+id/container_below"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.8"
+        android:layout_weight="2.0"
         android:padding="5dp"/>
 
 </LinearLayout>
