@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
@@ -57,6 +58,7 @@ public class GhostRiderFragment extends Fragment {
     private void init() {
         onAttachFragment(getParentFragment());
 
+        binding.progress.progressWheel.setVisibility(View.VISIBLE);
         binding.getRoot().setOnKeyListener(new onBackKeyListenerHandler());
 
         mRecycle = binding.ghostRecyclerView;
@@ -70,16 +72,18 @@ public class GhostRiderFragment extends Fragment {
         GetListRequestParams params = new GetListRequestParams();
         //Todo: change the UserId after SignUp procedure completed
 
-        params.setUser_id(48);
+        params.setUser_id(Integer.parseInt(Common.getInstance().getUser().getId()));
         params.setLat(Common.getInstance().getLocation().getLatitude());
         params.setLng(Common.getInstance().getLocation().getLongitude());
 
         ListOfTrackDAL.getTrackList(params, new TracksArrivalListener() {
             @Override
             public void onDataRecieved(final List<Datum> data) {
+               binding.progress.progressWheel.setVisibility(View.GONE);
                mRecycle.setAdapter(new TrackListAdapter(data, new RecyclerAdapterInterface() {
                    @Override
                    public void onstartCallback(int position) {
+
                        Datum datum = data.get(position);
                        listener.onStartGhostRider(datum);
                    }
@@ -88,7 +92,8 @@ public class GhostRiderFragment extends Fragment {
 
             @Override
             public void onEmptyData(String msg) {
-
+                Toast.makeText(getContext(), "No Tracks found", Toast.LENGTH_SHORT).show();
+                binding.progress.progressWheel.setVisibility(View.GONE);
             }
         });
     }

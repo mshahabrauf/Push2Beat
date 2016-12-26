@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
@@ -63,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private void addTabsIcons() {
 
         binding.tabs.getTabAt(0).setIcon(R.drawable.ic_gps);
+        //binding.tabs.getTabAt(0).setCustomView()
         binding.tabs.getTabAt(1).setIcon(R.drawable.ic_music);
         binding.tabs.getTabAt(2).setIcon(R.drawable.ic_stats);
         binding.tabs.getTabAt(3).setIcon(R.drawable.ic_action_name);
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         getFragmentManager().popBackStack();
-        Toast.makeText(MainActivity.this, "Back BUtton", Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(MainActivity.this, "Back BUtton", Toast.LENGTH_SHORT).show();
 
         super.onBackPressed();
     }
@@ -81,9 +81,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
+            // TODO: 12/24/16 implement back button on fragment
             //getFragmentManager().popBackStack(Constants.GHOST_TAG,FragmentManager.POP_BACK_STACK_INCLUSIVE);
             getFragmentManager().popBackStack(Constants.CMIYC_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            Toast.makeText(MainActivity.this, "Back BUtton", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(MainActivity.this, "Back BUtton", Toast.LENGTH_SHORT).show();
 
         }
     }

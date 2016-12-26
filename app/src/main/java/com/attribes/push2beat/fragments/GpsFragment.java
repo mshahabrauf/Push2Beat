@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import android.widget.Toast;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
-import com.attribes.push2beat.Utils.CustomConnectionListener;
+import com.attribes.push2beat.Utils.QBHandler;
 import com.attribes.push2beat.databinding.FragmentTimerBinding;
 import com.attribes.push2beat.models.BodyParams.AddTrackParams;
 import com.attribes.push2beat.models.Response.UserList.Datum;
@@ -34,16 +35,9 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
-import com.quickblox.chat.QBChatService;
-import com.quickblox.chat.QBIncomingMessagesManager;
-import com.quickblox.chat.exception.QBChatException;
-import com.quickblox.chat.listeners.QBChatDialogMessageListener;
-import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
-import com.quickblox.chat.model.QBDialogType;
-import com.quickblox.core.QBEntityCallback;
-import com.quickblox.core.exception.QBResponseException;
-import com.quickblox.users.model.QBUser;
+
+import org.jivesoftware.smack.SmackException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,6 +70,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     public static final String SpeedTag= "speed";
 
 
+    private boolean isCatchMeIfYouCan = false;
     //Timer Constants
     private List<Integer> speedList;
 
@@ -107,14 +102,21 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         View view = binding.getRoot();
         initGoogleApi();
         init();
+
         initFragments();
         startButtons();
+
         timer_start();
 
         return view;
     }
 
     private void initFragments() {
+        if(startLocation != null)
+        {mapFragment = new MapFragment(startLocation);}
+        else {mapFragment = new MapFragment();}
+        showHideFragment(mapFragment);
+
 
         speedMeterFragment = new SpeedoMeterFragment();
         FragmentManager fragment = getFragmentManager();
@@ -127,10 +129,6 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
         // Initialize map Fragment
-        if(startLocation != null)
-        {mapFragment = new MapFragment(startLocation);}
-        else {mapFragment = new MapFragment();}
-        showHideFragment(mapFragment,speedMeterFragment);
 
     }
 
@@ -163,6 +161,22 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         ft.commit();
     }
 
+    private void showHideFragment(final Fragment fragment) {
+
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        ft.replace(R.id.container_above,fragment, Constants.MAP_TAG);
+        if (fragment.isHidden()) {
+            ft.show(fragment);
+
+        } else {
+            ft.hide(fragment);
+
+        }
+
+        ft.commit();
+    }
+
+
 
     private void startButtons() {
 
@@ -182,6 +196,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         burntCalories = 0;
         distanceInMeter = 0;
 
+        isCatchMeIfYouCan = false;
 
         isSavedButtonClicked =false;
         starttime = 0L;
@@ -337,10 +352,11 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         model.setDistance(totalDistance * 1609.344); // converting miles into meter
         model.setCaleries_burnt(burntCalories);
         model.setTrack_time(""+ mins + ":" + String.format("%02d", secs) + ":" + String.format("%03d", milliseconds));
+        model.setGenrated_by(Integer.parseInt(Common.getInstance().getUser().getId()));
         // Dummy values
         //Todo change these dummy values to actual
         model.setTrack_type(1); // 1 for simple run, 2 for ghots rider and 3 for catch me if you can
-        model.setGenrated_by(48); // Todo get UserId after Login
+
 
         AddTrackDAL.postTrack(model,getContext());
 
@@ -355,93 +371,26 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     @Override
     public void onStartCmiyc(Datum datum) {
        // initQBChat();
+        initQBChat(datum.getEmail());
+        getMapFragment().addOpponentMaker(Double.parseDouble(datum.getLat()),Double.parseDouble(datum.getLng()));
         updateUiforCmifyc();
         resetScreensValues();
         showOpponentDetail(datum);
+        isCatchMeIfYouCan = true;
+
         timer_start();
     }
 
-    private void initQBChat() {
-        QBChatService.setDebugEnabled(true); // enable chat logging
-        QBChatService.setDefaultAutoSendPresenceInterval(10); //enable sending online status every 60 sec to keep connection alive
+    private void initQBChat(String email) {
 
-        QBChatService.ConfigurationBuilder chatServiceConfigurationBuilder = new QBChatService.ConfigurationBuilder();
-        chatServiceConfigurationBuilder.setSocketTimeout(60); //Sets chat socket's read timeout in seconds
-        chatServiceConfigurationBuilder.setKeepAlive(true); //Sets connection socket's keepAlive option.
-        chatServiceConfigurationBuilder.setUseTls(true); //Sets the TLS security mode used when making the connection. By default TLS is disabled.
-        QBChatService.setConfigurationBuilder(chatServiceConfigurationBuilder);
+        QBHandler.getInstance().initQBChatter();
 
-        QBChatService qbChatService = QBChatService.getInstance();
-        QBUser user = new QBUser();
-        user.setId(21938224);
-        user.setLogin("junaidaman@gmail.com");
-        user.setPassword("12345678");
-        qbChatService.login(user, new QBEntityCallback() {
-            @Override
-            public void onSuccess(Object o, Bundle bundle) {
-                Toast.makeText(getContext(), "login succesfully", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(QBResponseException e) {
-
-            }
-        });
-
-
-        //int id = 4;
-        QBChatService.getInstance().addConnectionListener(new CustomConnectionListener());
-        List<Integer> occupantIdsList = new ArrayList<>();
-        occupantIdsList.add(21938224);
-
-        QBChatDialog dialog = new QBChatDialog();
-
-        dialog.setDialogId("1234");
-        dialog.setName("Chat with Garry and John");
-        dialog.setPhoto("1786");
-        dialog.setType(QBDialogType.PRIVATE);
-        dialog.setOccupantsIds(occupantIdsList);
+        QBHandler.getInstance().setQBOpponentUser(email);
 
 
 
-        QBChatMessage message = new QBChatMessage();
-        message.setDialogId(dialog.getDialogId());
-        message.setRecipientId(21938224);
-        message.setBody("test message");
+        QBHandler.getInstance().QBCreateSession();
 
-
-//        message.setProperty(PROPERTY_OCCUPANTS_IDS, QbDialogUtils.getOccupantsIdsStringFromList(dialog.getOccupants()));
-//        message.setProperty(PROPERTY_DIALOG_TYPE, String.valueOf(dialog.getType().getCode()));
-//        message.setProperty(PROPERTY_DIALOG_NAME, String.valueOf(dialog.getName()));
-//        message.setProperty(PROPERTY_NOTIFICATION_TYPE, CREATING_DIALOG);
-
-        dialog.deliverMessage(message, new QBEntityCallback() {
-            @Override
-            public void onSuccess(Object o, Bundle bundle) {
-                Toast.makeText(getContext(), "Message Send Succesfully", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(QBResponseException e) {
-
-            }
-        });
-
-        // chatDialog.setOccupantsId();
-
-
-        QBIncomingMessagesManager manager = qbChatService.getIncomingMessagesManager();
-        manager.addDialogMessageListener(new QBChatDialogMessageListener() {
-            @Override
-            public void processMessage(String s, QBChatMessage qbChatMessage, Integer integer) {
-                Toast.makeText(getContext(), qbChatMessage.getBody().toString(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void processError(String s, QBChatException e, QBChatMessage qbChatMessage, Integer integer) {
-
-            }
-        });
 
 
     }
@@ -494,6 +443,12 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     //====================================== Listeners==================================================================//
 
 
+    public void startMessageListener()
+    {
+
+
+    }
+
     private class CustomLocationListener implements LocationListener {
         @Override
         public void onLocationChanged(Location curr) {
@@ -512,6 +467,21 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                 prev = curr;
            // }
 
+            if(isCatchMeIfYouCan)
+            {
+                QBChatMessage message = new QBChatMessage();
+            if(QBHandler.getInstance().getQBDialog() != null){
+                message.setDialogId(QBHandler.getInstance().getQBDialog().getDialogId());
+                message.setRecipientId(QBHandler.getInstance().getQBOpponent().getId());
+                message.setBody(String.valueOf(curr.getLatitude()) + "," + String.valueOf(curr.getLongitude()));
+                try {
+                    QBHandler.getInstance().getQBDialog().sendMessage(message);
+                } catch (SmackException.NotConnectedException e) {
+                    e.printStackTrace();
+                    Log.d("mChat",""+e);
+                }
+                }
+            }
 
 
         }
@@ -662,7 +632,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         LocationServices.FusedLocationApi.requestLocationUpdates(apiClient, request,new CustomLocationListener());
         startLocation = LocationServices.FusedLocationApi.getLastLocation(apiClient);
         Common.getInstance().setLocation(startLocation);
-        getMapFragment().addLocationToQb(startLocation);
+
         prev = startLocation;
 
     }

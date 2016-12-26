@@ -3,6 +3,7 @@ package com.attribes.push2beat.Utils;
 import android.content.Context;
 import android.location.Location;
 
+import com.attribes.push2beat.models.Response.UserSignUp.LoginData;
 import com.google.android.gms.maps.model.LatLng;
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.users.model.QBUser;
@@ -19,6 +20,8 @@ public class Common {
     private Location location;
     private QBUser qbUser;
     private int runType;
+    private LoginData user;
+    private String password;
 
 
     private Common() {
@@ -114,5 +117,23 @@ public class Common {
 
     public void setRunType(int runType) {
         this.runType = runType;
+    }
+
+    public void setUser(LoginData user) {
+        this.user = user;
+    }
+
+    public LoginData getUser()
+    {
+
+        return user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

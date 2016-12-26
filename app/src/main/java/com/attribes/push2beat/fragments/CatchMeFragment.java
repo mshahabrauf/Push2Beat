@@ -65,6 +65,8 @@ public class CatchMeFragment extends Fragment {
     private void init() {
         onAttachFragment(getParentFragment());
 
+
+        binding.progress.progressWheel.setVisibility(View.VISIBLE);
         mRecycle = binding.myRecyclerView;
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         mRecycle.setLayoutManager(mLayoutManager);
@@ -77,15 +79,17 @@ public class CatchMeFragment extends Fragment {
         GetListRequestParams params = new GetListRequestParams();
         //Todo: change the UserId after SignUp procedure completed
 
-        params.setUser_id(1);
+        params.setUser_id(Integer.parseInt(Common.getInstance().getUser().getId()));
         params.setLat(Common.getInstance().getLocation().getLatitude());
         params.setLng(Common.getInstance().getLocation().getLongitude());
+
+
 
         ListOfUserDAL.getUserList(params, new UsersArrivalListener() {
             @Override
             public void onDataRecieved(final List<Datum> data)
             {
-
+                binding.progress.progressWheel.setVisibility(View.GONE);
 
                 mRecycle.setAdapter(new UserListAdapter(data, new RecyclerAdapterInterface() {
                     @Override
@@ -101,6 +105,7 @@ public class CatchMeFragment extends Fragment {
 
             @Override
             public void onEmptyData(String msg) {
+                binding.progress.progressWheel.setVisibility(View.GONE);
                 Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
@@ -113,7 +118,7 @@ public class CatchMeFragment extends Fragment {
         if(data!=null)
         {
             getMapFragment().showUsers(data);
-            getMapFragment().showQBLocationMap();
+
         }
     }
 

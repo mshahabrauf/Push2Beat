@@ -18,12 +18,14 @@ import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
+import com.wang.avi.AVLoadingIndicatorView;
 
 public class SignIn extends AppCompatActivity {
     ImageButton signin;
     EditText username;
     EditText password;
     Boolean onsuccess = false;
+    AVLoadingIndicatorView progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,20 +37,23 @@ public class SignIn extends AppCompatActivity {
         signin = (ImageButton) findViewById(R.id.signinuser);
         username = (EditText) findViewById(R.id.usersignin);
         password = (EditText) findViewById(R.id.userpassword);
+        progress = (AVLoadingIndicatorView) findViewById(R.id.progress_wheel);
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progress.setVisibility(View.VISIBLE);
 
                 UserLoginDetailParams detail = new UserLoginDetailParams();
                 detail.setUser_email(username.getText().toString());
-                detail.setDevice_type(FirebaseInstanceId.getInstance().getToken());
-                detail.setDevice_token("1");
+                detail.setDevice_type("1");
+                detail.setDevice_token(FirebaseInstanceId.getInstance().getToken());
                 detail.setPassword(password.getText().toString());
 
                 LoginDAL.userLogin(detail, new OnSignUpSuccess() {
                     @Override
                     public void onSuccess() {
                         acccoutSignin(username.getText().toString().trim(),password.getText().toString().trim());
+                      Common.getInstance().setPassword(password.getText().toString());
                     }
 
                     @Override
@@ -74,6 +79,7 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onSuccess(QBUser qbUser, Bundle bundle) {
                 Common.getInstance().setQbUser(qbUser);
+                progress.setVisibility(View.GONE);
 
                 Toast.makeText(getApplicationContext(), "QuickBlox SignIn Success", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(SignIn.this,SelectActivity.class));

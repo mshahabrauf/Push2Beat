@@ -65,6 +65,7 @@ public class MapFragment extends android.support.v4.app.Fragment {
     private Marker start;
     private Marker end;
     private Polyline line;
+    private MarkerOptions opponent;
 
     @Nullable
     @Override
@@ -105,6 +106,8 @@ public class MapFragment extends android.support.v4.app.Fragment {
     }
 
 
+
+
     private class MapReadyCallback implements OnMapReadyCallback {
         @Override
         public void onMapReady(GoogleMap googleMap) {
@@ -114,6 +117,7 @@ public class MapFragment extends android.support.v4.app.Fragment {
             }
             else {
                 startLocation = Common.getInstance().getLocation();
+                map.setMyLocationEnabled(true);
             }
         }
     }
@@ -149,48 +153,6 @@ public class MapFragment extends android.support.v4.app.Fragment {
     }
 
 
-    public void addLocationToQb(Location sLocation)
-    {
-
-//        QBLocation location = new QBLocation(sLocation.getLatitude(), sLocation.getLongitude(),"");
-//        QBLocations.createLocation(location, new QBEntityCallback<QBLocation>() {
-//            @Override
-//            public void onSuccess(QBLocation qbLocation, Bundle args) {
-//                 Toast.makeText(getContext(), "updated", Toast.LENGTH_SHORT).show();
-//                Log.d("Qb","Location is added successfully");
-//            }
-//
-//            @Override
-//            public void onError(QBResponseException errors) {
-//                Log.d("Qb","failed");
-//            }
-//        });
-    }
-
-
-    public void showQBLocationMap()
-    {
-//        QBLocationRequestBuilder buider = new QBLocationRequestBuilder();
-//        buider.setPerPage(100);
-//        buider.setLastOnly();
-
-//        QBLocations.getLocations(buider, new QBEntityCallback<ArrayList<QBLocation>>() {
-//            @Override
-//            public void onSuccess(ArrayList<QBLocation> qbLocations, Bundle bundle) {
-//                for(QBLocation location: qbLocations)
-//                {
-//
-//                    map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_profile_overlay)).position(new LatLng(location.getLatitude(),location.getLongitude())));
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onError(QBResponseException e) {
-//
-//            }
-//        });
-    }
 
 
 
@@ -205,6 +167,19 @@ public class MapFragment extends android.support.v4.app.Fragment {
 
     }
 
+
+
+    public void addOpponentMaker(double lat,double lng)
+    {
+        LatLng latLng = new LatLng(lat,lng);
+        opponent = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_profile_overlay)).position(latLng);
+
+    }
+
+    public void moveOpponent(double lat,double lng){
+        LatLng latLng = new LatLng(lat,lng);
+        opponent.position(latLng);
+    }
 
     public void showRoute(List<LatLng> track) {
         if(track != null){

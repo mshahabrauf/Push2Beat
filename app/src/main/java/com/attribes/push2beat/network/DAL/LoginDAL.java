@@ -1,5 +1,6 @@
 package com.attribes.push2beat.network.DAL;
 
+import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.OnSignUpSuccess;
 import com.attribes.push2beat.models.BodyParams.UserLoginDetailParams;
 import com.attribes.push2beat.models.Response.UserSignUp.SigninResponse;
@@ -33,6 +34,8 @@ public class LoginDAL {
 
                     if (response.isSuccessful())
                     {
+
+                        Common.getInstance().setUser(response.body().getData());
                         listener.onSuccess();
 
                        // Toast.makeText(context, "Push2Beat Login Sucessfully!", Toast.LENGTH_SHORT).show();

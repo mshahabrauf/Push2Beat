@@ -52,9 +52,11 @@ android:id="@+id/usersignin"
               android:hint="Password"
               android:layout_marginLeft="50dp"
               android:inputType="textPassword"/>
+
 <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent"
 android:orientation="horizontal"
 >
+
 <CheckBox android:layout_width="30dp" android:layout_height="30dp"
 android:layout_marginTop="30dp"
 android:layout_marginLeft="55dp"
@@ -62,7 +64,8 @@ android:layout_marginLeft="55dp"
 
 />
 
-<TextView android:layout_width="100dp" android:layout_height="100dp"
+
+<TextView android:layout_width="100dp" android:layout_height="wrap_content"
 android:text="Remember me"
           android:layout_marginTop="30dp"
           android:layout_marginLeft="10dp"
@@ -74,7 +77,7 @@ android:text="Remember me"
     <ImageButton android:layout_width="100dp" android:layout_height="80dp"
               android:text="Remember me"
                  android:id="@+id/signinuser"
-              android:layout_marginTop="25dp"
+
 
                  android:background="@drawable/signin"
               android:layout_marginLeft="40dp"
@@ -87,6 +90,7 @@ android:text="Remember me"
 
 
 </LinearLayout>
+    <include layout="@layout/progress" />
   <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
   android:orientation="vertical">
   <TextView android:layout_width="match_parent" android:layout_height="match_parent"
@@ -100,7 +104,7 @@ android:textStyle="bold"
 
     <ImageButton android:layout_width="200dp" android:layout_height="50dp"
     android:layout_marginLeft="76dp"
-    android:layout_marginTop="10dp"
+
                  android:background="@drawable/fb"
 
     />

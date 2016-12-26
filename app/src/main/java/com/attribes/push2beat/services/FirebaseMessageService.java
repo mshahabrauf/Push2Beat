@@ -24,9 +24,9 @@ public class FirebaseMessageService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        //if(remoteMessage.getData().size() > 0){
+        if(remoteMessage.getData().size() > 0){
             displayNotification(remoteMessage.getData());
-      //  }
+        }
     }
 
     private void displayNotification(Map<String, String> data) {
@@ -38,8 +38,9 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         NotificationCompat.Builder nBuilder=new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.p2b_icon)
                 .setContentTitle("Catch me if you can!")
-                .setContentText("Are you ready to beat me")
-                .setAutoCancel(true)
+                .setContentText("Are you ready to beat "+data.get("username"))
+                .setAutoCancel(false)
+                .addAction(R.drawable.start_button,"Start",pendingIntent)
                 .setSound(notificationsound)
                 .setContentIntent(pendingIntent);
         NotificationManager notificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);

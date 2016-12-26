@@ -1,14 +1,12 @@
 package com.attribes.push2beat.models.Response.UserSignUp;
 
-import com.attribes.push2beat.models.BodyParams.LoginParams;
-
 /**
  * Created by Talha Ghaffar on 12/14/2016.
  */
 public class SigninResponse {
     public Integer code;
     public String msg;
-    public LoginParams data;
+    public LoginData data;
 
     public Integer getCode() {
         return code;
@@ -26,11 +24,11 @@ public class SigninResponse {
         this.msg = msg;
     }
 
-    public LoginParams getData() {
+    public LoginData getData() {
         return data;
     }
 
-    public void setData(LoginParams data) {
+    public void setData(LoginData data) {
         this.data = data;
     }
 }

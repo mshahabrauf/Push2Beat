@@ -10,12 +10,12 @@
 
 
     <LinearLayout
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:layout_width="match_parent"
-        android:layout_weight="1"
+
         android:background="@color/secondary_dark_grey"
         android:orientation="horizontal"
-        android:padding="@dimen/md_simplelistitem_padding_top"
+        android:padding="@dimen/normal_padding"
         android:elevation="@dimen/normal_elevation"
 
         android:layout_gravity="center">
@@ -59,11 +59,11 @@
     <LinearLayout
         android:id="@+id/item_bottom"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:background="@color/secondary_dark_purple"
-        android:layout_weight="1"
+
         android:orientation="horizontal"
-        android:padding="@dimen/md_button_padding_frame_side"
+        android:padding="@dimen/normal_padding"
         android:weightSum="5"
         >
         <ImageView
