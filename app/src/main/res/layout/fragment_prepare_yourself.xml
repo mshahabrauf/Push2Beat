@@ -1,177 +1,149 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
 
-    >
+    <FrameLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/prepare_container">
 
 <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/prepare_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="3">
 
-    >
-
-        <LinearLayout
-                      android:layout_width="match_parent"
-                      android:id="@+id/root"
-                      android:padding="@dimen/large_padding"
-                      android:layout_height="match_parent"
-                      android:orientation="vertical">
-            <!--<FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"-->
-            <!--android:id="@+id/frag"-->
-            <!--&gt;-->
-
-            <!--</FrameLayout>-->
-
-
-            <ScrollView
+            <ScrollView android:id="@+id/root"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fillViewport="true">
+                        android:layout_height="0dp"
+                        android:layout_weight="2.9">
 
-                <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent" android:layout_height="match_parent">
             <!-- TODO: Update blank fragment layout -->
-            <LinearLayout android:layout_width="match_parent" android:layout_height="50dp">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:padding="30dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
 
                 <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textColor="#ffffff"
-                        android:textSize="25dp"
-                        android:textStyle="bold"
-                        android:textAlignment="center"
-                        android:text="Prepare Yourself"/>
-            </LinearLayout>
-            <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
-
-                          android:orientation="vertical"
-            >
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:id="@+id/start"
-                    android:background="@drawable/start_button"
-                    />
-                <TextView android:layout_width="match_parent" android:layout_height="0dp"
-                          android:textColor="#ffffff"
-                          android:textSize="20dp"
-                          android:textAlignment="center"
-                          android:layout_weight="1.25"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="10dp"
                           android:maxLines="2"
-                          android:layout_marginTop="1dp"
-                          android:text="The first minute is your warm up /n Try and ride 25-50% of your maximum"
+                          android:textSize="15sp"
+                          android:gravity="center"
+                          android:text="The first minute is your warm up
+Try and ride 25-50% of your maximum"
+                          android:textColor="@color/white"/>
 
-                />
-                <TextView android:layout_width="match_parent" android:layout_height="0dp"
-                          android:textColor="#ffffff"
-                          android:textSize="20dp"
-                          android:textAlignment="center"
-                          android:layout_weight="1.31"
+                <TextView android:id="@+id/hard_tv"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="10dp"
                           android:maxLines="2"
-                          android:layout_marginTop="1dp"
-                          android:text="@string/test"
+                          android:textSize="15sp"
+                          android:gravity="center"
+                          android:textColor="@color/white"/>
 
-                />
-                <TextView android:layout_width="match_parent" android:layout_height="0dp"
-                          android:textColor="#ffffff"
-                          android:textSize="20dp"
-                          android:textAlignment="center"
-                          android:layout_weight="0.70"
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="10dp"
                           android:maxLines="1"
-                          android:layout_marginTop="1dp"
+                          android:textSize="15sp"
+                          android:gravity="center"
                           android:text="@string/text"
+                          android:textColor="@color/white"/>
 
-                />
-                <TextView android:layout_width="match_parent" android:layout_height="0dp"
-                          android:textColor="#ffffff"
-                          android:textSize="20dp"
-                          android:textAlignment="center"
-                          android:layout_weight="1.15"
-                          android:maxLines="2"
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
                           android:textStyle="bold"
-                          android:layout_marginTop="1dp"
-                          android:text="@string/text2"
+                          android:layout_marginTop="10dp"
+                          android:textSize="15sp"
+                          android:gravity="center"
+                          android:text="Braking sounds or screeching tyres will
+signify the end of that interval."
+                          android:textColor="@color/white"/>
 
-                />
-                <TextView android:layout_width="match_parent" android:layout_height="0dp"
-                          android:textColor="#ffffff"
-                          android:textSize="20dp"
-                          android:textAlignment="center"
-                          android:layout_weight="1.35"
-                          android:maxLines="2"
-                          android:layout_marginTop="1dp"
-                          android:text="Intervals range from 10-40 sec,\n don't forget to hydrate throughout."
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="10dp"
+                          android:textSize="15sp"
+                          android:gravity="center"
+                          android:text="Intervals range from 10-40 sec,"
+                          android:textColor="@color/white"/>
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:textStyle="bold"
+                          android:textSize="15sp"
+                          android:gravity="center"
+                          android:text="don't forget to hydrate throughout."
+                          android:textColor="@color/white"/>
 
-                />
-
-                <TextView android:layout_width="match_parent" android:layout_height="0dp"
-                          android:textColor="#ffffff"
-                          android:textSize="20dp"
-                          android:textAlignment="center"
-                          android:layout_weight="0.91"
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
                           android:maxLines="1"
-                          android:layout_marginTop="1dp"
+                          android:layout_marginTop="15dp"
                           android:text="REMEMBER!"
+                          android:textSize="15sp"
+                          android:gravity="center"
+                          android:textColor="@color/white"/>
 
-                />
-                <TextView android:layout_width="match_parent" android:layout_height="0dp"
-                          android:textColor="#ffffff"
-                          android:textSize="15dp"
-                          android:textAlignment="center"
-                          android:layout_weight="1.31"
-                          android:maxLines="3"
-                          android:layout_marginTop="1dp"
-                          android:text="@string/text4"
+                <TextView
+                          android:id="@+id/hit_tv"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="15dp"
+                          android:textSize="15sp"
+                          android:gravity="center"
+                          android:textColor="@color/white" />
 
-                />
-                <TextView android:layout_width="match_parent" android:layout_height="0dp"
-                          android:textColor="#ffffff"
-                          android:textSize="15dp"
-                          android:textAlignment="center"
-                          android:layout_weight="1.31"
-                          android:maxLines="3"
-                          android:layout_marginTop="1dp"
-                          android:text="@string/text5"
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="10dp"
+                          android:text="Outdoor Jog/Walk (GPS)
+ Stair-Masterx/X-Trainer
+ Rowing Machines"
+                          android:textSize="15sp"
+                          android:gravity="center"
+                          android:textColor="@color/white" />
 
-                />
+                <TextView   android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="Share your workout on
+ social media when you finish "
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            android:textColor="@color/white"/>
 
-                <TextView android:layout_width="match_parent" android:layout_height="0dp"
-                    android:textColor="#ffffff"
-                    android:textSize="15dp"
-                    android:textAlignment="center"
-                    android:layout_weight="1.31"
-                    android:maxLines="3"
-                    android:layout_marginTop="1dp"
-                    android:text="@string/text6"
+                <TextView   android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="#beastmode"
+                            android:textSize="18sp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textColor="@color/white"/>
 
-                    />
-                <TextView android:layout_width="match_parent" android:layout_height="0dp"
-                    android:textColor="#ffffff"
-                    android:textSize="15dp"
-                    android:textAlignment="center"
-                    android:layout_weight="1.31"
-                    android:maxLines="1"
-                    android:layout_marginTop="1dp"
-                    android:text="#beastmode"
-
-                    />
-
-
-
-
-
+                <ImageView android:layout_width="match_parent"
+                           android:layout_height="100dp"
+                           android:src="@drawable/hearbeat"
+                           android:layout_marginTop="20dp"/>
 
             </LinearLayout>
-                    <ImageView android:layout_width="match_parent"
-                        android:layout_height="100dp"
 
-                        android:src="@drawable/hearbeat"
-                         />
-
-
-                </LinearLayout>
             </ScrollView>
 
-        </LinearLayout>
+    <Button
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/start"
+            android:background="@drawable/start_button"
+            android:adjustViewBounds="true"
+            android:layout_weight="0.1"/>
+
 </LinearLayout>
+    </FrameLayout>
 </layout>

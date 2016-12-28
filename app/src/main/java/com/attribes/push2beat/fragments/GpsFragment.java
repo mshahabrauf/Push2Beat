@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
+import com.attribes.push2beat.Utils.QBHandler;
 import com.attribes.push2beat.databinding.FragmentTimerBinding;
 import com.attribes.push2beat.models.BodyParams.AddTrackParams;
 import com.attribes.push2beat.models.Response.UserList.Datum;
@@ -72,18 +74,12 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     //Timer Constants
     private List<Integer> speedList;
 
-    private int speed = 0;
     private  long starttime = 0L;
     private  long timeInMilliseconds = 0L;
     private  long timeSwapBuff = 0L;
     private  long updatedtime = 0L;
     private  int t = 1;
     private  double distanceInMeter = 0;
-
-    private   int secs = 0;
-    private   int mins = 0;
-    private   int milliseconds = 0;
-    private   Handler handler = new Handler();
 
     int secs = 0;
     int mins = 0;
@@ -153,9 +149,11 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         ft.replace(R.id.container_above,fragment, Constants.MAP_TAG);
         if (fragment.isHidden()) {
             ft.show(fragment);
+            binding.layoutTimerSubReplace.btnGps.setBackgroundResource(R.drawable.timerbtn);
             ft.hide(fragment1);
         } else {
             ft.hide(fragment);
+            binding.layoutTimerSubReplace.btnGps.setBackgroundResource(R.drawable.gps_button);
             ft.show(fragment1);
         }
 

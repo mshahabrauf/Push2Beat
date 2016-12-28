@@ -14,7 +14,6 @@ public class EndPoints {
 
     public static final String User_Details ="signup";
     public static final String User_Signin ="login";
-    public static final String Get_Profile ="get_profile";
 
     public static final String Get_Profile ="get_profile";
     public static final String MyStats_List ="get_Stats";

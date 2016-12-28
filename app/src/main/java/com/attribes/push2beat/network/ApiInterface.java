@@ -51,10 +51,6 @@ public interface ApiInterface {
     Call<SigninResponse> signin(@FieldMap Map<String,Object> params);
 
     @FormUrlEncoded
-    @POST(EndPoints.Get_Profile)
-    Call<MyProfileResponse> getProfile(@Field("user_id") String id);
-
-    @FormUrlEncoded
     @POST(EndPoints.MyStats_List)
     Call<MyStatsResponse> getMyStats(@Field("user_id")String user_id);
 
