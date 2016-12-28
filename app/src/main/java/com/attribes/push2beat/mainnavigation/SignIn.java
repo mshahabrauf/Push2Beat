@@ -3,6 +3,7 @@ package com.attribes.push2beat.mainnavigation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,6 +15,7 @@ import com.attribes.push2beat.Utils.OnSignUpSuccess;
 import com.attribes.push2beat.models.BodyParams.UserLoginDetailParams;
 import com.attribes.push2beat.network.DAL.LoginDAL;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.quickblox.chat.QBChatService;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.QBUsers;
@@ -26,6 +28,8 @@ public class SignIn extends AppCompatActivity {
     EditText password;
     Boolean onsuccess = false;
     AVLoadingIndicatorView progress;
+    QBChatService chatService;
+    QBUser opponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,21 +73,24 @@ public class SignIn extends AppCompatActivity {
     }
 
 
-    public void acccoutSignin(String email, String password) {
+    public void acccoutSignin(final String email, String password) {
 
-        QBUser qbUser = new QBUser();
+        final QBUser qbUser = new QBUser();
         qbUser.setLogin(email);
         qbUser.setEmail(email);
         qbUser.setPassword(password);
         QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {
             @Override
-            public void onSuccess(QBUser qbUser, Bundle bundle) {
+            public void onSuccess(QBUser user, Bundle bundle) {
+                qbUser.setId(user.getId());
                 Common.getInstance().setQbUser(qbUser);
                 progress.setVisibility(View.GONE);
+
 
                 Toast.makeText(getApplicationContext(), "QuickBlox SignIn Success", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(SignIn.this,SelectActivity.class));
                 onsuccess=true;
+                createChatService();
 
             }
 
@@ -95,4 +102,24 @@ public class SignIn extends AppCompatActivity {
         });
 
     }
+
+
+    private void createChatService() {
+
+
+        chatService = QBChatService.getInstance();
+        chatService.login(Common.getInstance().getQbUser(), new QBEntityCallback() {
+            @Override
+            public void onSuccess(Object o, Bundle bundle) {
+                Common.getInstance().setChatService(chatService);
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.d("mChat",""+e);
+            }
+        });
+    }
+
 }
+

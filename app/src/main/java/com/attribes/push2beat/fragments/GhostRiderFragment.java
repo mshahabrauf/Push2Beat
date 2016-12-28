@@ -99,14 +99,6 @@ public class GhostRiderFragment extends Fragment {
     }
 
 
-    public void onViewClicked(View view)
-    {
-        Fragment fragment = getFragmentManager().findFragmentByTag(Constants.GHOST_TAG);
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.remove(fragment).commit();
-    }
-
-
 
 
     public interface OnStartButtonListener

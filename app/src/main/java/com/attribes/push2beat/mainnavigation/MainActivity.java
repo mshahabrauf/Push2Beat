@@ -1,18 +1,21 @@
 package com.attribes.push2beat.mainnavigation;
 
-import android.app.FragmentManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
-import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.adapter.SectionsPagerAdapter;
 import com.attribes.push2beat.databinding.ActivityMainBinding;
+
+import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
 
+        Common.getInstance().setFragmentStack(new Stack<Fragment>());
+
         Common.getInstance().initializeQBInstance(getApplicationContext());
 
         binding.appbar.backButton.setOnClickListener(new BackButtonListener());
@@ -49,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOffscreenPageLimit(4);
         binding.tabs.setupWithViewPager(mViewPager);
 
 
@@ -56,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
 
 
     private void addTabsIcons() {
@@ -71,21 +76,32 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        getFragmentManager().popBackStack();
-      //  Toast.makeText(MainActivity.this, "Back BUtton", Toast.LENGTH_SHORT).show();
-
-        super.onBackPressed();
+        Log.d("size",""+Common.getInstance().getFragmentStack().size());
+        if (Common.getInstance().getFragmentStack().size() > 1) {
+            binding.appbar.backButton.performClick();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private class BackButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-
-            // TODO: 12/24/16 implement back button on fragment
-            //getFragmentManager().popBackStack(Constants.GHOST_TAG,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            getFragmentManager().popBackStack(Constants.CMIYC_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-           // Toast.makeText(MainActivity.this, "Back BUtton", Toast.LENGTH_SHORT).show();
+            try {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                Common.getInstance().getFragmentStack().lastElement().onPause();
+                ft.remove(Common.getInstance().getFragmentStack().pop());
+                Common.getInstance().getFragmentStack().lastElement().onResume();
+                ft.show(Common.getInstance().getFragmentStack().lastElement());
+                ft.commit();
+            }
+            catch (IndexOutOfBoundsException ex)
+            {
+                Log.d("error",""+ ex);
+            }
 
         }
+
+
     }
 }

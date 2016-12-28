@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.databinding.FragmentPrepareYourselfBinding;
 
@@ -36,8 +37,14 @@ public class PrepareFragment extends Fragment {
             public void onClick(View view) {
                 GpsFragment gpsFragment = new GpsFragment();
                 FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                ft.replace(R.id.prepare_container,gpsFragment,Constants.GPS_TAG).commit();
-                binding.root.setVisibility(View.GONE);
+
+                ft.add(R.id.prepare_container,gpsFragment,Constants.GPS_TAG);
+//                Common.getInstance().getFragmentStack().lastElement().onPause();
+//                ft.hide(Common.getInstance().getFragmentStack().lastElement());
+                Common.getInstance().getFragmentStack().push(gpsFragment);
+                ft.commit();
+              //  binding.root.setVisibility(View.GONE);
+
             }
         });
     }

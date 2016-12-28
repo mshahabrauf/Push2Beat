@@ -10,8 +10,14 @@ import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.RecyclerAdapterInterface;
 import com.attribes.push2beat.adapter.viewholders.UserListHolder;
+import com.attribes.push2beat.models.Response.MyProfileResponse;
+import com.attribes.push2beat.models.Response.PushFireBase.Data;
+import com.attribes.push2beat.models.Response.PushFireBase.PushData;
 import com.attribes.push2beat.models.Response.UserList.Datum;
-
+import com.attribes.push2beat.network.DAL.GetProfileDAL;
+import com.attribes.push2beat.network.DAL.SendPush;
+import com.attribes.push2beat.network.interfaces.ProfileDataArrivalListner;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.List;
 
@@ -80,6 +86,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListHolder> {
                     Data dataa = new Data();
                     dataa.setUsername(data.getFirst_name());
                     dataa.setToken(FirebaseInstanceId.getInstance().getToken());
+                    dataa.setStatus(0);
                     push.setData(dataa);
               //      if (data.getDevice_token().equals("") == false) {
                     push.setTo(data.getDevice_token());

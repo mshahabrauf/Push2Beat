@@ -109,7 +109,7 @@ public class SignUp extends AppCompatActivity {
             public void onSuccess(QBUser qbUser, Bundle bundle)
             {
              Common.getInstance().setQbUser(qbUser);
-              startActivity(new Intent(SignUp.this,SelectActivity.class));
+              startActivity(new Intent(SignUp.this,SignIn.class));
             }
 
             @Override

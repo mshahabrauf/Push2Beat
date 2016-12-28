@@ -94,7 +94,7 @@ public class CatchMeFragment extends Fragment {
                 mRecycle.setAdapter(new UserListAdapter(data, new RecyclerAdapterInterface() {
                     @Override
                     public void onstartCallback(int position) {
-
+                    getMapFragment().addOpponentMaker(Double.parseDouble(data.get(position).getLat()),Double.parseDouble(data.get(position).getLng()));
                      listener.onStartCmiyc(data.get(position));
                     }
                 }));

@@ -4,16 +4,19 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+                android:paddingLeft="20dp"
+               android:paddingStart="20dp"
+
+                android:paddingRight="20dp"
+                android:paddingEnd="20dp"
               android:id="@+id/container_full"
+              android:background="@drawable/bg"
               android:weightSum = "3.8"
               >
 
     <FrameLayout
             android:id="@+id/container_above"
-            android:paddingLeft="20dp"
-            android:paddingStart="20dp"
-            android:paddingRight="20dp"
-            android:paddingEnd="20dp"
+
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.8"
@@ -22,16 +25,21 @@
 
 
 
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="2.0"
+    android:id="@+id/layout_below"
+    >
+
     <LinearLayout
-            android:id="@+id/layout_below"
+
+
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:paddingLeft="20dp"
-            android:paddingStart="20dp"
-            android:paddingRight="20dp"
-            android:paddingEnd="20dp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="2.0">
+
+            >
 
 
         <include android:id="@+id/layout_counter_cal"
@@ -70,12 +78,7 @@
     </LinearLayout>
 
 
-    <FrameLayout
-        android:id="@+id/container_below"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2.0"
-        android:padding="5dp"/>
+</FrameLayout>
 
 </LinearLayout>
 </layout>

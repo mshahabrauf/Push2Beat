@@ -2,14 +2,18 @@ package com.attribes.push2beat.Utils;
 
 import android.content.Context;
 import android.location.Location;
+import android.support.v4.app.Fragment;
 
 import com.attribes.push2beat.models.Response.UserSignUp.LoginData;
 import com.google.android.gms.maps.model.LatLng;
 import com.quickblox.auth.session.QBSettings;
+import com.quickblox.chat.QBChatService;
+import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by android on 12/9/16.
@@ -24,6 +28,10 @@ public class Common {
     private String password;
     private int SpeedValue;
     private String profile_image;
+    private QBChatDialog qbChatDialog;
+    private QBChatService chatService;
+    private Stack<Fragment> fragmentStack;
+
 
 
     private Common() {
@@ -154,4 +162,28 @@ public class Common {
         this.profile_image = profile_image;
     }
 
+
+    public QBChatDialog getQbChatDialog() {
+        return qbChatDialog;
+    }
+
+    public void setQbChatDialog(QBChatDialog qbChatDialog) {
+        this.qbChatDialog = qbChatDialog;
+    }
+
+    public QBChatService getChatService() {
+        return chatService;
+    }
+
+    public void setChatService(QBChatService chatService) {
+        this.chatService = chatService;
+    }
+
+    public Stack<Fragment> getFragmentStack() {
+        return fragmentStack;
+    }
+
+    public void setFragmentStack(Stack<Fragment> fragmentStack) {
+        this.fragmentStack = fragmentStack;
+    }
 }

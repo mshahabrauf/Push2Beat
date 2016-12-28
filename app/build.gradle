@@ -43,10 +43,10 @@ dependencies {
 dependencies {
     compile 'com.afollestad.material-dialogs:core:0.9.1.0' // Material Dialog
     compile 'de.hdodenhof:circleimageview:2.1.0' //for Circular ImageView
-    compile 'com.github.anastr:speedviewlib:1.1.1' //for Speedometer
+
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.anastr:speedviewlib:1.1.2'//for Speedometer
-    compile 'com.cardiomood.android:android-widgets:0.1.1'   //for Speedometer
+
 }
 
 //play Services dependencies

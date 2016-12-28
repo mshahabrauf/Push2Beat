@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
+import com.attribes.push2beat.Utils.CustomConnectionListener;
 import com.attribes.push2beat.databinding.FragmentTimerBinding;
 import com.attribes.push2beat.models.BodyParams.AddTrackParams;
 import com.attribes.push2beat.models.Response.UserList.Datum;
@@ -33,7 +35,18 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
+import com.quickblox.chat.QBChatService;
+import com.quickblox.chat.QBIncomingMessagesManager;
+import com.quickblox.chat.QBRestChatService;
+import com.quickblox.chat.exception.QBChatException;
+import com.quickblox.chat.listeners.QBChatDialogMessageListener;
+import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.chat.model.QBChatMessage;
+import com.quickblox.chat.utils.DialogUtils;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 
 import org.jivesoftware.smack.SmackException;
 
@@ -84,14 +97,8 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     private   int mins = 0;
     private   int milliseconds = 0;
     private   Handler handler = new Handler();
-
-    int secs = 0;
-    int mins = 0;
-    int milliseconds = 0;
-    int speed = 0;
-    Handler handler = new Handler();
-
-
+    private QBUser opponent;
+    private QBChatService chatService;
 
 
     public GpsFragment() {
@@ -108,6 +115,10 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         initFragments();
         startButtons();
         timer_start();
+
+        //getMapFragment().addOpponentMaker(Common.getInstance().getLocation().getLatitude(),Common.getInstance().getLocation().getLongitude());
+        setMessageRecieverManager();
+
 
         return view;
     }
@@ -179,7 +190,9 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
 
+
     private void startButtons() {
+
 
         binding.layoutTimerSubReplace.btnGps.setOnClickListener(new GpsButtonListener());
         binding.layoutTimerSubReplace.timerStop.setOnClickListener(new StopButtonListener());
@@ -208,7 +221,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         secs = 0;
         mins = 0;
         milliseconds = 0;
-        timer_start();
+
 
     }
 
@@ -238,7 +251,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     }
 
     private void uiUpdate() {
-
+        binding.layoutTimerSubReplace.timerRecord.setVisibility(View.GONE);
         binding.layoutTimerSubReplace.btnAddTrack.setVisibility(View.VISIBLE);
         binding.layoutTimerSubReplace.timerStop.setVisibility(View.GONE);
         binding.layoutTimerSubReplace.btnGps.setVisibility(View.GONE);
@@ -371,39 +384,116 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
      */
     @Override
     public void onStartCmiyc(Datum datum) {
-       // initQBChat();
+
+      //  removeCatchMeFragment();
         initQBChat(datum.getEmail());
         getMapFragment().addOpponentMaker(Double.parseDouble(datum.getLat()),Double.parseDouble(datum.getLng()));
         updateUiforCmifyc();
+        getChildFragmentManager().popBackStack();
         resetScreensValues();
+        timer_start();
         showOpponentDetail(datum);
         isCatchMeIfYouCan = true;
 
         timer_start();
     }
 
+    private void removeCatchMeFragment() {
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        ft.remove(Common.getInstance().getFragmentStack().lastElement()).commit();
+        Common.getInstance().getFragmentStack().pop();
+    }
+
     private void initQBChat(String email) {
 
-        QBHandler.getInstance().initQBChatter();
+        QBChatService.setDebugEnabled(true); // enable chat logging
+        QBChatService.setDefaultAutoSendPresenceInterval(10); //enable sending online status every 60 sec to keep connection alive
+        QBChatService.ConfigurationBuilder chatServiceConfigurationBuilder = new QBChatService.ConfigurationBuilder();
+        chatServiceConfigurationBuilder.setSocketTimeout(60); //Sets chat socket's read timeout in seconds
+        chatServiceConfigurationBuilder.setKeepAlive(true); //Sets connection socket's keepAlive option.
+        chatServiceConfigurationBuilder.setUseTls(true); //Sets the TLS security mode used when making the connection. By default TLS is disabled.
+        QBChatService.setConfigurationBuilder(chatServiceConfigurationBuilder);
 
-        QBHandler.getInstance().setQBOpponentUser(email);
 
+        getUserByEmail(email);
 
-
-        QBHandler.getInstance().QBCreateSession();
-
+        QBChatService.getInstance().addConnectionListener(new CustomConnectionListener());
 
 
     }
 
+
+
+    private void getUserByEmail(String email) {
+        QBUsers.getUserByEmail(email).performAsync(new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser qbUser, Bundle bundle) {
+
+                opponent = qbUser;
+                createChatDialog(opponent.getId());
+
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.d("mChat",""+e);
+                //Todo show error mmessage to user
+            }
+        });
+    }
+
+
+    private void createChatDialog(int participantId) {
+
+        QBRestChatService.createChatDialog(DialogUtils.buildPrivateDialog(participantId)).performAsync(new QBEntityCallback<QBChatDialog>() {
+            @Override
+            public void onSuccess(QBChatDialog qbChatDialog, Bundle bundle) {
+
+              Common.getInstance().setQbChatDialog(qbChatDialog);
+
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.d("mChat",""+e);
+            }
+        });
+    }
+
+    private void setMessageRecieverManager() {
+
+        if(Common.getInstance().getChatService() !=null) {
+            QBIncomingMessagesManager manager = Common.getInstance().getChatService().getIncomingMessagesManager();
+            manager.addDialogMessageListener(new QBChatDialogMessageListener() {
+                @Override
+                public void processMessage(String s, QBChatMessage qbChatMessage, Integer integer) {
+                    String message = qbChatMessage.getBody();
+                    String[] str = message.split(",");
+                    double lat = Double.parseDouble(str[0]);
+                    double lng = Double.parseDouble(str[1]);
+
+                    if (isCatchMeIfYouCan) {
+                        getMapFragment().moveOpponent(lat, lng);
+                    }
+
+                }
+
+                @Override
+                public void processError(String s, QBChatException e, QBChatMessage qbChatMessage, Integer integer) {
+                    Log.d("mChat", "" + e);
+                }
+            });
+
+        }
+    }
     private void showOpponentDetail(Datum datum) {
        binding.layoutCounterCal.userFname.setText(datum.getUser_name()+" "+datum.getUser_lastname());
        binding.layoutCounterCal.catchDistance.setText(Common.getInstance().calulateDistance(datum.getLat(),datum.getLng()));
     }
 
     private void updateUiforCmifyc() {
-        binding.layoutBelow.setVisibility(View.VISIBLE);
         binding.layoutTimerSubReplace.timeSubReplaceRow.setVisibility(View.VISIBLE);
+        binding.layoutBelow.setVisibility(View.VISIBLE);
         binding.layoutCounterCal.userRow.setVisibility(View.VISIBLE);
         binding.layoutCounterCal.timerRow.setVisibility(View.GONE);
         binding.layoutGhostrider.ghostRow.setVisibility(View.GONE);
@@ -415,13 +505,12 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
      * this is a callback of child fragment Ghost Rider
      * @param datum
      */
-
     public void onStartGhostRider(com.attribes.push2beat.models.Response.TrackList.Datum datum) {
        Fragment fragment = getChildFragmentManager().findFragmentByTag(Constants.GHOST_TAG);
        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         ft.remove(fragment).commit();
+        stopTimer();
         updateUIforGhostRider();
-        resetScreensValues();
         trackId = datum.getId();
         if(datum.getTrack_path().equals("") == false) {
             List<LatLng> traker = Common.getInstance().convertStringIntoLatlng(datum.getTrack_path());
@@ -433,11 +522,15 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     }
 
     private void updateUIforGhostRider() {
+        binding.layoutTimerSubReplace.timerStop.setBackgroundResource(R.drawable.stop);
+        binding.layoutTimerSubReplace.btnGps.setVisibility(View.GONE);
+        binding.layoutTimerSubReplace.timerRecord.setVisibility(View.VISIBLE);
         binding.layoutCounterCal.timerRow.setBackgroundColor(getResources().getColor(R.color.secondary_dark_grey));
         binding.layoutCounterCal.countTimer.setTextColor(getResources().getColor(R.color.white));
         binding.layoutCounterCal.clock.setImageDrawable(getResources().getDrawable(R.drawable.ghost_icon));
         binding.layoutGhostrider.ghostRow.setVisibility(View.GONE);
         binding.layoutCmiyc.cmiycRow.setVisibility(View.GONE);
+        binding.layoutTimerSubReplace.timerRecord.setOnClickListener(new RecordButtonListener());
     }
 
 
@@ -465,12 +558,12 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
             if(isCatchMeIfYouCan)
             {
                 QBChatMessage message = new QBChatMessage();
-            if(QBHandler.getInstance().getQBDialog() != null){
-                message.setDialogId(QBHandler.getInstance().getQBDialog().getDialogId());
-                message.setRecipientId(QBHandler.getInstance().getQBOpponent().getId());
+            if(Common.getInstance().getQbChatDialog() != null){
+                message.setDialogId(Common.getInstance().getQbChatDialog().getDialogId());
+                message.setRecipientId(Common.getInstance().getQbUser().getId());
                 message.setBody(String.valueOf(curr.getLatitude()) + "," + String.valueOf(curr.getLongitude()));
                 try {
-                    QBHandler.getInstance().getQBDialog().sendMessage(message);
+                    Common.getInstance().getQbChatDialog().sendMessage(message);
                 } catch (SmackException.NotConnectedException e) {
                     e.printStackTrace();
                     Log.d("mChat",""+e);
@@ -537,6 +630,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
         StatsFragment fragment = new StatsFragment(data);
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        Common.getInstance().getFragmentStack().add(fragment);
         ft.add(R.id.container_full,fragment,Constants.STATS_TAG).commit();
 
     }
@@ -559,7 +653,10 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
             Fragment fragment = new GhostRiderFragment();
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            ft.add(R.id.container_full,fragment,Constants.GHOST_TAG).commit();
+
+            ft.add(R.id.container_full,fragment,Constants.GHOST_TAG);
+            Common.getInstance().getFragmentStack().push(fragment);
+            ft.commit();
         }
     }
 
@@ -573,8 +670,18 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
             Fragment fragment = new CatchMeFragment();
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
 
-            ft.add(R.id.container_below,fragment,Constants.CMIYC_TAG).commit();
-            binding.layoutBelow.setVisibility(View.GONE);
+            ft.add(R.id.layout_below,fragment,Constants.CMIYC_TAG);
+            Common.getInstance().getFragmentStack().push(fragment);
+
+
+
+//            ft.add(R.id.container, resultListFragment);
+//            fragmentStack.lastElement().onPause();
+//            ft.hide(fragmentStack.lastElement());
+//            fragmentStack.push(resultListFragment);
+
+            ft.commit();
+          //  binding.layoutBelow.setVisibility(View.GONE);
             getMapFragment().moveMapCamera(Common.getInstance().getLocation().getLatitude(),Common.getInstance().getLocation().getLatitude());
         }
 
@@ -589,13 +696,10 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                 Toast.makeText(getContext(), "No Track found", Toast.LENGTH_SHORT).show();
             }
             else {
-                timeSwapBuff += timeInMilliseconds;
-                handler.removeCallbacks(updateTimer);
-                t = 1;
-
+                stopTimer();
                 if(getMapFragment().isHidden())
                 {showHideFragment(getMapFragment(),speedMeterFragment);
-                    getMapFragment().moveMapCamera(startLocation.getLatitude(),startLocation.getLongitude());}
+                getMapFragment().moveMapCamera(startLocation.getLatitude(),startLocation.getLongitude());}
                 getMapFragment().showRoute(track);
                 saveRoute();
                 uiUpdate();
@@ -604,10 +708,15 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
             }
         }
+
+
     }
 
-
-
+    private void stopTimer() {
+        timeSwapBuff += timeInMilliseconds;
+        handler.removeCallbacks(updateTimer);
+        t = 1;
+    }
 
 
     // ============================Google Location Api Callbacks=======================================//
@@ -657,6 +766,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     @Override
     public void onResume() {
         super.onResume();
+       // initFragments();
         apiClient.connect();
     }
 
@@ -693,4 +803,12 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
 
+    private class RecordButtonListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+
+
+            timer_start();
+        }
+    }
 }
