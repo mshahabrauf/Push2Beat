@@ -3,15 +3,13 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:elevation="@dimen/small_elevation"
               android:id="@+id/cmiyc_row"
               android:background="@color/secondary_dark_grey">
 
     <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:layout_height="65dp"
+            android:padding="15dp">
 
         <ImageView
                 android:id="@+id/horse"
@@ -20,9 +18,7 @@
                 android:background="@drawable/catch_me_icon"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="25dp"
-                android:layout_marginStart="25dp"/>
+                android:layout_alignParentStart="true"/>
 
         <TextView
                 android:id="@+id/cmText"
@@ -34,8 +30,8 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginStart="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
                 android:layout_centerVertical="true"/>
 
         <ImageView
@@ -45,9 +41,7 @@
                 android:background="@drawable/go_btn"
                 android:layout_alignTop="@+id/horse"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"/>
+                android:layout_alignParentEnd="true"/>
     </RelativeLayout>
 
 

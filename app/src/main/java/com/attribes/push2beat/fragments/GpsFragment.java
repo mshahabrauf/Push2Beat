@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
-import com.attribes.push2beat.Utils.CustomConnectionListener;
 import com.attribes.push2beat.databinding.FragmentTimerBinding;
 import com.attribes.push2beat.models.BodyParams.AddTrackParams;
 import com.attribes.push2beat.models.Response.UserList.Datum;
@@ -164,9 +163,11 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         ft.replace(R.id.container_above,fragment, Constants.MAP_TAG);
         if (fragment.isHidden()) {
             ft.show(fragment);
+            binding.layoutTimerSubReplace.btnGps.setBackgroundResource(R.drawable.timerbtn);
             ft.hide(fragment1);
         } else {
             ft.hide(fragment);
+            binding.layoutTimerSubReplace.btnGps.setBackgroundResource(R.drawable.gps_button);
             ft.show(fragment1);
         }
 
@@ -708,6 +709,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
             }
         }
+    }
 
 
     }
@@ -766,7 +768,6 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     @Override
     public void onResume() {
         super.onResume();
-       // initFragments();
         apiClient.connect();
     }
 

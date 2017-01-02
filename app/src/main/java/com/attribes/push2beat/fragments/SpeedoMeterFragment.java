@@ -35,7 +35,7 @@ public class SpeedoMeterFragment extends android.support.v4.app.Fragment {
     private void initSpeednMeter(View rootView) {
         SpeedView speedView = (SpeedView)rootView.findViewById(R.id.speedView);
         speedView.setMaxSpeed(80);   // change MAX speed to 320
-        speedView.speedTo(40,4000);      // change speed to 140 Km/h   Common.getInstance().getSpeedValue()
+        speedView.speedTo(Common.getInstance().getSpeedValue(),4000);      // change speed to 140 Km/h   Common.getInstance().getSpeedValue() or 40
     }
 
 }

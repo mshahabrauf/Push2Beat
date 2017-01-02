@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.attribes.push2beat.R;
@@ -23,7 +24,7 @@ import com.quickblox.users.model.QBUser;
 import com.wang.avi.AVLoadingIndicatorView;
 
 public class SignIn extends AppCompatActivity {
-    ImageButton signin;
+    ImageView signin;
     EditText username;
     EditText password;
     Boolean onsuccess = false;
@@ -38,7 +39,7 @@ public class SignIn extends AppCompatActivity {
 
         Common.getInstance().initializeQBInstance(getApplicationContext());
 
-        signin = (ImageButton) findViewById(R.id.signinuser);
+        signin = (ImageView) findViewById(R.id.signinuser);
         username = (EditText) findViewById(R.id.usersignin);
         password = (EditText) findViewById(R.id.userpassword);
         progress = (AVLoadingIndicatorView) findViewById(R.id.progress_wheel);

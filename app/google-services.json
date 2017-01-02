@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "486266566296",
+    "firebase_url": "https://push2beat-aeedd.firebaseio.com",
+    "project_id": "push2beat-aeedd",
+    "storage_bucket": "push2beat-aeedd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486266566296:android:53b9489c47c6d5fe",
+        "android_client_info": {
+          "package_name": "com.attribes.push2beat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "486266566296-8vs86ki648ad877c09e9vpu8e3673kem.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIcrj4FYin3-7N6WqJrx3USogky20g04E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

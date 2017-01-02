@@ -1,9 +1,9 @@
-package com.attribes.push2beat.models.Response.UserSignUp;
+package com.attribes.push2beat.models.BodyParams;
 
 /**
  * Created by Talha Ghaffar on 12/14/2016.
  */
-public class LoginData {
+public class SignInParams {
 
     public String id;
     public String firstName;
