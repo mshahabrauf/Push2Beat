@@ -1,30 +1,22 @@
 package com.attribes.push2beat.fragments;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v13.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.attribes.push2beat.R;
-import com.attribes.push2beat.Utils.Constants;
+import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.Utils.RecyclerAdapterInterface;
 import com.attribes.push2beat.adapter.MyStatsAdapter;
 import com.attribes.push2beat.databinding.FragmentMystatsBinding;
 import com.attribes.push2beat.models.Response.MyStatsList.Datum;
 import com.attribes.push2beat.network.DAL.MyStatsDAL;
 import com.attribes.push2beat.network.interfaces.MyStatsDataArrivalListner;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -58,7 +50,7 @@ public class MyStatsFragment extends android.support.v4.app.Fragment  {
     }
 
     private void fetchMyStats() {
-        MyStatsDAL.getMyStatsList("69", new MyStatsDataArrivalListner() {
+        MyStatsDAL.getMyStatsList(DevicePreferences.getInstance().getusersocial().getId(), new MyStatsDataArrivalListner() {
             @Override
             public void onDataRecieved(List<Datum> data) {
 
@@ -81,9 +73,9 @@ public class MyStatsFragment extends android.support.v4.app.Fragment  {
 
     private void setProfileImage(String profile_image) {
         if(profile_image == null) {
-            mtBinding.mystatsProfileImage.setBackgroundResource(R.drawable.mz);
+            mtBinding.mystatsProfileImage.setBackgroundResource(R.drawable.placeholder);
         }else{
-            Picasso.with(getActivity()).load(profile_image).placeholder(R.drawable.mz).into( mtBinding.mystatsProfileImage);
+            Picasso.with(getActivity()).load(profile_image).placeholder(R.drawable.placeholder).into( mtBinding.mystatsProfileImage);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.attribes.push2beat.Utils;
 
-import models.SocialSignInResponse;
+
+import com.attribes.push2beat.models.Response.UserSignUp.SocialSignInResponse;
 
 /**
  * Created by Talha Ghaffar on 12/30/2016.

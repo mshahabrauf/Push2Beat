@@ -85,13 +85,16 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListHolder> {
                 public void onDataRecieved(MyProfileResponse.Data data) {
                     PushData push = new PushData();
                     Data dataa = new Data();
-                    dataa.setUsername(data.getFirst_name());
+                    dataa.setUsername(Common.getInstance().getUser().getFirstName());
                     dataa.setToken(FirebaseInstanceId.getInstance().getToken());
                     dataa.setStatus(0);
+                    dataa.setEmail(Common.getInstance().getUser().getEmail());
+                    dataa.setLatitude(String.valueOf(Common.getInstance().getLocation().getLatitude()));
+                    dataa.setLongitude(String.valueOf(Common.getInstance().getLocation().getLongitude()));
                     push.setData(dataa);
-              //      if (data.getDevice_token().equals("") == false) {
+
                     push.setTo(data.getDevice_token());
-                //    }
+
 
                     SendPush.sendPushToUser(push);
                     listener.onstartCallback(position);

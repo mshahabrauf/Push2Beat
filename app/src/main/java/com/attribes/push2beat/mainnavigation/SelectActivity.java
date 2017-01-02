@@ -29,7 +29,7 @@ public class SelectActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectActivity.this,MainActivity.class);
-                Common.getInstance().setRunType(1);
+                Common.getInstance().setRunType(1); // 1 : normal run
                 startActivity(intent);
             }
         });
@@ -38,7 +38,7 @@ public class SelectActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectActivity.this,MainActivity.class);
-                Common.getInstance().setRunType(2);
+                Common.getInstance().setRunType(2);  // 2 : ghost Rider
                 startActivity(intent);
             }
         });
@@ -49,7 +49,7 @@ public class SelectActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(SelectActivity.this,MainActivity.class);
-                Common.getInstance().setRunType(3);
+                Common.getInstance().setRunType(3); // 3 : Catch me if you can
                 startActivity(intent);
             }
         });

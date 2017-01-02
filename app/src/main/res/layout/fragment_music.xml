@@ -1,13 +1,432 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.attribes.push2beat.fragments.MusicFragment">
+<layout>
+    <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+           >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp">
 
-</FrameLayout>
+            <Button
+                    android:id="@+id/hit_one_btn"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="HIT ONE"
+                    android:textSize="20sp"
+                    android:textColor="@color/white"
+                    android:background="@color/primary_pink"
+                    android:gravity="center"/>
+
+            <Button
+                    android:id="@+id/hit_two_btn"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="HIT TWO"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:background="@color/primary_pink"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/pick_from_library"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginEnd="40dp"/>
+
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="20dp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:padding="10dp"
+                        android:background="@color/white">
+
+                    <ImageView
+                            android:id="@+id/clock"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/clock_icon"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                    />
+
+                    <TextView
+                            android:id="@+id/three"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3"
+                            android:layout_toRightOf="@+id/clock"
+                            android:layout_toEndOf="@+id/clock"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary_pink"
+                            android:textSize="20sp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_centerVertical="true"/>
+
+                    <TextView
+                            android:id="@+id/three_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Minutes HIT"
+                            android:layout_toRightOf="@+id/three"
+                            android:layout_toEndOf="@+id/three"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_centerVertical="true"/>
+
+                    <Button
+                            android:id="@+id/free_btn"
+                            android:layout_width="75dp"
+                            android:layout_height="50dp"
+                            android:text="FREE"
+                            android:textColor="@color/white"
+                            android:background="@color/secondary_dark_purple"
+                            android:layout_alignTop="@+id/clock"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:padding="15dp"
+                        android:background="@color/secondary_dark_purple">
+
+                    <ImageView
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/p_to_b"
+
+                            android:layout_alignParentLeft="true"/>
+
+                </RelativeLayout>
+
+
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:padding="10dp"
+                    android:background="@color/white"
+                    android:layout_marginTop="10dp">
+
+                <ImageView
+                        android:id="@+id/clock1"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/clock_icon"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                />
+
+                <TextView
+                        android:id="@+id/three1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="7"
+                        android:layout_toRightOf="@+id/clock1"
+                        android:layout_toEndOf="@+id/clock1"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_pink"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_centerVertical="true"/>
+
+                <TextView
+                        android:id="@+id/three_text1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Minutes HIT"
+                        android:layout_toRightOf="@+id/three1"
+                        android:layout_toEndOf="@+id/three1"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_centerVertical="true"/>
+
+                <Button
+                        android:id="@+id/seven_hit_btn"
+                        android:layout_width="75dp"
+                        android:layout_height="50dp"
+                        android:text="$1.49"
+                        android:textColor="@color/white"
+                        android:background="@color/primary_pink"
+                        android:layout_alignTop="@+id/clock1"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:padding="15dp"
+                    android:background="@color/secondary_dark_purple">
+
+                <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/p_to_b"
+                        android:layout_alignParentLeft="true"/>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:padding="10dp"
+                    android:background="@color/white"
+                    android:layout_marginTop="10dp">
+
+                <ImageView
+                        android:id="@+id/clock2"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/clock_icon"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                />
+
+                <TextView
+                        android:id="@+id/three2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="15"
+                        android:layout_toRightOf="@+id/clock2"
+                        android:layout_toEndOf="@+id/clock2"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_pink"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_centerVertical="true"/>
+
+                <TextView
+                        android:id="@+id/three_text2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Minutes HIT"
+                        android:layout_toRightOf="@+id/three2"
+                        android:layout_toEndOf="@+id/three2"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_centerVertical="true"/>
+
+                <Button
+                        android:id="@+id/fifteen_hit_btn"
+                        android:layout_width="75dp"
+                        android:layout_height="50dp"
+                        android:text="$2.99"
+                        android:textColor="@color/white"
+                        android:background="@color/primary_pink"
+                        android:layout_alignTop="@+id/clock2"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:padding="15dp"
+                    android:background="@color/secondary_dark_purple">
+
+                <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/p_to_b"
+
+                        android:layout_alignParentLeft="true"/>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:padding="10dp"
+                    android:background="@color/white"
+                    android:layout_marginTop="10dp">
+
+                <ImageView
+                        android:id="@+id/clock3"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/clock_icon"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                />
+
+                <TextView
+                        android:id="@+id/three3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="22"
+                        android:layout_toRightOf="@+id/clock3"
+                        android:layout_toEndOf="@+id/clock3"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_pink"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_centerVertical="true"/>
+
+                <TextView
+                        android:id="@+id/three_text3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Minutes HIT"
+                        android:layout_toRightOf="@+id/three3"
+                        android:layout_toEndOf="@+id/three3"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_centerVertical="true"/>
+
+                <Button
+                        android:id="@+id/twentytwo_hit_btn"
+                        android:layout_width="75dp"
+                        android:layout_height="50dp"
+                        android:text="$4.49"
+                        android:textColor="@color/white"
+                        android:background="@color/primary_pink"
+                        android:layout_alignTop="@+id/clock3"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:padding="15dp"
+                    android:background="@color/secondary_dark_purple">
+
+                <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/p_to_b"
+                        android:layout_alignParentLeft="true"/>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:padding="10dp"
+                    android:background="@color/white"
+                    android:layout_marginTop="10dp">
+
+                <ImageView
+                        android:id="@+id/clock4"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/clock_icon"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                />
+
+                <TextView
+                        android:id="@+id/three4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="7"
+                        android:layout_toRightOf="@+id/clock4"
+                        android:layout_toEndOf="@+id/clock4"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary_pink"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_centerVertical="true"/>
+
+                <TextView
+                        android:id="@+id/three_text4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Minutes HIT"
+                        android:layout_toRightOf="@+id/three4"
+                        android:layout_toEndOf="@+id/three4"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_centerVertical="true"/>
+
+                <Button
+                        android:id="@+id/thirty_hit_btn"
+                        android:layout_width="75dp"
+                        android:layout_height="50dp"
+                        android:text="$5.99"
+                        android:textColor="@color/white"
+                        android:background="@color/primary_pink"
+                        android:layout_alignTop="@+id/clock4"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:padding="15dp"
+                    android:background="@color/secondary_dark_purple">
+
+                <ImageView
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/p_to_b"
+
+                        android:layout_alignParentLeft="true"/>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        </ScrollView>
+</LinearLayout>
+</layout>

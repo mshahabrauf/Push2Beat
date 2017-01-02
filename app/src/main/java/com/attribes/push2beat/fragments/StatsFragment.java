@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.databinding.FragmentStatsBinding;
 import com.attribes.push2beat.models.StatsData;
@@ -46,22 +47,37 @@ public class StatsFragment extends Fragment {
         binding.layoutUserStats.statsDistancetravelledTv.setText(String.valueOf(data.getTraveledDistance())+"km");
         binding.layoutUserStats.statsAveragespeedTv.setText(String.valueOf(data.getAverageSpeed())+"km/h");
         binding.layoutUserStats.statsTopspeedTv.setText(String.valueOf(data.getTopSpeed()+"km/h"));
-        getMapFragment().showRoute(data.getPath());
+
 
 
     }
 
     private void initMapFragment() {
-        MapFragment fragment = new MapFragment();
+        MapFragment fragment = new MapFragment(Common.getInstance().getLocation(), new MapListener() {
+            @Override
+            public void onMapReady() {
+                getMapFragment().showRoute(data.getPath());
+            }
+        });
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.stats_map_view,fragment, Constants.MAP_TAG).commit();
+        ft.replace(R.id.stats_map_view,fragment, Constants.STATS_MAP_TAG).commit();
     }
 
 
     private MapFragment getMapFragment()
     {
         FragmentManager fm = getFragmentManager();
-        MapFragment fragment = (MapFragment)fm.findFragmentByTag(Constants.MAP_TAG);
+        MapFragment fragment = (MapFragment)fm.findFragmentByTag(Constants.STATS_MAP_TAG);
         return fragment;
+    }
+
+
+
+
+
+
+    public interface MapListener
+    {
+         void onMapReady();
     }
 }

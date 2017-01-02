@@ -2,24 +2,24 @@ package com.attribes.push2beat.network.DAL;
 
 import android.content.Context;
 import android.widget.Toast;
-import com.attribes.push2beat.localinterface.OnSocialSignInSuccess;
-import com.attribes.push2beat.localinterface.OnSocialSignUpSuccess;
+
+import com.attribes.push2beat.Utils.OnSocialSignInSuccess;
+import com.attribes.push2beat.models.Response.UserSignUp.SocialSignInResponse;
+import com.attribes.push2beat.models.UserProfile;
 import com.attribes.push2beat.network.RestClient;
-import models.SocialSigninRequest;
-import models.SocialSignInResponse;
-import models.UserProfile;
+
+import java.util.HashMap;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import java.util.HashMap;
 
 /**
  * Created by Talha Ghaffar on 12/28/2016.
  */
 public class SocialSignIn {
 
-    public static void socialsigninnew(final UserProfile Logindata, final Context context,final OnSocialSignInSuccess listener){
+    public static void socialsigninnew(final UserProfile Logindata, final Context context, final OnSocialSignInSuccess listener){
         {
             HashMap<String, Object> params = new HashMap<>();
             params.put("social_token", Logindata.getSocial_token());

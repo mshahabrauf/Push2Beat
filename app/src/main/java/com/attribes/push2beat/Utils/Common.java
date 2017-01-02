@@ -2,9 +2,10 @@ package com.attribes.push2beat.Utils;
 
 import android.content.Context;
 import android.location.Location;
-import android.support.v4.app.Fragment;
 
-import com.attribes.push2beat.models.Response.UserSignUp.LoginData;
+import com.attribes.push2beat.models.CatchMeModel;
+import com.attribes.push2beat.models.Response.UserList.Datum;
+import com.attribes.push2beat.models.BodyParams.SignInParams;
 import com.google.android.gms.maps.model.LatLng;
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.chat.QBChatService;
@@ -13,7 +14,6 @@ import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * Created by android on 12/9/16.
@@ -24,13 +24,17 @@ public class Common {
     private Location location;
     private QBUser qbUser;
     private int runType;
-    private LoginData user;
+    private SignInParams user;
     private String password;
     private int SpeedValue;
     private String profile_image;
     private QBChatDialog qbChatDialog;
     private QBChatService chatService;
-    private Stack<Fragment> fragmentStack;
+    private Datum opponentData;
+    private CatchMeModel oppData;
+    private boolean isCatchMeFromUser = false;
+    private boolean isCatchMeFromNotification = false;
+
 
 
 
@@ -91,7 +95,7 @@ public class Common {
         List<String> latitudes = new ArrayList<>();
         List<String> longitudes = new ArrayList<>();
         List<LatLng> tracker =  new ArrayList<LatLng>();
-        String[] commaSpliter = track_path.split(",");
+        String[] commaSpliter = track_path.split(" ,");
         boolean isFirstValue = true;
         for (String latsLngs: commaSpliter)
         {
@@ -109,9 +113,10 @@ public class Common {
                 }
             }
         }
-        latitudes.add(0,latitudes.get(latitudes.size()-1));
-        latitudes.remove(latitudes.size()-1);
-
+        if(latitudes.size()>1) {
+            latitudes.add(0, latitudes.get(latitudes.size() - 1));
+            latitudes.remove(latitudes.size() - 1);
+        }
         for(int i=0;i<latitudes.size();i++)
         {
             LatLng latlng = new LatLng(Double.parseDouble(latitudes.get(i)),Double.parseDouble(longitudes.get(i)));
@@ -129,11 +134,11 @@ public class Common {
         this.runType = runType;
     }
 
-    public void setUser(LoginData user) {
+    public void setUser(SignInParams user) {
         this.user = user;
     }
 
-    public LoginData getUser()
+    public SignInParams getUser()
     {
 
         return user;
@@ -179,11 +184,36 @@ public class Common {
         this.chatService = chatService;
     }
 
-    public Stack<Fragment> getFragmentStack() {
-        return fragmentStack;
+    public void setOpponentData(Datum opponentData) {
+        this.opponentData = opponentData;
     }
 
-    public void setFragmentStack(Stack<Fragment> fragmentStack) {
-        this.fragmentStack = fragmentStack;
+    public Datum getOpponentData() {
+        return opponentData;
+    }
+
+
+    public boolean isCatchMeFromUser() {
+        return isCatchMeFromUser;
+    }
+
+    public void setCatchMeFromUser(boolean catchMeFromUser) {
+        isCatchMeFromUser = catchMeFromUser;
+    }
+
+    public CatchMeModel getOppData() {
+        return oppData;
+    }
+
+    public void setOppData(CatchMeModel oppData) {
+        this.oppData = oppData;
+    }
+
+    public boolean isCatchMeFromNotification() {
+        return isCatchMeFromNotification;
+    }
+
+    public void setCatchMeFromNotification(boolean catchMeFromNotification) {
+        isCatchMeFromNotification = catchMeFromNotification;
     }
 }

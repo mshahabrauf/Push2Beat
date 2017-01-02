@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.attribes.push2beat.Utils.Common;
+import com.attribes.push2beat.fragments.GpsFragment;
+import com.attribes.push2beat.fragments.MusicFragment;
 import com.attribes.push2beat.fragments.MyProfileFragment;
 import com.attribes.push2beat.fragments.MyStatsFragment;
 import com.attribes.push2beat.fragments.PrepareFragment;
@@ -33,11 +35,18 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         switch (position)
         {
             case 0:
-                PrepareFragment prepareFragment = new PrepareFragment();
-                Common.getInstance().getFragmentStack().push(prepareFragment);
-                return prepareFragment;
-            case 1:
 
+                switch (Common.getInstance().getRunType()) {
+                    case 1: PrepareFragment prepareFragment = new PrepareFragment();
+                        return prepareFragment;
+                    case 2:
+                    case 3:
+                        GpsFragment gpsFragment = new GpsFragment();
+                        return gpsFragment;
+                }
+            case 1:
+                MusicFragment musicFragment = new MusicFragment();
+                return musicFragment;
             case 2:
                 MyStatsFragment myStatsFragment = new MyStatsFragment();
                 return myStatsFragment;
@@ -76,4 +85,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         }
         return null;
     }
+
+
 }

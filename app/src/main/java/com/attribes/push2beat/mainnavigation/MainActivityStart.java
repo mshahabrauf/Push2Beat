@@ -13,17 +13,17 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageButton;
-
 import android.widget.TextView;
+
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
+import com.attribes.push2beat.Utils.DevicePreferences;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import org.w3c.dom.Text;
 
 import static com.google.android.gms.location.LocationRequest.create;
 
@@ -33,13 +33,23 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
     private ImageButton signupbtn;
     private GoogleApiClient apiClient;
     private LocationRequest request;
+    private boolean Isremember;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_start);
+        DevicePreferences.getInstance().init(getApplicationContext());
         initGoogleClient();
         initColorText();
+
+        DevicePreferences.getInstance().isRemember();
+        Isremember= DevicePreferences.getInstance().isRemember();
+        if(Isremember==true){
+            Intent intent = new Intent(MainActivityStart.this,SelectActivity.class);
+            startActivity(intent);
+
+        }
 
         signinbtn=(ImageButton)findViewById(R.id.signin);
 

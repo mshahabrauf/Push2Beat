@@ -4,10 +4,8 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,7 @@ import android.widget.Toast;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
-import com.attribes.push2beat.Utils.Constants;
+import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.Utils.RecyclerAdapterInterface;
 import com.attribes.push2beat.adapter.TrackListAdapter;
 import com.attribes.push2beat.databinding.FragmentGhostRiderBinding;
@@ -59,7 +57,6 @@ public class GhostRiderFragment extends Fragment {
         onAttachFragment(getParentFragment());
 
         binding.progress.progressWheel.setVisibility(View.VISIBLE);
-        binding.getRoot().setOnKeyListener(new onBackKeyListenerHandler());
 
         mRecycle = binding.ghostRecyclerView;
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
@@ -70,9 +67,8 @@ public class GhostRiderFragment extends Fragment {
 
     private void fetchTracks() {
         GetListRequestParams params = new GetListRequestParams();
-        //Todo: change the UserId after SignUp procedure completed
 
-        params.setUser_id(Integer.parseInt(Common.getInstance().getUser().getId()));
+        params.setUser_id(Integer.parseInt(DevicePreferences.getInstance().getusersocial().getId()));
         params.setLat(Common.getInstance().getLocation().getLatitude());
         params.setLng(Common.getInstance().getLocation().getLongitude());
 
@@ -106,19 +102,4 @@ public class GhostRiderFragment extends Fragment {
         void onStartGhostRider(Datum datum);
     }
 
-    private class onBackKeyListenerHandler implements View.OnKeyListener {
-        @Override
-        public boolean onKey(View view, int i, KeyEvent keyEvent) {
-
-            if( i == KeyEvent.KEYCODE_BACK )
-            {
-                Fragment fragment = getFragmentManager().findFragmentByTag(Constants.GHOST_TAG);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.remove(fragment);
-                return true;
-            }
-
-            return false;
-        }
-    }
 }

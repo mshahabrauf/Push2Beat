@@ -66,6 +66,12 @@ public class MapFragment extends android.support.v4.app.Fragment {
     private Marker end;
     private Polyline line;
     private MarkerOptions opponent;
+    StatsFragment.MapListener maplistener;
+
+    @SuppressLint("ValidFragment")
+    public MapFragment(Location location, StatsFragment.MapListener mapListener) {
+        maplistener = mapListener;
+    }
 
     @Nullable
     @Override
@@ -112,12 +118,26 @@ public class MapFragment extends android.support.v4.app.Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
+            if(maplistener != null)
+            {
+            maplistener.onMapReady();
+            }
+
+
+            if(opponent != null)
+            {
+                map.addMarker(opponent);
+
+            }
+
             if(startLocation!=null) {
                 map.setMyLocationEnabled(true);
+                moveMapCamera(startLocation.getLatitude(),startLocation.getLongitude());
             }
             else {
                 startLocation = Common.getInstance().getLocation();
                 map.setMyLocationEnabled(true);
+                moveMapCamera(Common.getInstance().getLocation().getLatitude(),Common.getInstance().getLocation().getLongitude());
             }
         }
     }
@@ -156,12 +176,13 @@ public class MapFragment extends android.support.v4.app.Fragment {
 
 
 
+
     public void showUsers(List<Datum> data)
     {
         for(Datum datum:data)
         {
             LatLng userPosition =new LatLng(Double.parseDouble(datum.getLat()),Double.parseDouble(datum.getLng()));
-            map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_profile_overlay)).position(userPosition)).setTag(datum);
+            map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_action_name)).position(userPosition)).setTag(datum);
 
         }
 
@@ -172,13 +193,15 @@ public class MapFragment extends android.support.v4.app.Fragment {
     public void addOpponentMaker(double lat,double lng)
     {
         LatLng latLng = new LatLng(lat,lng);
-        opponent = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_profile_overlay)).position(latLng);
+        opponent = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_action_name)).position(latLng);
+      //  map.addMarker(opponent);
 
     }
 
     public void moveOpponent(double lat,double lng){
         LatLng latLng = new LatLng(lat,lng);
         opponent.position(latLng);
+
     }
 
     public void showRoute(List<LatLng> track) {

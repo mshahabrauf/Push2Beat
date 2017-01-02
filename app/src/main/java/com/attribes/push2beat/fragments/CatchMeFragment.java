@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
+import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.Utils.RecyclerAdapterInterface;
 import com.attribes.push2beat.adapter.UserListAdapter;
 import com.attribes.push2beat.databinding.FragmentCatchMeBinding;
@@ -48,7 +50,9 @@ public class CatchMeFragment extends Fragment {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_catch_me,container,false);
         View view = binding.getRoot();
+        initMapFragment();
         init();
+
         fetchUsers();
 
 
@@ -56,9 +60,15 @@ public class CatchMeFragment extends Fragment {
         return view;
     }
 
+    private void initMapFragment() {
+        MapFragment fragment = new MapFragment(Common.getInstance().getLocation());
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.add(R.id.catchme_map_view,fragment,Constants.CATCH_MAP_TAG).commit();
+    }
+
     @Override
     public void onAttachFragment(Fragment childFragment) {
-        listener = (CatchMeFragment.OnStartButtonListener) childFragment;
+//        listener = (CatchMeFragment.OnStartButtonListener) childFragment;
     }
 
 
@@ -70,16 +80,15 @@ public class CatchMeFragment extends Fragment {
         mRecycle = binding.myRecyclerView;
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         mRecycle.setLayoutManager(mLayoutManager);
-        getMapFragment().moveMapCamera(Common.getInstance().getLocation().getLatitude(),Common.getInstance().getLocation().getLongitude());
+//        getMapFragment().moveMapCamera(Common.getInstance().getLocation().getLatitude(),Common.getInstance().getLocation().getLongitude());
 
 
     }
 
     private void fetchUsers() {
         GetListRequestParams params = new GetListRequestParams();
-        //Todo: change the UserId after SignUp procedure completed
 
-        params.setUser_id(Integer.parseInt(Common.getInstance().getUser().getId()));
+         params.setUser_id(Integer.parseInt(DevicePreferences.getInstance().getusersocial().getId()));
         params.setLat(Common.getInstance().getLocation().getLatitude());
         params.setLng(Common.getInstance().getLocation().getLongitude());
 
@@ -94,8 +103,9 @@ public class CatchMeFragment extends Fragment {
                 mRecycle.setAdapter(new UserListAdapter(data, new RecyclerAdapterInterface() {
                     @Override
                     public void onstartCallback(int position) {
-                    getMapFragment().addOpponentMaker(Double.parseDouble(data.get(position).getLat()),Double.parseDouble(data.get(position).getLng()));
-                     listener.onStartCmiyc(data.get(position));
+                        startLoaderFragment();
+                        Common.getInstance().setOpponentData(data.get(position));
+                   //  listener.onStartCmiyc(data.get(position));
                     }
                 }));
 
@@ -111,6 +121,14 @@ public class CatchMeFragment extends Fragment {
         });
     }
 
+    private void startLoaderFragment() {
+        LoaderFragment fragment = new LoaderFragment();
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        ft.add(R.id.base_view,fragment,Constants.CATCH_LOADER_TAG).commit();
+
+    }
+
+
 
     private void displayUserOnMap(List<Datum> data)
     {
@@ -125,7 +143,7 @@ public class CatchMeFragment extends Fragment {
     private MapFragment getMapFragment()
     {
         FragmentManager fm = getFragmentManager();
-        MapFragment fragment = (MapFragment)fm.findFragmentByTag(Constants.MAP_TAG);
+        MapFragment fragment = (MapFragment)fm.findFragmentByTag(Constants.CATCH_MAP_TAG);
         return fragment;
     }
 

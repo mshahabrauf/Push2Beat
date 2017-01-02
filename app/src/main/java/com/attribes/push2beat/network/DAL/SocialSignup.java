@@ -2,16 +2,17 @@ package com.attribes.push2beat.network.DAL;
 
 import android.content.Context;
 import android.widget.Toast;
-import com.attribes.push2beat.localinterface.OnSocialSignUpSuccess;
+
+import com.attribes.push2beat.Utils.OnSocialSignUpSuccess;
+import com.attribes.push2beat.models.Response.SocialSignUpResponse;
+import com.attribes.push2beat.models.UserProfile;
 import com.attribes.push2beat.network.RestClient;
-import models.SocialSignUpResponse;
-import models.SocialSignupRequest;
-import models.UserProfile;
+
+import java.util.HashMap;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import java.util.HashMap;
 
 /**
  * Created by Talha Ghaffar on 12/28/2016.

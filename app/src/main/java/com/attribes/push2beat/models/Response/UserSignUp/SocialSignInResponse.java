@@ -1,5 +1,7 @@
 package com.attribes.push2beat.models.Response.UserSignUp;
 
+import com.attribes.push2beat.models.Response.SocialSignInDetail;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

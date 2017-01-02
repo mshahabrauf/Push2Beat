@@ -11,15 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import com.android.vending.billing.IInAppBillingService;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.databinding.FragmentMusicBinding;
+
+import java.util.ArrayList;
+
 import utils_in_app_purchase.IabHelper;
 import utils_in_app_purchase.IabResult;
 import utils_in_app_purchase.Inventory;
 import utils_in_app_purchase.Purchase;
-
-import java.util.ArrayList;
 
 /**
  * Created by Maaz on 12/30/2016.
@@ -98,7 +100,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         @Override
         public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
 
-            Toast.makeText(getActivity(), "Query inventory finished.", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(), "Query inventory finished.", Toast.LENGTH_SHORT).show();
 
             if (mHelper == null) return;    // Have we been disposed of in the meantime? If so, quit.
 
@@ -106,7 +108,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
                 complain("Failed to query inventory: " + result);
                 return;
             }
-            Toast.makeText(getActivity(), "Query inventory was successful.", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(), "Query inventory was successful.", Toast.LENGTH_SHORT).show();
 
 
             Purchase threeM_HITPurchase = inventory.getPurchase(threeM_HIT);
@@ -146,7 +148,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             updateUi();
 
             Log.d(TAG, "Initial inventory query finished; enabling main UI.");
-            Toast.makeText(getActivity(), "Initial inventory query finished; enabling main UI.", Toast.LENGTH_SHORT).show();
+        //    Toast.makeText(getActivity(), "Initial inventory query finished; enabling main UI.", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -161,7 +163,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             if (result.isSuccess()) {
                 // successfully consumed, so we apply the effects of the item in our
                 // game world's logic, which in our case means filling the gas tank a bit
-                Toast.makeText(getActivity(), "Consumption successful", Toast.LENGTH_SHORT).show();
+           //     Toast.makeText(getActivity(), "Consumption successful", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Consumption successful. Provisioning.");
             }
             else {

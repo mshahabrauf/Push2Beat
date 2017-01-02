@@ -15,7 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
+import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.databinding.FragmentMyProfileBinding;
+import com.attribes.push2beat.mainnavigation.MainActivityStart;
 import com.attribes.push2beat.models.BodyParams.UpdateProfileParams;
 import com.attribes.push2beat.models.Response.MyProfileResponse;
 import com.attribes.push2beat.network.DAL.GetProfileDAL;
@@ -54,6 +56,7 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
     private void init() {
         mpBinding.profileImage.setOnClickListener(new ImageUploadListner());
         mpBinding.userProfile.userNameTv.setOnClickListener(new NameEditListner());
+        mpBinding.logoutUserBtn.setOnClickListener(new LogOutListener());
     }
 
     @Override
@@ -81,7 +84,7 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
 
     private void updateProfilePic(Uri selectedImage) {
         String encodedProfileImageString = conversionInBase64Format(selectedImage);
-        profileParams.setUser_id("48");
+        profileParams.setUser_id(DevicePreferences.getInstance().getusersocial().getId());
         profileParams.setProfile_image(encodedProfileImageString);
         UpdateProfileDAL.updateProfile(profileParams,getActivity());
         //TODO : Get the data of user from a centralized aspect
@@ -113,7 +116,7 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
     }
 
     private void getMyProfileData() {
-        GetProfileDAL.getProfileData("48", new ProfileDataArrivalListner() {
+        GetProfileDAL.getProfileData(DevicePreferences.getInstance().getusersocial().getId(), new ProfileDataArrivalListner() {
             @Override
             public void onDataRecieved(MyProfileResponse.Data data) {
                 mpBinding.userProfileName.setText("" + data.getFirst_name());
@@ -134,9 +137,9 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
     private void setProfileImage(String profileImage) {
 
         if(profileImage == null) {
-            mpBinding.profileImage.setBackgroundResource(R.drawable.mz);
+            mpBinding.profileImage.setBackgroundResource(R.drawable.placeholder);
         }else{
-            Picasso.with(getActivity()).load(profileImage).placeholder(R.drawable.mz).into(mpBinding.profileImage);
+            Picasso.with(getActivity()).load(profileImage).placeholder(R.drawable.placeholder).into(mpBinding.profileImage);
         }
     }
 
@@ -216,6 +219,17 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
             params.setFirst_name(editedName);
             params.setProfile_image(Common.getInstance().getProfile_image());
             UpdateProfileDAL.updateProfile(params,getActivity());
+        }
+    }
+
+
+    private class LogOutListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getActivity(), MainActivityStart.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            DevicePreferences.getInstance().removeUserObject();
         }
     }
 }

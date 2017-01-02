@@ -2,20 +2,17 @@ package com.attribes.push2beat.mainnavigation;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.adapter.SectionsPagerAdapter;
 import com.attribes.push2beat.databinding.ActivityMainBinding;
-
-import java.util.Stack;
+import com.attribes.push2beat.models.CatchMeModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ActivityMainBinding binding;
 
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +45,35 @@ public class MainActivity extends AppCompatActivity {
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            boolean isCatcheMe = bundle.getBoolean("fromcatch");
+            boolean isFromNotification = bundle.getBoolean("fromNotification");
 
-        Common.getInstance().setFragmentStack(new Stack<Fragment>());
+            if(isCatcheMe)
+            {
+                Common.getInstance().setCatchMeFromUser(isCatcheMe);
+                Common.getInstance().setRunType(1);
+            }
+            else if(isFromNotification)
+            {
+
+                Common.getInstance().setCatchMeFromNotification(isFromNotification);
+                Common.getInstance().setRunType(1);
+
+                CatchMeModel data = new CatchMeModel();
+                data.setEmail(bundle.getString("email"));
+                data.setUsername(bundle.getString("username"));
+                data.setLatitude(Double.parseDouble(bundle.getString("latitude")));
+                data.setLongitude(Double.parseDouble(bundle.getString("longitude")));
+                Common.getInstance().setOppData(data);
+
+            }
+
+
+
+        }
+
 
         Common.getInstance().initializeQBInstance(getApplicationContext());
 
@@ -55,8 +83,25 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setOffscreenPageLimit(4);
-        binding.tabs.setupWithViewPager(mViewPager);
 
+        binding.tabs.setupWithViewPager(mViewPager);
+        setAppBarTitle(mViewPager.getCurrentItem());
+        binding.tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                setAppBarTitle(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         addTabsIcons();
 
@@ -67,40 +112,41 @@ public class MainActivity extends AppCompatActivity {
     private void addTabsIcons() {
 
         binding.tabs.getTabAt(0).setIcon(R.drawable.ic_gps);
-        //binding.tabs.getTabAt(0).setCustomView()
         binding.tabs.getTabAt(1).setIcon(R.drawable.ic_music);
         binding.tabs.getTabAt(2).setIcon(R.drawable.ic_stats);
         binding.tabs.getTabAt(3).setIcon(R.drawable.ic_action_name);
 
     }
 
+    private void setAppBarTitle(int currentItem)
+    {
+     switch (currentItem) {
+         case 0:  binding.appbar.text.setText("GPS");
+             break;
+         case 1:  binding.appbar.text.setText("My Music");
+             break;
+         case 2:  binding.appbar.text.setText("My Stats");
+             break;
+         case 3:  binding.appbar.text.setText("My Profile");
+             break;
+     }
+     }
+
     @Override
     public void onBackPressed() {
-        Log.d("size",""+Common.getInstance().getFragmentStack().size());
-        if (Common.getInstance().getFragmentStack().size() > 1) {
-            binding.appbar.backButton.performClick();
-        } else {
-            super.onBackPressed();
-        }
+        Common.getInstance().setCatchMeFromUser(false);
+        Common.getInstance().setCatchMeFromNotification(false);
+        super.onBackPressed();
     }
 
     private class BackButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            try {
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                Common.getInstance().getFragmentStack().lastElement().onPause();
-                ft.remove(Common.getInstance().getFragmentStack().pop());
-                Common.getInstance().getFragmentStack().lastElement().onResume();
-                ft.show(Common.getInstance().getFragmentStack().lastElement());
-                ft.commit();
-            }
-            catch (IndexOutOfBoundsException ex)
-            {
-                Log.d("error",""+ ex);
-            }
 
+            
+            onBackPressed();
         }
+
 
 
     }

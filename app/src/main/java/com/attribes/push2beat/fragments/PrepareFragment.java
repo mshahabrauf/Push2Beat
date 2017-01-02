@@ -10,10 +10,9 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
+
 import com.attribes.push2beat.R;
-import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.databinding.FragmentPrepareYourselfBinding;
 
@@ -59,7 +58,7 @@ public class PrepareFragment extends Fragment {
                 ft.add(R.id.prepare_container,gpsFragment,Constants.GPS_TAG);
 //                Common.getInstance().getFragmentStack().lastElement().onPause();
 //                ft.hide(Common.getInstance().getFragmentStack().lastElement());
-                Common.getInstance().getFragmentStack().push(gpsFragment);
+          //      Common.getInstance().getFragmentStack().push(gpsFragment);
                 ft.commit();
               //  binding.root.setVisibility(View.GONE);
 
