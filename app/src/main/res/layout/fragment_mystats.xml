@@ -56,6 +56,10 @@
 
         </RelativeLayout>
 
+        <include
+            android:id="@+id/loader_layout"
+            layout="@layout/progress" />
+
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/mystats_recycler_view"
                 android:scrollbars="vertical"

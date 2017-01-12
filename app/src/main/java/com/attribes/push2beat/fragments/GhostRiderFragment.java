@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.attribes.push2beat.R;
-import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.Utils.RecyclerAdapterInterface;
 import com.attribes.push2beat.adapter.TrackListAdapter;
@@ -68,9 +67,9 @@ public class GhostRiderFragment extends Fragment {
     private void fetchTracks() {
         GetListRequestParams params = new GetListRequestParams();
 
-        params.setUser_id(Integer.parseInt(DevicePreferences.getInstance().getusersocial().getId()));
-        params.setLat(Common.getInstance().getLocation().getLatitude());
-        params.setLng(Common.getInstance().getLocation().getLongitude());
+        params.setUser_id(Integer.parseInt(DevicePreferences.getInstance().getuser().getId()));
+        params.setLat(DevicePreferences.getInstance().getLocation().getLatitude());
+        params.setLng(DevicePreferences.getInstance().getLocation().getLongitude());
 
         ListOfTrackDAL.getTrackList(params, new TracksArrivalListener() {
             @Override

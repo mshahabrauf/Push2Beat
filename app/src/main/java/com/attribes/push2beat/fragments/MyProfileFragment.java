@@ -84,10 +84,10 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
 
     private void updateProfilePic(Uri selectedImage) {
         String encodedProfileImageString = conversionInBase64Format(selectedImage);
-        profileParams.setUser_id(DevicePreferences.getInstance().getusersocial().getId());
+        profileParams.setUser_id(DevicePreferences.getInstance().getuser().getId());
         profileParams.setProfile_image(encodedProfileImageString);
         UpdateProfileDAL.updateProfile(profileParams,getActivity());
-        //TODO : Get the data of user from a centralized aspect
+
     }
 
     private String conversionInBase64Format(Uri selectedImage) {
@@ -116,7 +116,7 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
     }
 
     private void getMyProfileData() {
-        GetProfileDAL.getProfileData(DevicePreferences.getInstance().getusersocial().getId(), new ProfileDataArrivalListner() {
+        GetProfileDAL.getProfileData(DevicePreferences.getInstance().getuser().getId(), new ProfileDataArrivalListner() {
             @Override
             public void onDataRecieved(MyProfileResponse.Data data) {
                 mpBinding.userProfileName.setText("" + data.getFirst_name());
@@ -226,10 +226,12 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
     private class LogOutListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            DevicePreferences.getInstance().saverememberme(false);
+            DevicePreferences.getInstance().removeUserObject();
             Intent intent = new Intent(getActivity(), MainActivityStart.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-            DevicePreferences.getInstance().removeUserObject();
+
         }
     }
 }

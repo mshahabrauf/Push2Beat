@@ -2,10 +2,12 @@ package com.attribes.push2beat.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
 
 import com.attribes.push2beat.models.BodyParams.SignInParams;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.quickblox.users.model.QBUser;
 
 import java.util.List;
 
@@ -43,12 +45,7 @@ public class DevicePreferences {
     }
 
 
-    public SignInParams getusersocial(){
-        Gson gson = new Gson();
-        String json = mPref.getString("UserObject", "");
-        SignInParams obj = gson.fromJson(json, SignInParams.class);
-        return obj;
-    }
+
 
     public void saverememberme(Boolean Isremember){
         SharedPreferences.Editor prefsEditor = mPref.edit();
@@ -57,20 +54,6 @@ public class DevicePreferences {
 
 
     }
-    public boolean isRemember ()
-    {
-        Boolean yourLocked = mPref.getBoolean("MyBOOL", false);
-        return yourLocked;
-    }
-
-
-
-    public void  removeUserObject()
-    {
-        SharedPreferences.Editor prefsEditor = mPref.edit();
-        prefsEditor.remove("UserObject").commit();
-    }
-
 
     public void saveusers(SignInParams user)
     {
@@ -82,6 +65,72 @@ public class DevicePreferences {
         prefsEditor.commit();
 
     }
+
+
+    public void saveQbuser(QBUser user)
+    {
+        SharedPreferences.Editor prefsEditor = mPref.edit();
+        Gson gson = new Gson();
+
+        String json = gson.toJson(user);
+        prefsEditor.putString("qbuser", json);
+        prefsEditor.commit();
+
+    }
+
+
+    public QBUser getQbUser()
+    {
+        Gson gson = new Gson();
+        String json = mPref.getString("qbuser","");
+        QBUser obj = gson.fromJson(json, QBUser.class);
+        return obj;
+
+    }
+
+
+    public SignInParams getuser(){
+        Gson gson = new Gson();
+        String json = mPref.getString("UserObject", "");
+        SignInParams obj = gson.fromJson(json, SignInParams.class);
+        return obj;
+    }
+
+    public void saveLocation(Location location)
+    {
+        SharedPreferences.Editor editor = mPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(location);
+        editor.putString("location",json);
+        editor.commit();
+
+    }
+
+
+    public Location getLocation()
+    {
+        Gson gson = new Gson();
+        String json = mPref.getString("location","");
+        Location location = gson.fromJson(json,Location.class);
+        return location;
+    }
+
+    public boolean isRemember ()
+    {
+        Boolean yourLocked = mPref.getBoolean("MyBOOL", false);
+        return yourLocked;
+    }
+
+
+
+
+    public void  removeUserObject()
+    {
+        SharedPreferences.Editor prefsEditor = mPref.edit();
+        prefsEditor.remove("UserObject").commit();
+    }
+
+
 
 //    public void setuserlogin(UserLogin userlogin)
 //    {
@@ -114,6 +163,9 @@ public class DevicePreferences {
         List<LatLng> location = gson.fromJson(list,null);
         return  location;
     }
+
+
+
 
 
 

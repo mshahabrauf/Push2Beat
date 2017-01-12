@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.databinding.FragmentPrepareYourselfBinding;
+import com.attribes.push2beat.mainnavigation.MainActivity;
 
 /**
  * Created by android on 12/23/16.
@@ -48,6 +49,7 @@ public class PrepareFragment extends Fragment {
     }
 
     private void init() {
+        ((MainActivity)getActivity()).changeTitle("Prepare Yourself");
 
         binding.start.setOnClickListener(new View.OnClickListener() {
             @Override

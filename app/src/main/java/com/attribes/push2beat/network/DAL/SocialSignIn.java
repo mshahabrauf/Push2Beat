@@ -35,7 +35,7 @@ public class SocialSignIn {
                     if (response.isSuccessful())
                     {
                    //     listener.onSuccess();
-                        // SignUp.acntsignup(data.getEmail(),data.getPassword());
+                        // SignUp.QBSignUp(data.getEmail(),data.getPassword());
 
 
                         Toast.makeText(context, "Social SigninResponseDetail and Facebook SigninResponseDetail Sucessfully!", Toast.LENGTH_SHORT).show();

@@ -1,10 +1,14 @@
 package com.attribes.push2beat.mainnavigation;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -16,7 +20,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.attribes.push2beat.R;
-import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.google.android.gms.common.ConnectionResult;
@@ -34,21 +37,26 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
     private GoogleApiClient apiClient;
     private LocationRequest request;
     private boolean Isremember;
+   private LocationManager lm;
+    private boolean gps_enabled = false;
+    private boolean network_enabled = false;
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_start);
-        DevicePreferences.getInstance().init(getApplicationContext());
+        init();
+
         initGoogleClient();
         initColorText();
 
-        DevicePreferences.getInstance().isRemember();
+        DevicePreferences.getInstance().init(getApplicationContext());
         Isremember= DevicePreferences.getInstance().isRemember();
-        if(Isremember==true){
+        if(Isremember){
             Intent intent = new Intent(MainActivityStart.this,SelectActivity.class);
             startActivity(intent);
-
+            finish();
         }
 
         signinbtn=(ImageButton)findViewById(R.id.signin);
@@ -76,6 +84,38 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
 
             }
         });
+    }
+
+    private void init() {
+        lm = (LocationManager)getApplicationContext().getSystemService(getApplicationContext().LOCATION_SERVICE);
+
+    }
+
+    private void checkLocationEnabled() {
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch(Exception ex) {}
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch(Exception ex) {}
+
+        if(!gps_enabled && !network_enabled) {
+            // notify user
+            AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivityStart.this);
+            dialog.setMessage(getResources().getString(R.string.gps_network_not_enabled));
+            dialog.setPositiveButton(getResources().getString(R.string.open_location_settings), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+
+                    Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(myIntent);
+                    //get gps
+                }
+            });
+
+            dialog.show();
+        }
     }
 
     private void initColorText() {
@@ -118,11 +158,12 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
         LocationServices.FusedLocationApi.requestLocationUpdates(apiClient, request, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Common.getInstance().setLocation(location);
+
+                DevicePreferences.getInstance().saveLocation(location);
             }
         });
         Location location = LocationServices.FusedLocationApi.getLastLocation(apiClient);
-        Common.getInstance().setLocation(location);
+        DevicePreferences.getInstance().saveLocation(location);
 
     }
 
@@ -146,8 +187,10 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
 
     @Override
     public void onResume() {
-        super.onResume();
+
+        checkLocationEnabled();
         apiClient.connect();
+        super.onResume();
     }
 
     @Override
@@ -169,15 +212,42 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == Constants.MY_PERMISSIONS_REQUEST_READ_LOCATION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-            } else {
-                ActivityCompat.requestPermissions(this,
+        switch (requestCode)
+        {
+            case Constants.MY_PERMISSIONS_REQUEST_READ_LOCATION:
+                if (grantResults != null ) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        // Permission is granted
+                    } else {
+                        showPermissionDialog();
+                    }
+                }
+
+                    break;
+
+
+
+        }
+    }
+
+    private void showPermissionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Sorry");
+        builder.setMessage("This application using location Api without this you can't use many feature of this app " +
+                "\n Do you want to access those features? ");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ActivityCompat.requestPermissions(MainActivityStart.this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
                         Constants.MY_PERMISSIONS_REQUEST_READ_LOCATION);
+
             }
-        }
+        });
+
+        AlertDialog alertDialog  = builder.create();
+        alertDialog.show();
     }
 
 }

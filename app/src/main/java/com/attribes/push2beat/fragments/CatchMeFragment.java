@@ -61,7 +61,7 @@ public class CatchMeFragment extends Fragment {
     }
 
     private void initMapFragment() {
-        MapFragment fragment = new MapFragment(Common.getInstance().getLocation());
+        MapFragment fragment = new MapFragment(DevicePreferences.getInstance().getLocation());
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.add(R.id.catchme_map_view,fragment,Constants.CATCH_MAP_TAG).commit();
     }
@@ -88,9 +88,9 @@ public class CatchMeFragment extends Fragment {
     private void fetchUsers() {
         GetListRequestParams params = new GetListRequestParams();
 
-         params.setUser_id(Integer.parseInt(DevicePreferences.getInstance().getusersocial().getId()));
-        params.setLat(Common.getInstance().getLocation().getLatitude());
-        params.setLng(Common.getInstance().getLocation().getLongitude());
+         params.setUser_id(Integer.parseInt(DevicePreferences.getInstance().getuser().getId()));
+        params.setLat(DevicePreferences.getInstance().getLocation().getLatitude());
+        params.setLng(DevicePreferences.getInstance().getLocation().getLongitude());
 
 
 
@@ -122,7 +122,7 @@ public class CatchMeFragment extends Fragment {
     }
 
     private void startLoaderFragment() {
-        LoaderFragment fragment = new LoaderFragment();
+        LoaderFragment fragment = new LoaderFragment("Waiting for opponent...");
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         ft.add(R.id.base_view,fragment,Constants.CATCH_LOADER_TAG).commit();
 

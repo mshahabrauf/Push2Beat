@@ -11,9 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.attribes.push2beat.R;
-import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
+import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.databinding.FragmentStatsBinding;
+import com.attribes.push2beat.mainnavigation.MainActivity;
 import com.attribes.push2beat.models.StatsData;
 
 /**
@@ -38,8 +39,18 @@ public class StatsFragment extends Fragment {
         View view = binding.getRoot();
         initMapFragment();
         initUi();
+        initListener();
         return view;
 
+    }
+
+    private void initListener() {
+        binding.layoutGudjob.goodJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });
     }
 
     private void initUi() {
@@ -47,16 +58,18 @@ public class StatsFragment extends Fragment {
         binding.layoutUserStats.statsDistancetravelledTv.setText(String.valueOf(data.getTraveledDistance())+"km");
         binding.layoutUserStats.statsAveragespeedTv.setText(String.valueOf(data.getAverageSpeed())+"km/h");
         binding.layoutUserStats.statsTopspeedTv.setText(String.valueOf(data.getTopSpeed()+"km/h"));
-
+        binding.layoutUser.trackNameTv.setText(data.getTrackname());
+        binding.statsProfileName.setText(DevicePreferences.getInstance().getuser().getFirstName());
 
 
     }
 
     private void initMapFragment() {
-        MapFragment fragment = new MapFragment(Common.getInstance().getLocation(), new MapListener() {
+        MapFragment fragment = new MapFragment(DevicePreferences.getInstance().getLocation(), new MapListener() {
             @Override
             public void onMapReady() {
                 getMapFragment().showRoute(data.getPath());
+                getMapFragment().hideHeader();
             }
         });
         FragmentTransaction ft = getFragmentManager().beginTransaction();

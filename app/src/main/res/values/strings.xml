@@ -20,4 +20,8 @@
     <string name="text6">Share your workout on \n social media when you finish </string>
 
     <string name="goal">Goal</string>
+    <string name="ghost_info">Choose from your saved tracks</string>
+    <string name="terms_and_conditions"><![CDATA[I have read & I agree to the terms and conditions]]></string>
+    <string name="open_location_settings">Enable</string>
+    <string name="gps_network_not_enabled">This application needs  Internet connection  and  location.Kindly enable location service</string>
 </resources>

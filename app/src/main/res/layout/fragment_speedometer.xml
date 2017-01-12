@@ -5,10 +5,29 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <com.github.anastr.speedviewlib.SpeedView
-            android:id="@+id/speedView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="330dp"
+        android:background="@drawable/speedometer"
+        >
+
+
+    </FrameLayout>
+
+    <com.github.anastr.speedviewlib.ImageSpeedometer
+        android:id="@+id/speed_view"
+        android:layout_width="295dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        android:layout_marginTop="44dp"
+        app:speedometerWidth="20dp"
+
+        app:indicator="NormalIndicator"
+        app:speedTextColor="@color/white"
+        app:indicatorWidth="3dp"
+        app:indicatorColor="@color/white"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
 </layout>

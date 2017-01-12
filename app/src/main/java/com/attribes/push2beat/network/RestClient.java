@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestClient {
     private static final int TIMEOUT = 25;
     private static ApiInterface restClient;
-    private static FirebaseInterface fbClient;
+
 
     static {
         setupClient();
@@ -33,36 +33,11 @@ public class RestClient {
     private static void setupClient() {
 
         setupRestClient();
-        setupFireBaseClient();
+
 
     }
 
-    private static void setupFireBaseClient() {
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Interceptor.Chain chain) throws IOException {
-                Request original = chain.request();
 
-                // Request customization: add request headers
-                Request.Builder requestBuilder = original.newBuilder()
-                        .header("Content-Type","application/json")
-                        .header("Authorization", "key= AIzaSyBQeEHVP1CQ6VHdu5nGkS42wsxZ5mFlJts"); // <-- this is the server key line
-
-                Request request = requestBuilder.build();
-                return chain.proceed(request);
-            }
-        });
-
-        OkHttpClient client = httpClient.build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(NetworkConstant.FIREBASE_URL)
-                .client(client).build();
-
-        fbClient = retrofit.create(FirebaseInterface.class);
-    }
 
     private static void setupRestClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -101,8 +76,6 @@ public class RestClient {
         return restClient;
     }
 
-    public static FirebaseInterface getFbAdapter(){
-        return fbClient;
-    }
+
 }
 

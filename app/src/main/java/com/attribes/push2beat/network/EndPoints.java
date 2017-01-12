@@ -20,7 +20,13 @@ public class EndPoints {
     public static final String Update_Profile ="update_profile";
 
     public static final String Social_Signup ="social_signup";
-
     public static final String Social_Signin ="social_login";
+
+
+    public static final String Challenge ="challenge";
+    public static final String Challenge_Response ="challenge_responce";
+    public static final String Challenge_Loser ="challenge_loser";
+
+
 
 }

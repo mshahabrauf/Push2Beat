@@ -6,7 +6,7 @@ package com.attribes.push2beat.Utils;
 
 public class Constants {
     public static final String STATS_TAG = "stats";
-    public static int MY_PERMISSIONS_REQUEST_READ_LOCATION = 1;
+    public static final int MY_PERMISSIONS_REQUEST_READ_LOCATION = 1;
     public static final String MAP_TAG = "map";
     public static final String CMIYC_TAG ="catch";
 

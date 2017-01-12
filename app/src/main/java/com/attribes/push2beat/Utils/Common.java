@@ -34,7 +34,7 @@ public class Common {
     private CatchMeModel oppData;
     private boolean isCatchMeFromUser = false;
     private boolean isCatchMeFromNotification = false;
-
+    private List<LatLng> ghostTrack;
 
 
 
@@ -64,7 +64,7 @@ public class Common {
         Location userLocation = new Location("opponentLocation");
         userLocation.setLatitude(Double.parseDouble(lat));
         userLocation.setLongitude(Double.parseDouble(lng));
-        int distance = (int) userLocation.distanceTo(Common.getInstance().getLocation());
+        int distance = (int) userLocation.distanceTo(DevicePreferences.getInstance().getLocation());
         return String.valueOf(distance)+"m";
     }
 
@@ -95,7 +95,7 @@ public class Common {
         List<String> latitudes = new ArrayList<>();
         List<String> longitudes = new ArrayList<>();
         List<LatLng> tracker =  new ArrayList<LatLng>();
-        String[] commaSpliter = track_path.split(" ,");
+        String[] commaSpliter = track_path.split(",");
         boolean isFirstValue = true;
         for (String latsLngs: commaSpliter)
         {
@@ -215,5 +215,13 @@ public class Common {
 
     public void setCatchMeFromNotification(boolean catchMeFromNotification) {
         isCatchMeFromNotification = catchMeFromNotification;
+    }
+
+    public List<LatLng> getGhostTrack() {
+        return ghostTrack;
+    }
+
+    public void setGhostTrack(List<LatLng> ghostTrack) {
+        this.ghostTrack = ghostTrack;
     }
 }

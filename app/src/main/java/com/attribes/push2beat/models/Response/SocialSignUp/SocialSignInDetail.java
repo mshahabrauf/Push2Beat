@@ -1,4 +1,4 @@
-package com.attribes.push2beat.models.Response;
+package com.attribes.push2beat.models.Response.SocialSignUp;
 
 import java.util.HashMap;
 import java.util.Map;

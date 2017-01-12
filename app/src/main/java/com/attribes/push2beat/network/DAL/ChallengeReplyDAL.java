@@ -1,6 +1,5 @@
 package com.attribes.push2beat.network.DAL;
 
-import com.attribes.push2beat.models.Response.PushFireBase.PushData;
 import com.attribes.push2beat.models.Response.PushFireBase.PushResponse;
 import com.attribes.push2beat.network.RestClient;
 
@@ -9,14 +8,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by android on 12/22/16.
+ * Created by android on 1/10/17.
  */
 
-public class SendPush {
+public class ChallengeReplyDAL {
 
-    public static void sendPushToUser(PushData data)
+    public  static void replyChallenger(String opponentId, String userId, String status )
     {
-        RestClient.getFbAdapter().sendPushToUser(data).enqueue(new Callback<PushResponse>() {
+        RestClient.getAuthAdapter().challengerResponse(userId,opponentId,status).enqueue(new Callback<PushResponse>() {
             @Override
             public void onResponse(Call<PushResponse> call, Response<PushResponse> response) {
 
@@ -27,5 +26,7 @@ public class SendPush {
 
             }
         });
+
     }
+
 }

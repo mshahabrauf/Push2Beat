@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.DevicePreferences;
@@ -50,10 +51,11 @@ public class MyStatsFragment extends android.support.v4.app.Fragment  {
     }
 
     private void fetchMyStats() {
-        MyStatsDAL.getMyStatsList(DevicePreferences.getInstance().getusersocial().getId(), new MyStatsDataArrivalListner() {
+        mtBinding.loaderLayout.progressWheel.setVisibility(View.VISIBLE);
+        MyStatsDAL.getMyStatsList(DevicePreferences.getInstance().getuser().getId(), new MyStatsDataArrivalListner() {
             @Override
             public void onDataRecieved(List<Datum> data) {
-
+                mtBinding.loaderLayout.progressWheel.setVisibility(View.GONE);
                 setProfileImage(data.get(0).getProfile_image());
                 mtBinding.mystatsProfileName.setText(data.get(0).getFirst_name());
                 mRecycle.setAdapter(new MyStatsAdapter(data, new RecyclerAdapterInterface() {
@@ -66,7 +68,8 @@ public class MyStatsFragment extends android.support.v4.app.Fragment  {
 
             @Override
             public void onEmptyData(String msg) {
-
+                mtBinding.loaderLayout.progressWheel.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "No stats found", Toast.LENGTH_SHORT).show();
             }
         });
     }

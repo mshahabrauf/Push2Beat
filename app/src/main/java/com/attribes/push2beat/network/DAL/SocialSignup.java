@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.attribes.push2beat.Utils.OnSocialSignUpSuccess;
-import com.attribes.push2beat.models.Response.SocialSignUpResponse;
+import com.attribes.push2beat.models.Response.SocialSignUp.SocialSignUpResponse;
 import com.attribes.push2beat.models.UserProfile;
 import com.attribes.push2beat.network.RestClient;
 
@@ -35,7 +35,7 @@ public class SocialSignup {
                     if (response.isSuccessful())
                     {
                         // }
-                        // SignUp.acntsignup(data.getEmail(),data.getPassword());
+                        // SignUp.QBSignUp(data.getEmail(),data.getPassword());
                         listener.onSuccess(response.body());
 
                         Toast.makeText(context, "Facebook Signup Sucessfully!", Toast.LENGTH_SHORT).show();

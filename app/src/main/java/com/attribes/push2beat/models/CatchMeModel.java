@@ -5,6 +5,7 @@ package com.attribes.push2beat.models;
  */
 
 public class CatchMeModel {
+    public String id;
     public String username;
     public String email;
     public double latitude;
@@ -41,5 +42,13 @@ public class CatchMeModel {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -6,6 +6,7 @@ import android.content.ServiceConnection;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.android.vending.billing.IInAppBillingService;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.databinding.FragmentMusicBinding;
+import com.attribes.push2beat.mainnavigation.MainActivity;
 
 import java.util.ArrayList;
 
@@ -53,6 +55,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         musicBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_music,container,false);
         View view = musicBinding.getRoot();
+        ((MainActivity)getActivity()).changeTitle("Select Your Workout");
         initPurchaseListners();
         enableHelperListner();
         return view;
@@ -60,6 +63,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
 
 
     private void initPurchaseListners() {
+        musicBinding.libraryButton.setOnClickListener(new LibraryListener());
         musicBinding.freeBtn.setOnClickListener(new FreeHITListner());
         musicBinding.sevenHitBtn.setOnClickListener(new SevenHITListner());
         musicBinding.fifteenHitBtn.setOnClickListener(new FifteenHITListner());
@@ -331,4 +335,19 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             mHelper.launchPurchaseFlow(getActivity(), thirtyM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
         }
     }
+
+
+    private class LibraryListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i,1);
+
+            PrepareFragment prepareFragment = new PrepareFragment();
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.add(R.id.music_container,prepareFragment).commit();
+        }
+    }
+
+
 }

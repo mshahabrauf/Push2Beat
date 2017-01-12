@@ -3,25 +3,29 @@ package com.attribes.push2beat.mainnavigation;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
+import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.Utils.OnSignUpSuccess;
 import com.attribes.push2beat.Utils.OnSocialSignInSuccess;
 import com.attribes.push2beat.Utils.OnSocialSignUpSuccess;
+import com.attribes.push2beat.fragments.LoaderFragment;
 import com.attribes.push2beat.models.BodyParams.SignInParams;
 import com.attribes.push2beat.models.BodyParams.UserLoginDetailParams;
-import com.attribes.push2beat.models.Response.SocialSignUpResponse;
+import com.attribes.push2beat.models.Response.SocialSignUp.SocialSignUpResponse;
 import com.attribes.push2beat.models.Response.UserSignUp.SocialSignInResponse;
 import com.attribes.push2beat.models.UserProfile;
 import com.attribes.push2beat.network.DAL.LoginDAL;
@@ -35,8 +39,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -57,6 +61,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 
 public class SignIn extends AppCompatActivity {
     ImageView signin;
@@ -67,7 +72,7 @@ public class SignIn extends AppCompatActivity {
     QBChatService chatService;
     QBUser opponent;
 
-    private LoginButton loginButton1;
+    private ImageButton loginButton1;
     private CallbackManager callbackManager1;
     CheckBox remember;
     public SignInParams data1;
@@ -82,29 +87,33 @@ public class SignIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
-
+        DevicePreferences.getInstance().init(getApplicationContext());
         setContentView(R.layout.activity_sign_in);
 
         Common.getInstance().initializeQBInstance(getApplicationContext());
-        loginButton1 = (LoginButton) findViewById(R.id.login_button1);
+        loginButton1 = (ImageButton) findViewById(R.id.login_button1);
+
+
         signin = (ImageView) findViewById(R.id.signinuser);
         username = (EditText) findViewById(R.id.usersignin);
         password = (EditText) findViewById(R.id.userpassword);
         progress = (AVLoadingIndicatorView) findViewById(R.id.progress_wheel);
         remember = (CheckBox) findViewById(R.id.checkBox);
         callbackManager1 = CallbackManager.Factory.create();
-        //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends", "email"));
+        //
 
-       // loginButton1.setReadPermissions(Arrays.asList("public_profile", "email", "user_friends"));
 
 
         loginButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+
+
+                LoginManager.getInstance().logInWithReadPermissions(SignIn.this, Arrays.asList("public_profile", "user_friends", "email"));
                 facebook_id = f_name = m_name = l_name = gender = profile_image = full_name = email_id = "";
 
-                loginButton1.registerCallback(callbackManager1, new FacebookCallback<LoginResult>() {
+                LoginManager.getInstance().registerCallback(callbackManager1, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
 
@@ -135,7 +144,7 @@ public class SignIn extends AppCompatActivity {
                                             socialSignup(userProfile);
 
                                         } catch (JSONException e) {
-                                            // TODO Auto-generated catch block
+
                                             //  e.printStackTrace();
                                         }
 
@@ -185,7 +194,7 @@ public class SignIn extends AppCompatActivity {
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progress.setVisibility(View.VISIBLE);
+                startLoader();
 
                 UserLoginDetailParams detail = new UserLoginDetailParams();
                 detail.setUser_email(username.getText().toString());
@@ -208,7 +217,7 @@ public class SignIn extends AppCompatActivity {
 
                     @Override
                     public void onFailure() {
-                        progress.setVisibility(View.GONE);
+                        removeLoader();
                         Toast.makeText(SignIn.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -221,6 +230,19 @@ public class SignIn extends AppCompatActivity {
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    private void startLoader() {
+        LoaderFragment loaderFragment = new LoaderFragment("Wait...");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.activity_main_start,loaderFragment, Constants.CATCH_LOADER_TAG).commit();
+    }
+
+    private void removeLoader()
+    {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(Constants.CATCH_LOADER_TAG);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.remove(fragment);
+        ft.commit();
+    }
 
 
     public void QbSignIn(final String email, String password) {
@@ -233,20 +255,21 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onSuccess(QBUser user, Bundle bundle) {
                 qbUser.setId(user.getId());
-                Common.getInstance().setQbUser(qbUser);
-                progress.setVisibility(View.GONE);
+
+                DevicePreferences.getInstance().saveQbuser(qbUser);
+                removeLoader();
 
 
              //   Toast.makeText(getApplicationContext(), "QuickBlox SignIn Success", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(SignIn.this, SelectActivity.class));
                 onsuccess = true;
-                createChatService();
+
 
             }
 
             @Override
             public void onError(QBResponseException e) {
-               // Toast.makeText(getApplicationContext(), "QuickBlox SignIn Failed", Toast.LENGTH_SHORT).show();
+                removeLoader();
 
             }
         });
@@ -303,22 +326,7 @@ public class SignIn extends AppCompatActivity {
     }
 
 
-    private void createChatService() {
 
-
-        chatService = QBChatService.getInstance();
-        chatService.login(Common.getInstance().getQbUser(), new QBEntityCallback() {
-            @Override
-            public void onSuccess(Object o, Bundle bundle) {
-                Common.getInstance().setChatService(chatService);
-            }
-
-            @Override
-            public void onError(QBResponseException e) {
-                Log.d("mChat", "" + e);
-            }
-        });
-    }
 
 
 
@@ -392,6 +400,8 @@ public class SignIn extends AppCompatActivity {
         client.connect();
         AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
+
+
 
     @Override
     public void onStop() {

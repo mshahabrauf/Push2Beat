@@ -39,10 +39,9 @@ RestClient.getAuthAdapter().signup(params).enqueue(new retrofit2.Callback<Signup
     public void onResponse(Call<SignupResponse> call, Response<SignupResponse> response) {
         if (response.isSuccessful())
         {
-           // SignUp.acntsignup(data.getEmail(),data.getPassword());
+           // SignUp.QBSignUp(data.getEmail(),data.getPassword());
             listner.onSuccess();
-            Toast.makeText(context, "Push2Beat Signup Sucessfully!", Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(context,""+response.body().msg,Toast.LENGTH_SHORT).show();
 
         }
     }

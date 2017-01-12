@@ -1,6 +1,11 @@
 package com.attribes.push2beat.mainnavigation;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,6 +18,8 @@ import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.adapter.SectionsPagerAdapter;
 import com.attribes.push2beat.databinding.ActivityMainBinding;
 import com.attribes.push2beat.models.CatchMeModel;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,19 +56,36 @@ public class MainActivity extends AppCompatActivity {
         if(bundle != null) {
             boolean isCatcheMe = bundle.getBoolean("fromcatch");
             boolean isFromNotification = bundle.getBoolean("fromNotification");
+            boolean isEndRun = bundle.getBoolean("fromendrun");
 
+            if(isEndRun)
+            {
+                String message = bundle.getString("text");
+                showEndingDialog(message);
+            }
             if(isCatcheMe)
             {
                 Common.getInstance().setCatchMeFromUser(isCatcheMe);
-                Common.getInstance().setRunType(1);
+                Common.getInstance().setRunType(3);
+
+                CatchMeModel data = new CatchMeModel();
+                data.setId(bundle.getString("id"));
+                data.setEmail(bundle.getString("email"));
+                data.setUsername(bundle.getString("username"));
+                data.setLatitude(Double.parseDouble(bundle.getString("latitude")));
+                data.setLongitude(Double.parseDouble(bundle.getString("longitude")));
+
+                Common.getInstance().setOppData(data);
+
             }
             else if(isFromNotification)
             {
 
                 Common.getInstance().setCatchMeFromNotification(isFromNotification);
-                Common.getInstance().setRunType(1);
+                Common.getInstance().setRunType(3);
 
                 CatchMeModel data = new CatchMeModel();
+                data.setId(bundle.getString("id"));
                 data.setEmail(bundle.getString("email"));
                 data.setUsername(bundle.getString("username"));
                 data.setLatitude(Double.parseDouble(bundle.getString("latitude")));
@@ -108,6 +132,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void showEndingDialog(String message) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Catch me if you can");
+        builder.setMessage(message);
+        builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog alertDialog  = builder.create();
+        alertDialog.show();
+    }
+
 
     private void addTabsIcons() {
 
@@ -132,6 +172,11 @@ public class MainActivity extends AppCompatActivity {
      }
      }
 
+    public void changeTitle(String title)
+    {
+        binding.appbar.text.setText(title);
+    }
+
     @Override
     public void onBackPressed() {
         Common.getInstance().setCatchMeFromUser(false);
@@ -142,12 +187,23 @@ public class MainActivity extends AppCompatActivity {
     private class BackButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-
-            
             onBackPressed();
         }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
+        if (requestCode == RESULT_OK && requestCode == 1) {
+            Uri uri = data.getData();
+            MediaPlayer mMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+            mMediaPlayer.setLooping(true);
+            try {
+                mMediaPlayer.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mMediaPlayer.start();
+        }
     }
 }

@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.3"
+
     defaultConfig {
         applicationId "com.attribes.push2beat"
         minSdkVersion 16
@@ -10,6 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -47,6 +49,7 @@ dependencies {
 
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.anastr:speedviewlib:1.1.2'//for Speedometer
+    compile 'com.google.firebase:firebase-crash:9.8.0'
 
 }
 
@@ -86,6 +89,7 @@ dependencies {
 dependencies {
     compile 'com.wang.avi:library:2.1.3'
     compile 'com.google.android.gms:play-services-appindexing:9.8.0'
+    compile 'com.android.support.test.espresso:espresso-core:2.2.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
