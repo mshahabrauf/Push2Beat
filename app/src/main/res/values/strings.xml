@@ -18,4 +18,6 @@
     <string name="text6">Share your workout on \n social media when you finish </string>
 
     <string name="goal">Goal</string>
+    <string name="play_str">PLAY</string>
+    <string name="pause_str">PAUSE</string>
 </resources>

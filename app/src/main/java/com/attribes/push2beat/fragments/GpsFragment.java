@@ -1,9 +1,13 @@
 package com.attribes.push2beat.fragments;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -20,9 +24,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.attribes.push2beat.R;
-import com.attribes.push2beat.Utils.Common;
-import com.attribes.push2beat.Utils.Constants;
-import com.attribes.push2beat.Utils.QBHandler;
+import com.attribes.push2beat.Utils.*;
 import com.attribes.push2beat.databinding.FragmentTimerBinding;
 import com.attribes.push2beat.models.BodyParams.AddTrackParams;
 import com.attribes.push2beat.models.Response.UserList.Datum;
@@ -39,6 +41,7 @@ import com.quickblox.chat.model.QBChatMessage;
 
 import org.jivesoftware.smack.SmackException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -86,19 +89,16 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     int milliseconds = 0;
     int speed = 0;
     Handler handler = new Handler();
-
-
-
+    private MediaPlayer mPlayer;
 
     public GpsFragment() {
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_timer,container,false);
         View view = binding.getRoot();
+
         initGoogleApi();
         init();
         initFragments();
@@ -122,21 +122,18 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         transaction.add(R.id.container_above, speedMeterFragment,SpeedTag);
         transaction.commit();
 
-
-
-
-        // Initialize map Fragment
-
     }
 
 
 
 
     private void init() {
+        DevicePreferences.getInstance().init(getActivity());
+        mPlayer = new MediaPlayer();
+
         track = new ArrayList<LatLng>();
         speedList = new ArrayList<Integer>();
     }
-
 
     /**
      * This method Hide and Show Fragments
@@ -583,6 +580,8 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         @Override
         public void onClick(View view) {
 
+            stopMusic();
+
             if (track.isEmpty()) {
                 Toast.makeText(getContext(), "No Track found", Toast.LENGTH_SHORT).show();
             }
@@ -650,25 +649,34 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     public void onStart() {
         super.onStart();
         apiClient.connect();
+        playMusic();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         apiClient.connect();
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
         apiClient.disconnect();
+        stopMusic();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        stopMusic();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
         apiClient.disconnect();
+        stopMusic();
     }
 
 
@@ -690,5 +698,56 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     }
 
 
+    private void playMusic() {
+
+        if(DevicePreferences.getInstance().getMusicTrackPath() != null) {
+
+            Uri myUri = Uri.parse(DevicePreferences.getInstance().getMusicTrackPath()+"/music.mp3");
+            mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            try {
+                mPlayer.setDataSource(getActivity(), myUri);
+            } catch (IllegalArgumentException e) {
+                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+            } catch (SecurityException e) {
+                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+            } catch (IllegalStateException e) {
+                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                mPlayer.prepare();
+            } catch (IllegalStateException e) {
+                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+            }
+
+            mPlayer.start();
+            //set up MediaPlayer
+//            try {
+//                mp.setDataSource(DevicePreferences.getInstance().getMusicTrackPath());
+//                mp.prepare();
+//                mp.start();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+        }
+        else{
+
+            try {
+                DevicePreferences.getInstance().getMusicTrackPath();
+            } catch (NullPointerException e) {
+                Toast.makeText(getActivity(), "No music available , Download it first !" + e, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void stopMusic(){
+        if(mPlayer!=null && mPlayer.isPlaying()){
+            mPlayer.stop();
+        }
+    }
 
 }

@@ -44,7 +44,49 @@
                     android:layout_marginRight="40dp"
                     android:layout_marginEnd="40dp"/>
 
+        <RelativeLayout
+                android:id="@+id/widget_player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal">
+
+            <Button
+                    android:id="@+id/play"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Play"
+                    android:textColor="@color/white"
+                    android:background="@color/primary_pink"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"/>
+
+            <Button
+                    android:id="@+id/stop"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:text="Stop"
+                    android:textColor="@color/black"
+                    android:background="@color/white"
+                    android:gravity="center"/>
+        <!--<Button-->
+                <!--android:id="@+id/button_play_stop"-->
+                <!--android:text="@string/play_str"-->
+                <!--android:textSize="15sp"-->
+                <!--android:textStyle="bold"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"/>-->
+        <!--<SeekBar-->
+                <!--android:id="@+id/seekbar_1"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_below="@id/button_play_stop"/>-->
+    </RelativeLayout>
+
         <ScrollView
+                android:id="@+id/hit_one"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="20dp">
@@ -52,7 +94,8 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <RelativeLayout
                         android:layout_width="match_parent"
@@ -428,5 +471,9 @@
         </LinearLayout>
 
         </ScrollView>
+
+        <include android:id="@+id/hit_two"
+                 layout="@layout/music_frame_hit_two"
+        />
 </LinearLayout>
 </layout>

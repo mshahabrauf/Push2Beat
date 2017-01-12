@@ -1,11 +1,21 @@
 package com.attribes.push2beat.fragments;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.DownloadManager;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
-import android.os.Bundle;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.*;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +23,17 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import com.android.vending.billing.IInAppBillingService;
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.databinding.FragmentMusicBinding;
 import utils_in_app_purchase.IabHelper;
 import utils_in_app_purchase.IabResult;
 import utils_in_app_purchase.Inventory;
 import utils_in_app_purchase.Purchase;
 
+import java.io.*;
 import java.util.ArrayList;
+
+import static com.attribes.push2beat.R.id.root;
 
 /**
  * Created by Maaz on 12/30/2016.
@@ -34,14 +48,19 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     static final int RC_REQUEST = 10001;    // (arbitrary) request code for the purchase flow
     IabHelper mHelper;  // The helper object
 
-    String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm2lLP4cixk0F13868EssZeuv3S1/179cxIj070t2WKxLsodu1F5N2BOiPyQdAod2pXvq45wYZBd91gR7f4ofTTNGPPis8qPwtk4af9J2HEemWIoOrar4MRmHqmwH0miPtZMM/udOddX0Q+mzBbyjsHSIztLDXbb8YPiqh5NyOstkfrSiX7V5dsL9PVWD/ekUGxEV0FjqOw5vy5sKxZ3swIc2/NvrNLwa/hJm/Oql1JFM4KOKYYQNyj3XArf/uc23rvrfo+RwhYv5DnRqyOgZsmKcI+GNroyW9RlZ9fUzb6D/mizt7djfjYoNT8/zxvw+x5ZtPmdtvM70Cf43t9yvkwIDAQAB";
+    String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAur6/aqP+oKF9ZqyZmUA44qKkp4xh6i8FomO0b8HBPUFWd9BHK/FjxXpFGUptZMG5ZRN7DGuODFKn+sYYepk8TPvQD/2tlPr70k8xWVpGrka7XVprE7s5D1ThgKwiNqT/kaqWPhRrJV0I8wf3O66HKSyXh80sCcWGWYuPKW61N4RoDoSul22lP7qarprL+CQCpQvUcXulMgZMrN+52D1I3ShPI/+M98SInrJmALay2A9oerA5RsLHz3r/XrXYMwbe7EwVP5IXIdFHsd1VWx9j5TZ6veeWW0qhf3ILv6pE0+v8kSW/xmayOIA5jz2E78l7y/t0a2Z/fA7H5bNN5TyW0QIDAQAB";
 
-    String threeM_HIT = "com.infoicon.push2beat.3minutess";
-    String sevenM_HIT = "com.infoicon.push2beat.7minutes";
-    String fifteenM_HIT = "com.infoicon.push2beat.15minutes";
-    String twentytwoM_HIT = "com.infoicon.push2beat.22minutes";
-    String thirtyM_HIT = "com.infoicon.push2beat.30minute";
+    String threeM_HIT = "com.attribes.push2beat.3minutes";
+    String sevenM_HIT = "com.attribes.push2beat.7minutes";
+    String fifteenM_HIT = "com.attribes.push2beat.15minutes";
+    String twentytwoM_HIT = "com.attribes.push2beat.22minutes";
+    String thirtyM_HIT = "com.attribes.push2beat.30minutes";
 
+    private ProgressDialog pDialog;
+    public static final int progress_bar_type = 0;     // Progress dialog type (0 - for Horizontal progress bar)
+
+    private  MediaPlayer mPlayer;
+    private final Handler handler = new Handler();
 
     public MusicFragment() {
     }
@@ -51,9 +70,23 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         musicBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_music,container,false);
         View view = musicBinding.getRoot();
-        initPurchaseListners();
+        isStoragePermissionGranted();
+        initAndListners();
         enableHelperListner();
+        initPurchaseListners();
         return view;
+    }
+
+
+    private void initAndListners() {
+        DevicePreferences.getInstance().init(getActivity());
+        mPlayer = new MediaPlayer();
+
+        musicBinding.hitOneBtn.setOnClickListener(new HIT_OneListner());
+        musicBinding.hitTwoBtn.setOnClickListener(new HIT_TwoListner());
+
+        musicBinding.play.setOnClickListener(new PlayListner());
+        musicBinding.stop.setOnClickListener(new StopListner());
     }
 
 
@@ -197,50 +230,37 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             if (purchase.getSku().equals(sevenM_HIT)) {
                 Toast.makeText(getActivity(), "sevenM_HIT"+" Purchased", Toast.LENGTH_SHORT).show();
                 mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                new DownloadFileFromURL().execute("https://www.dropbox.com/s/27f3udiocs2wsb5/first7.mp3?dl=1");
             }
 
             if (purchase.getSku().equals(fifteenM_HIT)) {
                 Toast.makeText(getActivity(), "fifteenM_HIT"+" Purchased", Toast.LENGTH_SHORT).show();
                 mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                new DownloadFileFromURL().execute("https://www.dropbox.com/s/trcoakb6r22eujv/first15.mp3?dl=1");
             }
 
             if (purchase.getSku().equals(twentytwoM_HIT)) {
                 Toast.makeText(getActivity(), "twentytwoM_HIT"+" Purchased", Toast.LENGTH_SHORT).show();
                 mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                new DownloadFileFromURL().execute("https://www.dropbox.com/s/zgie7locjtrdumr/first22.mp3?dl=1");
             }
 
             if (purchase.getSku().equals(thirtyM_HIT)) {
                 Toast.makeText(getActivity(), "thirtyM_HIT"+" Purchased", Toast.LENGTH_SHORT).show();
                 mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                new DownloadFileFromURL().execute("https://www.dropbox.com/s/c4vuopcqd2mzuzz/fullmix.mp3?dl=1");
             }
-//            else if (purchase.getSku().equals(SKU_PREMIUM)) {
-//                // bought the premium upgrade!
-//                Log.d(TAG, "Purchase is premium upgrade. Congratulating user.");
-//                alert("Thank you for upgrading to premium!");
-//                mIsPremium = true;
-//                updateUi();
-//                setWaitScreen(false);
-//            }
-//            else if (purchase.getSku().equals(SKU_INFINITE_GAS)) {
-//                // bought the infinite gas subscription
-//                Log.d(TAG, "Infinite gas subscription purchased.");
-//                alert("Thank you for subscribing to infinite gas!");
-//                mSubscribedToInfiniteGas = true;
-//                mTank = TANK_MAX;
-//                updateUi();
-//                setWaitScreen(false);
-//            }
         }
     };
 
     private ArrayList<String> prepareListOfProducts() {
 
         ArrayList<String> skuList = new ArrayList<String>();
-        skuList.add("com.infoicon.push2beat.3minutess");
-        skuList.add("com.infoicon.push2beat.7minutes");
-        skuList.add("com.infoicon.push2beat.15minutes");
-        skuList.add("com.infoicon.push2beat.22minutes");
-        skuList.add("com.infoicon.push2beat.30minute");
+        skuList.add("com.attribes.push2beat.3minutes");
+        skuList.add("com.attribes.push2beat.7minutes");
+        skuList.add("com.attribes.push2beat.15minutes");
+        skuList.add("com.attribes.push2beat.22minutes");
+        skuList.add("com.attribes.push2beat.30minutes");
 
         return skuList;
     }
@@ -256,10 +276,10 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             // not handled, so handle it ourselves (here's where you'd
             // perform any handling of activity results not related to in-app
             // billing...
-
         }
         else {
             Log.d(TAG, "onActivityResult handled by IABUtil.");
+
         }
     }
 
@@ -294,7 +314,8 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         @Override
         public void onClick(View view) {
             String payload = "";
-            mHelper.launchPurchaseFlow(getActivity(), threeM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+            new DownloadFileFromURL().execute("https://www.dropbox.com/s/1vyy0x5r4zmrhsq/first3.mp3?dl=1");
+           // mHelper.launchPurchaseFlow(getActivity(), threeM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
         }
     }
 
@@ -327,6 +348,176 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         public void onClick(View view) {
             String payload = "";
             mHelper.launchPurchaseFlow(getActivity(), thirtyM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+        }
+    }
+
+    private class DownloadFileFromURL extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showDialog(progress_bar_type);
+        }
+
+        private void showDialog(int progress_bar_type) {
+
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Downloading Please wait...");
+            if (progress_bar_type==ProgressDialog.STYLE_HORIZONTAL){
+
+                pDialog.setIndeterminate(false);
+                pDialog.setMax(100);
+                pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                pDialog.setCancelable(true);
+            }
+            pDialog.show();
+        }
+
+        @Override
+       protected String doInBackground(String... file_url) {
+
+//            String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/maaz_files";
+//            String file_path = Environment.DIRECTORY_DOWNLOADS + "/maaz_files";
+
+            String file_path =  Environment.getExternalStorageDirectory()+"/maaz_files";
+            File direct = new File(file_path);
+
+            if (!direct.exists()) {
+                direct.mkdirs();
+            }
+
+            DownloadManager mgr = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+
+            Uri downloadUri = Uri.parse(file_url[0]);
+            DownloadManager.Request request = new DownloadManager.Request(downloadUri);
+
+            request.setAllowedNetworkTypes( DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
+                    .setAllowedOverRoaming(false).setTitle("Music")
+                    .setDestinationInExternalPublicDir("/maaz_files","music.mp3");
+            DevicePreferences.getInstance().save_musicTrackPath(file_path);
+            mgr.enqueue(request);
+
+            return null;
+        }
+
+        protected void onProgressUpdate(String... progress) {
+            pDialog.setProgress(Integer.parseInt(progress[0]));  // setting progress percentage
+        }
+
+        @Override
+        protected void onPostExecute(String file_url) {
+            pDialog.dismiss();
+            Toast.makeText(getActivity(),"Done!!!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private class HIT_OneListner implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            musicBinding.hitTwo.hitTwo.setVisibility(View.GONE);
+            musicBinding.hitOne.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private class HIT_TwoListner implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            musicBinding.hitTwo.hitTwo.setVisibility(View.VISIBLE);
+            musicBinding.hitOne.setVisibility(View.GONE);
+        }
+    }
+
+
+    private class PlayListner implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            playMusic();
+        }
+    }
+
+    private void playMusic() {
+
+        if(DevicePreferences.getInstance().getMusicTrackPath() != null) {
+
+            Uri myUri = Uri.parse(DevicePreferences.getInstance().getMusicTrackPath()+"/music.mp3");
+            mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            try {
+                mPlayer.setDataSource(getActivity(), myUri);
+            } catch (IllegalArgumentException e) {
+                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+            } catch (SecurityException e) {
+                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+            } catch (IllegalStateException e) {
+                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                mPlayer.prepare();
+            } catch (IllegalStateException e) {
+                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+            }
+
+            mPlayer.start();
+            //set up MediaPlayer
+//            try {
+//                mp.setDataSource(DevicePreferences.getInstance().getMusicTrackPath());
+//                mp.prepare();
+//                mp.start();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+        }
+        else{
+
+            try {
+                DevicePreferences.getInstance().getMusicTrackPath();
+            } catch (NullPointerException e) {
+                Toast.makeText(getActivity(), "No music available , Download it first !" + e, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+
+    private class StopListner implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            if(mPlayer!=null && mPlayer.isPlaying()){
+                mPlayer.stop();
+            }
+//            if(mp!=null && mp.isPlaying()){
+//                mp.stop();
+//            }
+        }
+    }
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getActivity(), "Permission is granted", Toast.LENGTH_SHORT).show();
+                return true;
+            } else {
+                Toast.makeText(getActivity(), "Permission is revoked", Toast.LENGTH_SHORT).show();
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Toast.makeText(getActivity(), "Permission is granted", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
+            //resume tasks needing this permission
+            initPurchaseListners();
         }
     }
 }
