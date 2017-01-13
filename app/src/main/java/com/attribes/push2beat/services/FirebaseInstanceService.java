@@ -15,7 +15,7 @@ public class FirebaseInstanceService extends FirebaseInstanceIdService {
 
        String token =  FirebaseInstanceId.getInstance().getToken();
 
-        //Todo: retrieve new device token and update it to user profile
+        //Todo: retrieve new device token and call api ..There is no API right now
 
     }
 }

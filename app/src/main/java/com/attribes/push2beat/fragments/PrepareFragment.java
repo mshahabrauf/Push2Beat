@@ -10,11 +10,12 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
+
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.databinding.FragmentPrepareYourselfBinding;
+import com.attribes.push2beat.mainnavigation.MainActivity;
 
 /**
  * Created by android on 12/23/16.
@@ -48,13 +49,21 @@ public class PrepareFragment extends Fragment {
     }
 
     private void init() {
+        ((MainActivity)getActivity()).changeTitle("Prepare Yourself");
 
         binding.start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 GpsFragment gpsFragment = new GpsFragment();
                 FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                ft.replace(R.id.prepare_container,gpsFragment,Constants.GPS_TAG).commit();
+
+                ft.add(R.id.prepare_container,gpsFragment,Constants.GPS_TAG);
+//                Common.getInstance().getFragmentStack().lastElement().onPause();
+//                ft.hide(Common.getInstance().getFragmentStack().lastElement());
+          //      Common.getInstance().getFragmentStack().push(gpsFragment);
+                ft.commit();
+              //  binding.root.setVisibility(View.GONE);
+
             }
         });
     }

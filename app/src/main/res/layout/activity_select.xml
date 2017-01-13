@@ -7,6 +7,9 @@
         android:layout_height="match_parent"
         android:id="@+id/main_container"
         >
+
+
+
         <LinearLayout
 
             android:id="@+id/root_selector"
@@ -17,14 +20,8 @@
             android:background="@drawable/bg">
 
 
-
-            <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:text="Select Activity"
-                    android:gravity="center"
-                    android:textSize="@dimen/large_margin"
-                    android:textColor="#ffffff"/>
+            <include android:id="@+id/appbar"
+                layout="@layout/custom_app_bar" />
 
             <include
                 android:id="@+id/timer_ghost"

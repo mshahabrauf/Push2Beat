@@ -74,7 +74,7 @@
                  layout="@layout/user_track_info_layout"
                  android:layout_below="@+id/stats_map_view"/>
 
-        <include android:id="@+id/layout_gudjoc"
+        <include android:id="@+id/layout_gudjob"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content"
                  layout="@layout/stats_gudjob_layout"

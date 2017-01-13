@@ -2,17 +2,37 @@
 <layout>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:id="@+id/base_view"
+    android:background="@drawable/bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/catchme_map_view"
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        android:paddingRight="20dp"
+        android:paddingEnd="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.8"
+        android:layout_below="@+id/user"/>
 
     <include
         android:id="@+id/progress"
         layout="@layout/progress" />
     <android.support.v7.widget.RecyclerView
+
         android:id="@+id/my_recycler_view"
         android:scrollbars="vertical"
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        android:paddingRight="20dp"
+        android:paddingEnd="20dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="2"
+
+        />
 
 </LinearLayout>
 </layout>

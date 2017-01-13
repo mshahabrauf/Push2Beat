@@ -9,10 +9,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.attribes.push2beat.Utils.Common;
+import com.attribes.push2beat.fragments.GpsFragment;
 import com.attribes.push2beat.fragments.MusicFragment;
 import com.attribes.push2beat.fragments.MyProfileFragment;
 import com.attribes.push2beat.fragments.MyStatsFragment;
-import com.attribes.push2beat.fragments.PrepareFragment;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -33,8 +34,15 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         switch (position)
         {
             case 0:
-                PrepareFragment prepareFragment = new PrepareFragment();
-                return prepareFragment;
+
+                switch (Common.getInstance().getRunType()) {
+                    case 1: MusicFragment musicFragment = new MusicFragment();
+                        return musicFragment;
+                    case 2:
+                    case 3:
+                        GpsFragment gpsFragment = new GpsFragment();
+                        return gpsFragment;
+                }
             case 1:
                 MusicFragment musicFragment = new MusicFragment();
                 return musicFragment;
@@ -46,6 +54,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 return myProfileFragment;
             default:
                 return null;
+
+
+
 
         }
 

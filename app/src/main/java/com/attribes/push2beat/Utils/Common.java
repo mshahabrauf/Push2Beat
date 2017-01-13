@@ -3,9 +3,13 @@ package com.attribes.push2beat.Utils;
 import android.content.Context;
 import android.location.Location;
 
-import com.attribes.push2beat.models.Response.UserSignUp.LoginData;
+import com.attribes.push2beat.models.CatchMeModel;
+import com.attribes.push2beat.models.Response.UserList.Datum;
+import com.attribes.push2beat.models.BodyParams.SignInParams;
 import com.google.android.gms.maps.model.LatLng;
 import com.quickblox.auth.session.QBSettings;
+import com.quickblox.chat.QBChatService;
+import com.quickblox.chat.model.QBChatDialog;
 import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
@@ -20,10 +24,18 @@ public class Common {
     private Location location;
     private QBUser qbUser;
     private int runType;
-    private LoginData user;
+    private SignInParams user;
     private String password;
     private int SpeedValue;
     private String profile_image;
+    private QBChatDialog qbChatDialog;
+    private QBChatService chatService;
+    private Datum opponentData;
+    private CatchMeModel oppData;
+    private boolean isCatchMeFromUser = false;
+    private boolean isCatchMeFromNotification = false;
+    private List<LatLng> ghostTrack;
+
 
 
     private Common() {
@@ -52,7 +64,7 @@ public class Common {
         Location userLocation = new Location("opponentLocation");
         userLocation.setLatitude(Double.parseDouble(lat));
         userLocation.setLongitude(Double.parseDouble(lng));
-        int distance = (int) userLocation.distanceTo(Common.getInstance().getLocation());
+        int distance = (int) userLocation.distanceTo(DevicePreferences.getInstance().getLocation());
         return String.valueOf(distance)+"m";
     }
 
@@ -101,9 +113,10 @@ public class Common {
                 }
             }
         }
-        latitudes.add(0,latitudes.get(latitudes.size()-1));
-        latitudes.remove(latitudes.size()-1);
-
+        if(latitudes.size()>1) {
+            latitudes.add(0, latitudes.get(latitudes.size() - 1));
+            latitudes.remove(latitudes.size() - 1);
+        }
         for(int i=0;i<latitudes.size();i++)
         {
             LatLng latlng = new LatLng(Double.parseDouble(latitudes.get(i)),Double.parseDouble(longitudes.get(i)));
@@ -121,11 +134,11 @@ public class Common {
         this.runType = runType;
     }
 
-    public void setUser(LoginData user) {
+    public void setUser(SignInParams user) {
         this.user = user;
     }
 
-    public LoginData getUser()
+    public SignInParams getUser()
     {
 
         return user;
@@ -154,4 +167,61 @@ public class Common {
         this.profile_image = profile_image;
     }
 
+
+    public QBChatDialog getQbChatDialog() {
+        return qbChatDialog;
+    }
+
+    public void setQbChatDialog(QBChatDialog qbChatDialog) {
+        this.qbChatDialog = qbChatDialog;
+    }
+
+    public QBChatService getChatService() {
+        return chatService;
+    }
+
+    public void setChatService(QBChatService chatService) {
+        this.chatService = chatService;
+    }
+
+    public void setOpponentData(Datum opponentData) {
+        this.opponentData = opponentData;
+    }
+
+    public Datum getOpponentData() {
+        return opponentData;
+    }
+
+
+    public boolean isCatchMeFromUser() {
+        return isCatchMeFromUser;
+    }
+
+    public void setCatchMeFromUser(boolean catchMeFromUser) {
+        isCatchMeFromUser = catchMeFromUser;
+    }
+
+    public CatchMeModel getOppData() {
+        return oppData;
+    }
+
+    public void setOppData(CatchMeModel oppData) {
+        this.oppData = oppData;
+    }
+
+    public boolean isCatchMeFromNotification() {
+        return isCatchMeFromNotification;
+    }
+
+    public void setCatchMeFromNotification(boolean catchMeFromNotification) {
+        isCatchMeFromNotification = catchMeFromNotification;
+    }
+
+    public List<LatLng> getGhostTrack() {
+        return ghostTrack;
+    }
+
+    public void setGhostTrack(List<LatLng> ghostTrack) {
+        this.ghostTrack = ghostTrack;
+    }
 }

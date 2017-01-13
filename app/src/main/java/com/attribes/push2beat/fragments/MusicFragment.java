@@ -16,6 +16,13 @@ import android.os.*;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.databinding.DataBindingUtil;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +32,14 @@ import com.android.vending.billing.IInAppBillingService;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.databinding.FragmentMusicBinding;
+
+import com.android.vending.billing.IInAppBillingService;
+import com.attribes.push2beat.R;
+import com.attribes.push2beat.databinding.FragmentMusicBinding;
+import com.attribes.push2beat.mainnavigation.MainActivity;
+
+import java.util.ArrayList;
+
 import utils_in_app_purchase.IabHelper;
 import utils_in_app_purchase.IabResult;
 import utils_in_app_purchase.Inventory;
@@ -70,6 +85,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         musicBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_music,container,false);
         View view = musicBinding.getRoot();
+        ((MainActivity)getActivity()).changeTitle("Select Your Workout");
         isStoragePermissionGranted();
         initAndListners();
         enableHelperListner();
@@ -91,6 +107,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
 
 
     private void initPurchaseListners() {
+        musicBinding.libraryButton.setOnClickListener(new LibraryListener());
         musicBinding.freeBtn.setOnClickListener(new FreeHITListner());
         musicBinding.sevenHitBtn.setOnClickListener(new SevenHITListner());
         musicBinding.fifteenHitBtn.setOnClickListener(new FifteenHITListner());
@@ -131,7 +148,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         @Override
         public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
 
-            Toast.makeText(getActivity(), "Query inventory finished.", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(), "Query inventory finished.", Toast.LENGTH_SHORT).show();
 
             if (mHelper == null) return;    // Have we been disposed of in the meantime? If so, quit.
 
@@ -139,7 +156,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
                 complain("Failed to query inventory: " + result);
                 return;
             }
-            Toast.makeText(getActivity(), "Query inventory was successful.", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(), "Query inventory was successful.", Toast.LENGTH_SHORT).show();
 
 
             Purchase threeM_HITPurchase = inventory.getPurchase(threeM_HIT);
@@ -179,7 +196,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             updateUi();
 
             Log.d(TAG, "Initial inventory query finished; enabling main UI.");
-            Toast.makeText(getActivity(), "Initial inventory query finished; enabling main UI.", Toast.LENGTH_SHORT).show();
+        //    Toast.makeText(getActivity(), "Initial inventory query finished; enabling main UI.", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -194,7 +211,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             if (result.isSuccess()) {
                 // successfully consumed, so we apply the effects of the item in our
                 // game world's logic, which in our case means filling the gas tank a bit
-                Toast.makeText(getActivity(), "Consumption successful", Toast.LENGTH_SHORT).show();
+           //     Toast.makeText(getActivity(), "Consumption successful", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Consumption successful. Provisioning.");
             }
             else {
@@ -518,6 +535,18 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
             //resume tasks needing this permission
             initPurchaseListners();
+        }
+    }
+
+    private class LibraryListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i,1);
+
+            PrepareFragment prepareFragment = new PrepareFragment();
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.add(R.id.music_container,prepareFragment).commit();
         }
     }
 }

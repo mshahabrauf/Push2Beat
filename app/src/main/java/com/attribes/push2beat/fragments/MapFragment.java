@@ -6,15 +6,13 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
-import com.attribes.push2beat.Utils.Constants;
+import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.databinding.FragmentMapBinding;
 import com.attribes.push2beat.models.Response.UserList.Datum;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -29,12 +27,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.quickblox.core.QBEntityCallback;
 
-import com.quickblox.core.account.model.QBAccountSettings;
-import com.quickblox.core.exception.QBResponseException;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,6 +59,12 @@ public class MapFragment extends android.support.v4.app.Fragment {
     private Marker end;
     private Polyline line;
     private MarkerOptions opponent;
+    StatsFragment.MapListener maplistener;
+
+    @SuppressLint("ValidFragment")
+    public MapFragment(Location location, StatsFragment.MapListener mapListener) {
+        maplistener = mapListener;
+    }
 
     @Nullable
     @Override
@@ -73,15 +72,15 @@ public class MapFragment extends android.support.v4.app.Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
         View view = binding.getRoot();
         initMap(savedInstanceState);
-        initQuickBlox();
+        initListeners();
+
         return view;
     }
 
-    private void initQuickBlox() {
-//        QBSettings.getInstance().init(getContext(), Constants.APP_ID, Constants.AUTH_KEY, Constants.AUTH_SECRET);
-//        QBSettings.getInstance().setAccountKey(Constants.ACCOUNT_KEY);
+    private void initListeners() {
+        binding.mapHeader.satelite.setOnClickListener(new sateliteButton());
+        binding.mapHeader.terrain.setOnClickListener(new terrainButton());
     }
-
 
 
     /**
@@ -112,13 +111,44 @@ public class MapFragment extends android.support.v4.app.Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
+            if(maplistener != null)
+            {
+            maplistener.onMapReady();
+            }
+
+
+            if(opponent != null)
+            {
+                map.addMarker(opponent);
+
+            }
+
             if(startLocation!=null) {
                 map.setMyLocationEnabled(true);
+                moveMapCamera(startLocation.getLatitude(),startLocation.getLongitude());
             }
             else {
-                startLocation = Common.getInstance().getLocation();
+                startLocation = DevicePreferences.getInstance().getLocation();
                 map.setMyLocationEnabled(true);
+                moveMapCamera(DevicePreferences.getInstance().getLocation().getLatitude(),DevicePreferences.getInstance().getLocation().getLongitude());
             }
+        }
+    }
+
+
+    private void mapTypeSwitcher(String type)
+    {
+        switch (type) {
+            case "terrain":
+                binding.mapHeader.terrain.setTextColor(getResources().getColor(R.color.secondary_red));
+                binding.mapHeader.satelite.setTextColor(getResources().getColor(R.color.white));
+                map.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                break;
+            case "satelite":
+                binding.mapHeader.terrain.setTextColor(getResources().getColor(R.color.white));
+                binding.mapHeader.satelite.setTextColor(getResources().getColor(R.color.secondary_red));
+                map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                break;
         }
     }
 
@@ -139,7 +169,9 @@ public class MapFragment extends android.support.v4.app.Fragment {
 
 
 
-
+    public void hideHeader() {
+        binding.mapHeader.mapHeaderRoot.setVisibility(View.INVISIBLE);
+    }
 
 
     public void removeTrackMarkers()
@@ -156,12 +188,13 @@ public class MapFragment extends android.support.v4.app.Fragment {
 
 
 
+
     public void showUsers(List<Datum> data)
     {
         for(Datum datum:data)
         {
             LatLng userPosition =new LatLng(Double.parseDouble(datum.getLat()),Double.parseDouble(datum.getLng()));
-            map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_profile_overlay)).position(userPosition)).setTag(datum);
+            map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_action_name)).position(userPosition)).setTag(datum);
 
         }
 
@@ -169,19 +202,23 @@ public class MapFragment extends android.support.v4.app.Fragment {
 
 
 
+
     public void addOpponentMaker(double lat,double lng)
     {
         LatLng latLng = new LatLng(lat,lng);
-        opponent = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_profile_overlay)).position(latLng);
+        opponent = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_action_name)).position(latLng);
+      //  map.addMarker(opponent);
 
     }
 
     public void moveOpponent(double lat,double lng){
         LatLng latLng = new LatLng(lat,lng);
         opponent.position(latLng);
+
     }
 
     public void showRoute(List<LatLng> track) {
+
         if(track != null){
             for (int i = 0; i < track.size() - 1; i++) {
                 LatLng src = track.get(i);
@@ -196,8 +233,32 @@ public class MapFragment extends android.support.v4.app.Fragment {
             }
             addTrackMarker(track);
         }
-        moveMapCamera(track.get(0).latitude,track.get(0).longitude);
+     //   moveMapCamera(track.get(0).latitude,track.get(0).longitude);
     }
+
+    public void updateUIonStop(String totalDistance,String speed) {
+        binding.mapHeader.mapHeaderRoot.setVisibility(View.GONE);
+        if(Common.getInstance().getRunType() == 2) {
+            binding.trackDetails.mapDetailRoot.setVisibility(View.GONE);
+        }
+        else {
+            binding.trackDetails.mapDetailRoot.setVisibility(View.VISIBLE);
+        }
+        binding.trackDetails.mapSpeed.setText(speed);
+        binding.trackDetails.mapTotalDistance.setText(totalDistance);
+    }
+
+
+    public void updateUIonGhostRider(String trackname,String timeToBeat)
+    {
+        binding.mapHeader.mapHeaderRoot.setVisibility(View.GONE);
+
+        binding.ghostDetails.mapDetailRoot.setVisibility(View.VISIBLE);
+        binding.ghostDetails.mapTrackName.setText(trackname);
+        binding.ghostDetails.mapTimetobeat.setText(timeToBeat);
+
+    }
+
 
     /**
      * To move Map Camera
@@ -210,7 +271,19 @@ public class MapFragment extends android.support.v4.app.Fragment {
 
 
 
+    private class terrainButton implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
 
+            mapTypeSwitcher("terrain");
 
+        }
+    }
 
+    private class sateliteButton implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            mapTypeSwitcher("satelite");
+        }
+    }
 }

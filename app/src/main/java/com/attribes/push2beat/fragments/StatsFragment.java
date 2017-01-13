@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Constants;
+import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.databinding.FragmentStatsBinding;
+import com.attribes.push2beat.mainnavigation.MainActivity;
 import com.attribes.push2beat.models.StatsData;
 
 /**
@@ -37,8 +39,18 @@ public class StatsFragment extends Fragment {
         View view = binding.getRoot();
         initMapFragment();
         initUi();
+        initListener();
         return view;
 
+    }
+
+    private void initListener() {
+        binding.layoutGudjob.goodJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+            }
+        });
     }
 
     private void initUi() {
@@ -46,22 +58,39 @@ public class StatsFragment extends Fragment {
         binding.layoutUserStats.statsDistancetravelledTv.setText(String.valueOf(data.getTraveledDistance())+"km");
         binding.layoutUserStats.statsAveragespeedTv.setText(String.valueOf(data.getAverageSpeed())+"km/h");
         binding.layoutUserStats.statsTopspeedTv.setText(String.valueOf(data.getTopSpeed()+"km/h"));
-        getMapFragment().showRoute(data.getPath());
+        binding.layoutUser.trackNameTv.setText(data.getTrackname());
+        binding.statsProfileName.setText(DevicePreferences.getInstance().getuser().getFirstName());
 
 
     }
 
     private void initMapFragment() {
-        MapFragment fragment = getMapFragment();
+        MapFragment fragment = new MapFragment(DevicePreferences.getInstance().getLocation(), new MapListener() {
+            @Override
+            public void onMapReady() {
+                getMapFragment().showRoute(data.getPath());
+                getMapFragment().hideHeader();
+            }
+        });
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.stats_map_view,fragment, Constants.MAP_TAG).commit();
+        ft.replace(R.id.stats_map_view,fragment, Constants.STATS_MAP_TAG).commit();
     }
 
 
     private MapFragment getMapFragment()
     {
         FragmentManager fm = getFragmentManager();
-        MapFragment fragment = (MapFragment)fm.findFragmentByTag(Constants.MAP_TAG);
+        MapFragment fragment = (MapFragment)fm.findFragmentByTag(Constants.STATS_MAP_TAG);
         return fragment;
+    }
+
+
+
+
+
+
+    public interface MapListener
+    {
+         void onMapReady();
     }
 }

@@ -2,12 +2,24 @@
 <layout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
+        android:background="@drawable/bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <TextView
+            android:padding="@dimen/normal_padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/ghost_info"
+            android:textSize="@dimen/medium_text_size"
+            android:textColor="@color/white"
+            android:gravity="center"
+            />
 
         <include
             android:id="@+id/progress"
             layout="@layout/progress" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ghost_recycler_view"
             android:scrollbars="vertical"

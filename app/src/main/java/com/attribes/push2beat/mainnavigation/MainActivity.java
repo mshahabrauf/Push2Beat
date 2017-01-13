@@ -1,8 +1,13 @@
 package com.attribes.push2beat.mainnavigation;
 
-import android.app.FragmentManager;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +15,11 @@ import android.view.View;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
-import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.adapter.SectionsPagerAdapter;
 import com.attribes.push2beat.databinding.ActivityMainBinding;
+import com.attribes.push2beat.models.CatchMeModel;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ActivityMainBinding binding;
 
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +52,52 @@ public class MainActivity extends AppCompatActivity {
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            boolean isCatcheMe = bundle.getBoolean("fromcatch");
+            boolean isFromNotification = bundle.getBoolean("fromNotification");
+            boolean isEndRun = bundle.getBoolean("fromendrun");
+
+            if(isEndRun)
+            {
+                String message = bundle.getString("text");
+                showEndingDialog(message);
+            }
+            if(isCatcheMe)
+            {
+                Common.getInstance().setCatchMeFromUser(isCatcheMe);
+                Common.getInstance().setRunType(3);
+
+                CatchMeModel data = new CatchMeModel();
+                data.setId(bundle.getString("id"));
+                data.setEmail(bundle.getString("email"));
+                data.setUsername(bundle.getString("username"));
+                data.setLatitude(Double.parseDouble(bundle.getString("latitude")));
+                data.setLongitude(Double.parseDouble(bundle.getString("longitude")));
+
+                Common.getInstance().setOppData(data);
+
+            }
+            else if(isFromNotification)
+            {
+
+                Common.getInstance().setCatchMeFromNotification(isFromNotification);
+                Common.getInstance().setRunType(3);
+
+                CatchMeModel data = new CatchMeModel();
+                data.setId(bundle.getString("id"));
+                data.setEmail(bundle.getString("email"));
+                data.setUsername(bundle.getString("username"));
+                data.setLatitude(Double.parseDouble(bundle.getString("latitude")));
+                data.setLongitude(Double.parseDouble(bundle.getString("longitude")));
+                Common.getInstance().setOppData(data);
+
+            }
+
+
+
+        }
+
 
         Common.getInstance().initializeQBInstance(getApplicationContext());
 
@@ -49,43 +106,104 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        binding.tabs.setupWithViewPager(mViewPager);
+        mViewPager.setOffscreenPageLimit(4);
 
+        binding.tabs.setupWithViewPager(mViewPager);
+        setAppBarTitle(mViewPager.getCurrentItem());
+        binding.tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                setAppBarTitle(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         addTabsIcons();
 
 
     }
 
+    private void showEndingDialog(String message) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Catch me if you can");
+        builder.setMessage(message);
+        builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog alertDialog  = builder.create();
+        alertDialog.show();
+    }
 
 
     private void addTabsIcons() {
 
         binding.tabs.getTabAt(0).setIcon(R.drawable.ic_gps);
-        //binding.tabs.getTabAt(0).setCustomView()
         binding.tabs.getTabAt(1).setIcon(R.drawable.ic_music);
         binding.tabs.getTabAt(2).setIcon(R.drawable.ic_stats);
         binding.tabs.getTabAt(3).setIcon(R.drawable.ic_action_name);
 
     }
 
+    private void setAppBarTitle(int currentItem)
+    {
+     switch (currentItem) {
+         case 0:  binding.appbar.text.setText("GPS");
+             break;
+         case 1:  binding.appbar.text.setText("My Music");
+             break;
+         case 2:  binding.appbar.text.setText("My Stats");
+             break;
+         case 3:  binding.appbar.text.setText("My Profile");
+             break;
+     }
+     }
+
+    public void changeTitle(String title)
+    {
+        binding.appbar.text.setText(title);
+    }
+
     @Override
     public void onBackPressed() {
-        getFragmentManager().popBackStack();
-      //  Toast.makeText(MainActivity.this, "Back BUtton", Toast.LENGTH_SHORT).show();
-
+        Common.getInstance().setCatchMeFromUser(false);
+        Common.getInstance().setCatchMeFromNotification(false);
         super.onBackPressed();
     }
 
     private class BackButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            onBackPressed();
+        }
+    }
 
-            // TODO: 12/24/16 implement back button on fragment
-            //getFragmentManager().popBackStack(Constants.GHOST_TAG,FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            getFragmentManager().popBackStack(Constants.CMIYC_TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-           // Toast.makeText(MainActivity.this, "Back BUtton", Toast.LENGTH_SHORT).show();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if (requestCode == RESULT_OK && requestCode == 1) {
+            Uri uri = data.getData();
+            MediaPlayer mMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+            mMediaPlayer.setLooping(true);
+            try {
+                mMediaPlayer.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mMediaPlayer.start();
         }
     }
 }

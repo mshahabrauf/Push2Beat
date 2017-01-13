@@ -8,17 +8,12 @@ import android.view.ViewGroup;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
+import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.Utils.RecyclerAdapterInterface;
 import com.attribes.push2beat.adapter.viewholders.UserListHolder;
-import com.attribes.push2beat.models.Response.MyProfileResponse;
-
-import com.attribes.push2beat.models.Response.PushFireBase.Data;
-import com.attribes.push2beat.models.Response.PushFireBase.PushData;
 import com.attribes.push2beat.models.Response.UserList.Datum;
-import com.attribes.push2beat.network.DAL.GetProfileDAL;
-import com.attribes.push2beat.network.DAL.SendPush;
-import com.attribes.push2beat.network.interfaces.ProfileDataArrivalListner;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.attribes.push2beat.network.DAL.ChallengeDAL;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -55,8 +50,9 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListHolder> {
         holder.distance.setText(Common.getInstance().calulateDistance(mData.get(position).getLat(),mData.get(position).getLng()));
         holder.startBtn.setOnClickListener(new startButtonListener(position));
 
-        //Todo Display profile picture if available
-        //holder.profile_image.setImageURI(Uri.parse(mData.get(position).getProfile_image()));
+        if(mData.get(position).getProfile_image() != "") {
+            Picasso.with(mContext).load(mData.get(position).getProfile_image()).placeholder(R.drawable.placeholder).into(holder.profileImage);
+        }
 
     }
 
@@ -79,18 +75,32 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListHolder> {
         @Override
         public void onClick(View view) {
 
+            ChallengeDAL.challengeOpponent(mData.get(position).getId(), DevicePreferences.getInstance().getuser().getId());
+            listener.onstartCallback(position);
+        }
+    }
 
-            GetProfileDAL.getProfileData(mData.get(position).getId(), new ProfileDataArrivalListner() {
+}
+
+
+
+
+//Purana Kachra :D
+/*            GetProfileDAL.getProfileData(mData.get(position).getId(), new ProfileDataArrivalListner() {
                 @Override
                 public void onDataRecieved(MyProfileResponse.Data data) {
                     PushData push = new PushData();
                     Data dataa = new Data();
-                    dataa.setUsername(data.getFirst_name());
+                    dataa.setUsername(Common.getInstance().getUser().getFirstName());
                     dataa.setToken(FirebaseInstanceId.getInstance().getToken());
+                    dataa.setStatus(0);
+                    dataa.setEmail(Common.getInstance().getUser().getEmail());
+                    dataa.setLatitude(String.valueOf(DevicePreferences.getInstance().getLocation().getLatitude()));
+                    dataa.setLongitude(String.valueOf(DevicePreferences.getInstance().getLocation().getLongitude()));
                     push.setData(dataa);
-              //      if (data.getDevice_token().equals("") == false) {
+
                     push.setTo(data.getDevice_token());
-                //    }
+
 
                     SendPush.sendPushToUser(push);
                     listener.onstartCallback(position);
@@ -101,10 +111,4 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListHolder> {
                 public void onEmptyData(String msg) {
 
                 }
-            });
-//
-
-        }
-    }
-
-}
+            });*/

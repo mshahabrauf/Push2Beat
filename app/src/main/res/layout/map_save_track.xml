@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:padding="@dimen/small_padding"
+    android:visibility="gone"
+
+    android:id="@+id/map_detail_root"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Total Distance:"
+        android:textSize="@dimen/medium_text_size"
+        android:textColor="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/map_total_distance"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text=" 0 km"
+        android:textSize="@dimen/medium_text_size"
+        android:textColor="@color/white"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="right"
+        android:gravity="right"
+        android:layout_height="wrap_content">
+    <TextView android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text=" Speed:"
+        android:gravity="right"
+        android:textSize="@dimen/medium_text_size"
+        android:textColor="@color/white"
+        />
+
+    <TextView
+        android:id="@+id/map_speed"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text=" 0 km/hr"
+        android:gravity="right"
+        android:textSize="@dimen/medium_text_size"
+        android:textColor="@color/white"
+        />
+        </LinearLayout>
+</LinearLayout>
+</layout>

@@ -15,6 +15,7 @@ public class StatsData {
    private double averageSpeed;
     private int calories;
     private List<LatLng> path;
+    private String trackname;
 
 
     public double getTraveledDistance() {
@@ -55,5 +56,13 @@ public class StatsData {
 
     public void setPath(List<LatLng> path) {
         this.path = path;
+    }
+
+    public String getTrackname() {
+        return trackname;
+    }
+
+    public void setTrackname(String trackname) {
+        this.trackname = trackname;
     }
 }
