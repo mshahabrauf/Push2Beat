@@ -19,6 +19,7 @@ public class DevicePreferences {
 
     public static final String preference = "mPrefernce";
     public static final String TRACK_KEY = "track";
+    public static final String MUSIC_TRACK_KEY = "music_track";
     public static final String USER_KEY = "user";
     public static DevicePreferences instance = null;
     public static SharedPreferences mPref;
@@ -165,6 +166,19 @@ public class DevicePreferences {
     }
 
 
+    public void save_musicTrackPath(String music_path){
+
+        SharedPreferences.Editor editor;
+        editor = mPref.edit();
+        editor.putString(MUSIC_TRACK_KEY,music_path);
+        editor.commit();
+    }
+
+    public String getMusicTrackPath(){
+
+        String music_path = mPref.getString(MUSIC_TRACK_KEY,null);
+        return music_path;
+    }
 
 
 

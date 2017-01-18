@@ -24,4 +24,6 @@
     <string name="terms_and_conditions"><![CDATA[I have read & I agree to the terms and conditions]]></string>
     <string name="open_location_settings">Enable</string>
     <string name="gps_network_not_enabled">This application needs  Internet connection  and  location.Kindly enable location service</string>
+    <string name="play_str">PLAY</string>
+    <string name="pause_str">PAUSE</string>
 </resources>
