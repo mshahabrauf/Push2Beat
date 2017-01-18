@@ -13,6 +13,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -181,6 +182,11 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
     private void init() {
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
         ((MainActivity)getActivity()).changeTitle("GPS");
         DevicePreferences.getInstance().init(getActivity());
         mPlayer = new MediaPlayer();
@@ -969,7 +975,6 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     @Override
     public void onStop() {
         super.onStop();
-        stopMusic();
     }
 
     @Override

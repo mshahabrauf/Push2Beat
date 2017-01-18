@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -87,6 +88,11 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
     }
 
     private void init() {
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
         lm = (LocationManager)getApplicationContext().getSystemService(getApplicationContext().LOCATION_SERVICE);
 
     }

@@ -7,6 +7,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.util.Base64;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.DevicePreferences;
+import com.attribes.push2beat.Utils.ReverseGeoLocationTask;
 import com.attribes.push2beat.databinding.FragmentMyProfileBinding;
 import com.attribes.push2beat.mainnavigation.MainActivityStart;
 import com.attribes.push2beat.models.BodyParams.UpdateProfileParams;
@@ -28,6 +30,7 @@ import com.squareup.picasso.Picasso;
 import java.io.*;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Maaz on 12/11/2016.
@@ -54,6 +57,10 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
     }
 
     private void init() {
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
         mpBinding.profileImage.setOnClickListener(new ImageUploadListner());
         mpBinding.userProfile.userNameTv.setOnClickListener(new NameEditListner());
         mpBinding.logoutUserBtn.setOnClickListener(new LogOutListener());
@@ -146,19 +153,21 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
     private void makeAddressFromLatLong(String lattitude, String longitude) {
         Geocoder geocoder;
         List<Address> addresses;
-        geocoder = new Geocoder(getActivity(), Locale.getDefault());
-
         try {
-            addresses = geocoder.getFromLocation(Double.parseDouble(lattitude),Double.parseDouble(longitude), 1);
-
-            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            String city = addresses.get(0).getLocality();
-            String state = addresses.get(0).getAdminArea();
-            String country = addresses.get(0).getCountryName();
-
-            String completeAddress = " "+address+", "+" "+country;
-            mpBinding.userProfile.userLocTv.setText(""+completeAddress);
-        } catch (IOException e) {
+//            geocoder = new Geocoder(getActivity(), Locale.getDefault());
+//            addresses = geocoder.getFromLocation(Double.parseDouble(lattitude),Double.parseDouble(longitude), 2);
+//
+//            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+//            String city = addresses.get(0).getLocality();
+//            String state = addresses.get(0).getAdminArea();
+//            String country = addresses.get(0).getCountryName();
+//
+//            String completeAddress = " "+address+", "+" "+country;
+            String pick_location= new ReverseGeoLocationTask(getActivity()).execute(Double.parseDouble(lattitude), Double.parseDouble(longitude)).get();
+            mpBinding.userProfile.userLocTv.setText(""+pick_location);
+        }  catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
             e.printStackTrace();
         }
     }

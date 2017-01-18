@@ -2,6 +2,7 @@ package com.attribes.push2beat.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -45,6 +46,7 @@ public class GhostRiderFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ghost_rider,container,false);
         View view = binding.getRoot();
         init();
@@ -53,6 +55,11 @@ public class GhostRiderFragment extends Fragment {
     }
 
     private void init() {
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
         onAttachFragment(getParentFragment());
 
         binding.progress.progressWheel.setVisibility(View.VISIBLE);

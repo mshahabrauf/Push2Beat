@@ -22,6 +22,7 @@ import android.content.ServiceConnection;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import com.android.vending.billing.IInAppBillingService;
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.databinding.FragmentMusicBinding;
 
@@ -58,6 +60,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     FragmentMusicBinding musicBinding;
     private IInAppBillingService mService;
     private ServiceConnection mServiceConn;
+    private PrepareFragment prepareFragment;
 
     static final String TAG = "Music HIT";   // Debug tag, for logging
     static final int RC_REQUEST = 10001;    // (arbitrary) request code for the purchase flow
@@ -87,10 +90,22 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         View view = musicBinding.getRoot();
         ((MainActivity)getActivity()).changeTitle("Select Your Workout");
         isStoragePermissionGranted();
+        init();
         initAndListners();
         enableHelperListner();
         initPurchaseListners();
         return view;
+    }
+
+    private void init() {
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        if(Common.getInstance().getRunType() == 1){
+            musicBinding.widgetPlayer.setVisibility(View.GONE);
+        }
     }
 
 
@@ -239,10 +254,10 @@ public class MusicFragment extends android.support.v4.app.Fragment {
 
             Log.d(TAG, "Purchase successful.");
 
-            if (purchase.getSku().equals(threeM_HIT)) {
-                Toast.makeText(getActivity(), "threeM_HIT"+" Purchased", Toast.LENGTH_SHORT).show();
-                mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-            }
+//            if (purchase.getSku().equals(threeM_HIT)) {
+//                Toast.makeText(getActivity(), "threeM_HIT"+" Purchased", Toast.LENGTH_SHORT).show();
+//                mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+//            }
 
             if (purchase.getSku().equals(sevenM_HIT)) {
                 Toast.makeText(getActivity(), "sevenM_HIT"+" Purchased", Toast.LENGTH_SHORT).show();
@@ -330,9 +345,18 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     private class FreeHITListner implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            String payload = "";
-            new DownloadFileFromURL().execute("https://www.dropbox.com/s/1vyy0x5r4zmrhsq/first3.mp3?dl=1");
-           // mHelper.launchPurchaseFlow(getActivity(), threeM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+
+            if(DevicePreferences.getInstance().getMusicTrackPath() != null){
+                prepareFragment = new PrepareFragment();
+                FragmentManager fragment = getFragmentManager();
+                FragmentTransaction transaction = fragment.beginTransaction();
+
+                transaction.add(R.id.prepare_container, prepareFragment);
+                transaction.commit();
+            }
+            else {
+                new DownloadFileFromURL().execute("https://www.dropbox.com/s/1vyy0x5r4zmrhsq/first3.mp3?dl=1");
+            }
         }
     }
 
@@ -425,6 +449,12 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         protected void onPostExecute(String file_url) {
             pDialog.dismiss();
             Toast.makeText(getActivity(),"Done!!!", Toast.LENGTH_LONG).show();
+            prepareFragment = new PrepareFragment();
+            FragmentManager fragment = getFragmentManager();
+            FragmentTransaction transaction = fragment.beginTransaction();
+
+            transaction.add(R.id.prepare_container, prepareFragment);
+            transaction.commit();
         }
     }
 
@@ -461,9 +491,9 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             try {
                 mPlayer.setDataSource(getActivity(), myUri);
             } catch (IllegalArgumentException e) {
-                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+
             } catch (SecurityException e) {
-                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+
             } catch (IllegalStateException e) {
                 Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
             } catch (IOException e) {
@@ -490,11 +520,13 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         }
         else{
 
-            try {
-                DevicePreferences.getInstance().getMusicTrackPath();
-            } catch (NullPointerException e) {
-                Toast.makeText(getActivity(), "No music available , Download it first !" + e, Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(getActivity(), "No music available , Download it first !" , Toast.LENGTH_SHORT).show();
+
+//            try {
+//                DevicePreferences.getInstance().getMusicTrackPath();
+//            } catch (NullPointerException e) {
+//                Toast.makeText(getActivity(), "No music available , Download it first !" + e, Toast.LENGTH_SHORT).show();
+//            }
         }
     }
 

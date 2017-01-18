@@ -2,6 +2,7 @@ package com.attribes.push2beat.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,6 +46,12 @@ public class MyStatsFragment extends android.support.v4.app.Fragment  {
     }
 
     private void initView() {
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
         mRecycle = mtBinding.mystatsRecyclerView;
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         mRecycle.setLayoutManager(mLayoutManager);

@@ -2,6 +2,7 @@ package com.attribes.push2beat.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -73,6 +74,12 @@ public class CatchMeFragment extends Fragment {
 
 
     private void init() {
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
         onAttachFragment(getParentFragment());
 
 

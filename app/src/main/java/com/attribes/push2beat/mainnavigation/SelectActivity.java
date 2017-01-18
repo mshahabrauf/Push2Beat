@@ -3,6 +3,7 @@ package com.attribes.push2beat.mainnavigation;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -25,10 +26,15 @@ public class SelectActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(SelectActivity.this,R.layout.activity_select);
         binding.appbar.backButton.setVisibility(View.GONE);
         createChatService();
+        init();
         initButtons();
+    }
 
-
-
+    private void init() {
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
     }
 
 
