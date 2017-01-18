@@ -24,6 +24,7 @@ public class SelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(SelectActivity.this,R.layout.activity_select);
         binding.appbar.backButton.setVisibility(View.GONE);
+        DevicePreferences.getInstance().init(getApplicationContext());
         createChatService();
         initButtons();
 
@@ -34,19 +35,23 @@ public class SelectActivity extends AppCompatActivity {
 
     private void createChatService() {
         Common.getInstance().initializeQBInstance(getApplicationContext());
-       final QBChatService chatService = QBChatService.getInstance();
-        chatService.login(DevicePreferences.getInstance().getQbUser(), new QBEntityCallback() {
-            @Override
-            public void onSuccess(Object o, Bundle bundle) {
-                Common.getInstance().setChatService(chatService);
-            }
+        final QBChatService chatService = QBChatService.getInstance();
 
-            @Override
-            public void onError(QBResponseException e) {
-                Log.d("mChat", "" + e);
-            }
-        });
+
+            chatService.login(DevicePreferences.getInstance().getQbUser(), new QBEntityCallback() {
+                @Override
+                public void onSuccess(Object o, Bundle bundle) {
+                    Common.getInstance().setChatService(chatService);
+                }
+
+                @Override
+                public void onError(QBResponseException e) {
+                    Log.d("mChat", "" + e);
+                }
+            });
+
     }
+
 
     private void initButtons() {
         binding.appbar.text.setText("Select Activity");

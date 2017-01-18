@@ -1,6 +1,7 @@
 package com.attribes.push2beat.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
@@ -8,32 +9,40 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.*;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import com.android.vending.billing.IInAppBillingService;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.databinding.FragmentMusicBinding;
+import com.attribes.push2beat.mainnavigation.MainActivity;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import utils_in_app_purchase.IabHelper;
 import utils_in_app_purchase.IabResult;
 import utils_in_app_purchase.Inventory;
 import utils_in_app_purchase.Purchase;
-
-import java.io.*;
-import java.util.ArrayList;
-
-import static com.attribes.push2beat.R.id.root;
 
 /**
  * Created by Maaz on 12/30/2016.
@@ -58,9 +67,16 @@ public class MusicFragment extends android.support.v4.app.Fragment {
 
     private ProgressDialog pDialog;
     public static final int progress_bar_type = 0;     // Progress dialog type (0 - for Horizontal progress bar)
+    private boolean isOnGpsFragment = false;
 
     private  MediaPlayer mPlayer;
     private final Handler handler = new Handler();
+
+    @SuppressLint("ValidFragment")
+    public MusicFragment(boolean bool)
+    {
+        isOnGpsFragment = bool;
+    }
 
     public MusicFragment() {
     }
@@ -72,10 +88,18 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         View view = musicBinding.getRoot();
         ((MainActivity)getActivity()).changeTitle("Select Your Workout");
         isStoragePermissionGranted();
+        updateUI();
         initAndListners();
         enableHelperListner();
         initPurchaseListners();
         return view;
+    }
+
+    private void updateUI() {
+        if(isOnGpsFragment)
+        {
+            musicBinding.widgetPlayer.setVisibility(View.GONE);
+        }
     }
 
 
@@ -85,9 +109,9 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         mPlayer = new MediaPlayer();
 
         musicBinding.libraryButton.setOnClickListener(new LibraryListener());
-        musicBinding.hitOneBtn.setOnClickListener(new HIT_OneListner());
-        musicBinding.hitTwoBtn.setOnClickListener(new HIT_TwoListner());
-
+        musicBinding.hitOne.setOnClickListener(new HIT_OneListner());
+        musicBinding.hitTwo.setOnClickListener(new HIT_TwoListner());
+        musicBinding.pause.setOnClickListener(new PauseListener());
         musicBinding.play.setOnClickListener(new PlayListner());
         musicBinding.stop.setOnClickListener(new StopListner());
     }
@@ -318,10 +342,25 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     private class FreeHITListner implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            String payload = "";
-            new DownloadFileFromURL().execute("https://www.dropbox.com/s/1vyy0x5r4zmrhsq/first3.mp3?dl=1");
-           // mHelper.launchPurchaseFlow(getActivity(), threeM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+
+
+            File extStore = Environment.getExternalStorageDirectory();
+            File myFile = new File(extStore.getAbsolutePath() + "/push2beat/music.mp3");
+
+            if(myFile.exists() ){
+               if(isOnGpsFragment) {
+                   startPrepareFragment();
+               }
+                else {
+                   playMusic();
+               }
+            }
+            else {
+                new DownloadFileFromURL().execute("https://www.dropbox.com/s/1vyy0x5r4zmrhsq/first3.mp3?dl=1");
+            }
         }
+        // mHelper.launchPurchaseFlow(getActivity(), threeM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+
     }
 
     private class SevenHITListner implements View.OnClickListener {
@@ -359,32 +398,8 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     private class DownloadFileFromURL extends AsyncTask<String, String, String> {
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showDialog(progress_bar_type);
-        }
-
-        private void showDialog(int progress_bar_type) {
-
-            pDialog = new ProgressDialog(getActivity());
-            pDialog.setMessage("Downloading Please wait...");
-            if (progress_bar_type==ProgressDialog.STYLE_HORIZONTAL){
-
-                pDialog.setIndeterminate(false);
-                pDialog.setMax(100);
-                pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                pDialog.setCancelable(true);
-            }
-            pDialog.show();
-        }
-
-        @Override
-       protected String doInBackground(String... file_url) {
-
-//            String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/maaz_files";
-//            String file_path = Environment.DIRECTORY_DOWNLOADS + "/maaz_files";
-
-            String file_path =  Environment.getExternalStorageDirectory()+"/maaz_files";
+        protected String doInBackground(String... file_url) {
+            String file_path =  Environment.getExternalStorageDirectory()+"/push2beat";
             File direct = new File(file_path);
 
             if (!direct.exists()) {
@@ -398,37 +413,89 @@ public class MusicFragment extends android.support.v4.app.Fragment {
 
             request.setAllowedNetworkTypes( DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
                     .setAllowedOverRoaming(false).setTitle("Music")
-                    .setDestinationInExternalPublicDir("/maaz_files","music.mp3");
-            DevicePreferences.getInstance().save_musicTrackPath(file_path);
-            mgr.enqueue(request);
+                    .setDestinationInExternalPublicDir("/push2beat","music.mp3");
+            DevicePreferences.getInstance().saveMusicTrackPath(file_path+"/music.mp3");
+            long lastDownload = mgr.enqueue(request);
+
+
+            boolean downloading = true;
+            while (downloading) {
+
+                DownloadManager.Query q = new DownloadManager.Query();
+                q.setFilterById(lastDownload);
+
+                Cursor cursor = mgr.query(q);
+                cursor.moveToFirst();
+                long bytes_downloaded = cursor.getLong(cursor
+                        .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                long bytes_total = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                publishProgress(String.valueOf(bytes_total), String.valueOf(bytes_downloaded));
+                if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
+                    pDialog.dismiss();
+                    if(isOnGpsFragment)
+                    {
+                        startPrepareFragment();
+                    }
+                    else
+                    {
+                        playMusic();
+                    }
+
+                    downloading = false;
+                }
+            }
 
             return null;
         }
 
-        protected void onProgressUpdate(String... progress) {
-            pDialog.setProgress(Integer.parseInt(progress[0]));  // setting progress percentage
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showDialog(progress_bar_type);
         }
 
         @Override
-        protected void onPostExecute(String file_url) {
-            pDialog.dismiss();
-            Toast.makeText(getActivity(),"Done!!!", Toast.LENGTH_LONG).show();
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            pDialog.setProgress(Integer.parseInt(values[0]));
         }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+        }
+
+        private void showDialog(int progress_bar_type) {
+
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Downloading Please wait...");
+            pDialog.setCancelable(false);
+            if (progress_bar_type==ProgressDialog.STYLE_HORIZONTAL){
+
+                pDialog.setIndeterminate(false);
+                pDialog.setMax(100);
+                pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                pDialog.setCancelable(true);
+            }
+            pDialog.show();
+        }
+
     }
 
     private class HIT_OneListner implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            musicBinding.hitTwo.hitTwo.setVisibility(View.GONE);
-            musicBinding.hitOne.setVisibility(View.VISIBLE);
+            musicBinding.hitTwoLayout.hitTwo.setVisibility(View.GONE);
+            musicBinding.hitoneLayout.setVisibility(View.VISIBLE);
         }
     }
 
     private class HIT_TwoListner implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            musicBinding.hitTwo.hitTwo.setVisibility(View.VISIBLE);
-            musicBinding.hitOne.setVisibility(View.GONE);
+            musicBinding.hitTwoLayout.hitTwo.setVisibility(View.VISIBLE);
+            musicBinding.hitoneLayout.setVisibility(View.GONE);
         }
     }
 
@@ -436,6 +503,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     private class PlayListner implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+
             playMusic();
         }
     }
@@ -444,46 +512,40 @@ public class MusicFragment extends android.support.v4.app.Fragment {
 
         if(DevicePreferences.getInstance().getMusicTrackPath() != null) {
 
-            Uri myUri = Uri.parse(DevicePreferences.getInstance().getMusicTrackPath()+"/music.mp3");
+            Uri myUri = Uri.parse(DevicePreferences.getInstance().getMusicTrackPath());
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             try {
                 mPlayer.setDataSource(getActivity(), myUri);
+                mPlayer.prepare();
             } catch (IllegalArgumentException e) {
-                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+
             } catch (SecurityException e) {
-                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+
             } catch (IllegalStateException e) {
-                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            try {
-                mPlayer.prepare();
-            } catch (IllegalStateException e) {
-                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-            } catch (IOException e) {
-                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-            }
-
             mPlayer.start();
-            //set up MediaPlayer
-//            try {
-//                mp.setDataSource(DevicePreferences.getInstance().getMusicTrackPath());
-//                mp.prepare();
-//                mp.start();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+
         }
         else{
 
             try {
                 DevicePreferences.getInstance().getMusicTrackPath();
             } catch (NullPointerException e) {
-                Toast.makeText(getActivity(), "No music available , Download it first !" + e, Toast.LENGTH_SHORT).show();
+
             }
         }
+    }
+
+
+    private void startPrepareFragment()
+    {
+        PrepareFragment prepareFragment = new PrepareFragment();
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        ft.add(R.id.music_container, prepareFragment).commit();
     }
 
 
@@ -502,16 +564,16 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     public  boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (getActivity().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getActivity(), "Permission is granted", Toast.LENGTH_SHORT).show();
+
                 return true;
             } else {
-                Toast.makeText(getActivity(), "Permission is revoked", Toast.LENGTH_SHORT).show();
+
                 ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
         }
         else { //permission is automatically granted on sdk<23 upon installation
-            Toast.makeText(getActivity(), "Permission is granted", Toast.LENGTH_SHORT).show();
+
             return true;
         }
     }
@@ -531,10 +593,23 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         public void onClick(View view) {
             Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i,1);
+        if(isOnGpsFragment) {
 
-            PrepareFragment prepareFragment = new PrepareFragment();
-            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            ft.add(R.id.music_container,prepareFragment).commit();
+//            if(((MainActivity)getActivity()).activityResult)
+//            {
+                startPrepareFragment();
+//            }
+        }
+        }
+    }
+
+
+    private class PauseListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            if (mPlayer.isPlaying()) {
+                mPlayer.pause();
+            }
         }
     }
 }

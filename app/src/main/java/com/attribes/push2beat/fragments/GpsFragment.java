@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
@@ -31,7 +30,6 @@ import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.Utils.CustomConnectionListener;
 import com.attribes.push2beat.Utils.DevicePreferences;
-import com.attribes.push2beat.Utils.*;
 import com.attribes.push2beat.databinding.FragmentTimerBinding;
 import com.attribes.push2beat.mainnavigation.MainActivity;
 import com.attribes.push2beat.mainnavigation.SelectActivity;
@@ -112,8 +110,14 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     private  double distanceInMeter = 0;
     private int iterator = 0;
     private MediaPlayer mPlayer;
+    private  int hrs = 0;
     private   int secs = 0;
     private   int mins = 0;
+
+    private  int ghostHrs = 0;
+    private   int ghostSecs = 0;
+    private   int ghostMins = 0;
+
     private   int milliseconds = 0;
     private   Handler handler = new Handler();
     private QBUser opponent;
@@ -261,6 +265,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         secs = 0;
         mins = 0;
         milliseconds = 0;
+        hrs = 0;
 
 
     }
@@ -382,12 +387,27 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
             timeInMilliseconds = SystemClock.uptimeMillis() - starttime;
             updatedtime = timeSwapBuff + timeInMilliseconds;
-            secs = (int) (updatedtime / 1000);
+            secs = (int) (timeInMilliseconds / 1000);
             mins = secs / 60;
+            hrs = mins / 60;
+            mins = mins % 60;
             secs = secs % 60;
+
             milliseconds = (int) (updatedtime % 1000);
-            binding.layoutCounterCal.countTimer.setText(""+ mins + ":" + String.format("%02d", secs) + ":" + String.format("%03d", milliseconds));
+            binding.layoutCounterCal.countTimer.setText(""+ String.format("%02d", hrs) + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs));
             handler.postDelayed(this, 0);
+            if(isUserOnTrackPosition)
+            {
+                if(hrs >= ghostHrs && mins >= ghostMins && secs >= ghostSecs)
+                {
+                    stopTimer();
+                    binding.layoutTimerSubReplace.timerStop.callOnClick();
+                    isUserOnTrackPosition = false;
+                    Toast.makeText(getContext(), "Your time is up", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
 
         }
 
@@ -418,7 +438,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
         model.setDistance(totalDistance * 1609.344); // converting miles into meter
         model.setCaleries_burnt(burntCalories);
-        model.setTrack_time(""+ mins + ":" + String.format("%02d", secs) + ":" + String.format("%03d", milliseconds));
+        model.setTrack_time(""+ hrs + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs));
         model.setGenrated_by(Integer.parseInt(DevicePreferences.getInstance().getuser().getId()));
         model.setTrack_type(Common.getInstance().getRunType()); // 1 for simple run, 2 for ghots rider and 3 for catch me if you can
 
@@ -431,15 +451,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
 
-    private void removeCatchMeFragment() {
-        Fragment fragment = getChildFragmentManager().findFragmentByTag(Constants.CMIYC_TAG);
-        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
 
-        ft.remove(fragment);
-       // Common.getInstance().getFragmentStack().pop();
-        ft.commit();
-
-    }
 
     private void initQBChat(String email) {
 
@@ -577,6 +589,9 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         removeGhostFragment();
         updateUIforGhostRider();
 
+        breakStringintoHrsMinSec(datum.getTrack_time());
+
+
         trackId = datum.getId();
         if(datum.getTrack_path().equals("") == false) {
             List<LatLng> traker = Common.getInstance().convertStringIntoLatlng(datum.getTrack_path());
@@ -589,6 +604,13 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         }
         isGhostRider = true;
 
+    }
+
+    private void breakStringintoHrsMinSec(String tracktime) {
+        String[] split = tracktime.split(":");
+        ghostHrs = Integer.parseInt(split[0]);
+        ghostMins =  Integer.parseInt(split[1]);
+        ghostSecs = Integer.parseInt(split[2]);
     }
 
     private void removeGhostFragment() {
@@ -656,6 +678,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                 if(startTrackDifference < 20)
                 {
                     isUserOnTrackPosition = true;
+                    resetScreensValues();
                     timer_start();
                     isGhostRider = false;
                 }
@@ -914,6 +937,8 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
 
+
+
 //=========================Activity Lifecycle Callbacks=================================//
 
 
@@ -997,7 +1022,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
             {
 
             } else {
-                ActivityCompat.requestPermissions(getActivity(),
+                        ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
                         Constants.MY_PERMISSIONS_REQUEST_READ_LOCATION);
             }
@@ -1007,39 +1032,28 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
     private void playMusic() {
 
-        if(DevicePreferences.getInstance().getMusicTrackPath() != null) {
+        if(DevicePreferences.getInstance().getMusicTrackPath() != null && Common.getInstance().getRunType() == 1) {
 
-            Uri myUri = Uri.parse(DevicePreferences.getInstance().getMusicTrackPath()+"/music.mp3");
+            Uri myUri = Uri.parse(DevicePreferences.getInstance().getMusicTrackPath());
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             try {
                 mPlayer.setDataSource(getActivity(), myUri);
+                mPlayer.prepare();
+                mPlayer.start();
             } catch (IllegalArgumentException e) {
-                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+
             } catch (SecurityException e) {
-                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+
             } catch (IllegalStateException e) {
-                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            try {
-                mPlayer.prepare();
-            } catch (IllegalStateException e) {
-                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-            } catch (IOException e) {
-                Toast.makeText(getActivity(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-            }
 
-            mPlayer.start();
-            //set up MediaPlayer
-//            try {
-//                mp.setDataSource(DevicePreferences.getInstance().getMusicTrackPath());
-//                mp.prepare();
-//                mp.start();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+
+
+
         }
         else{
 

@@ -19,7 +19,7 @@
                 android:layout_margin="20dp">
 
             <Button
-                    android:id="@+id/hit_one_btn"
+                    android:id="@+id/hit_one"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:text="HIT ONE"
@@ -29,7 +29,7 @@
                     android:gravity="center"/>
 
             <Button
-                    android:id="@+id/hit_two_btn"
+                    android:id="@+id/hit_two"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:text="HIT TWO"
@@ -52,7 +52,7 @@
                     android:layout_marginRight="40dp"
                     android:layout_marginEnd="40dp"/>
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/widget_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,45 +60,47 @@
             android:layout_marginRight="20dp"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/play"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:text="Play"
-                android:textColor="@color/white"
-                android:background="@color/primary_pink"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"/>
-
-            <Button
+            <ImageView
                 android:id="@+id/stop"
-                android:layout_width="170dp"
-                android:layout_height="wrap_content"
-                android:text="Stop"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/stop_player"
                 android:textColor="@color/black"
-                android:background="@color/white"
-                android:gravity="center"/>
-            <!--<Button-->
-            <!--android:id="@+id/button_play_stop"-->
-            <!--android:text="@string/play_str"-->
-            <!--android:textSize="15sp"-->
-            <!--android:textStyle="bold"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"/>-->
-            <!--<SeekBar-->
-            <!--android:id="@+id/seekbar_1"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_below="@id/button_play_stop"/>-->
-        </RelativeLayout>
+
+                />
+
+            <ImageView
+                android:id="@+id/play"
+                android:layout_marginLeft="@dimen/small_margin"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@android:drawable/ic_media_play"
+                android:textColor="@color/white"
+
+          />
+
+
+
+            <ImageView
+                android:layout_marginLeft="@dimen/small_margin"
+                android:id="@+id/pause"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@android:drawable/ic_media_pause"
+                android:textColor="@color/black"
+
+                />
+
+        </LinearLayout>
 
         <ScrollView
+                android:id="@+id/hitone_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="20dp">
 
         <LinearLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -694,6 +696,10 @@
         </LinearLayout>
 
         </ScrollView>
+        <include
+            android:id="@+id/hit_two_layout"
+            layout="@layout/music_frame_hit_two"
+            />
 </LinearLayout>
     </FrameLayout>
 </layout>

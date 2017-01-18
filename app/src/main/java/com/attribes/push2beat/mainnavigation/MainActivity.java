@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -15,11 +14,10 @@ import android.view.View;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
+import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.adapter.SectionsPagerAdapter;
 import com.attribes.push2beat.databinding.ActivityMainBinding;
 import com.attribes.push2beat.models.CatchMeModel;
-
-import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
     private ActivityMainBinding binding;
+    public boolean activityResult = false;
 
 
 
@@ -194,16 +193,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == RESULT_OK && requestCode == 1) {
+        if (resultCode == RESULT_OK ) {
             Uri uri = data.getData();
-            MediaPlayer mMediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-            mMediaPlayer.setLooping(true);
-            try {
-                mMediaPlayer.prepare();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            mMediaPlayer.start();
+            DevicePreferences.getInstance().saveMusicTrackPath(uri.toString());
+            activityResult = true;
+        }
+        else {
+            activityResult = false;
         }
     }
+
 }

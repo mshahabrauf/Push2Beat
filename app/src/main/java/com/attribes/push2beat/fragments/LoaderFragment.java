@@ -22,6 +22,9 @@ public class LoaderFragment extends Fragment {
     private String loadingText;
     private LayoutProgressLoaderBinding binding;
 
+    public LoaderFragment()
+    {}
+
     public LoaderFragment(String text)
     {
                 loadingText = text;

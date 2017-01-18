@@ -133,29 +133,6 @@ public class DevicePreferences {
 
 
 
-//    public void setuserlogin(UserLogin userlogin)
-//    {
-//        SharedPreferences.Editor editor;
-//        editor = mPref.edit();
-//        Gson gson = new Gson();
-//
-//        String locationObject = gson.toJson(userlogin);
-//        editor.putString(USER_KEY,locationObject);
-//        editor.commit();
-//    }
-
-
-    public void savetrack(List<LatLng> listlocation)
-    {
-        SharedPreferences.Editor editor;
-        editor = mPref.edit();
-        Gson gson = new Gson();
-
-        String locationObject = gson.toJson(listlocation);
-        editor.putString(TRACK_KEY,locationObject);
-        editor.commit();
-    }
-
 
     public List<LatLng> getTrack()
     {
@@ -166,11 +143,11 @@ public class DevicePreferences {
     }
 
 
-    public void save_musicTrackPath(String music_path){
+    public void saveMusicTrackPath(String musicPath){
 
         SharedPreferences.Editor editor;
         editor = mPref.edit();
-        editor.putString(MUSIC_TRACK_KEY,music_path);
+        editor.putString(MUSIC_TRACK_KEY,musicPath);
         editor.commit();
     }
 

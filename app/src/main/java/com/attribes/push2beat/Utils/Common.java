@@ -3,14 +3,13 @@ package com.attribes.push2beat.Utils;
 import android.content.Context;
 import android.location.Location;
 
+import com.attribes.push2beat.models.BodyParams.SignInParams;
 import com.attribes.push2beat.models.CatchMeModel;
 import com.attribes.push2beat.models.Response.UserList.Datum;
-import com.attribes.push2beat.models.BodyParams.SignInParams;
 import com.google.android.gms.maps.model.LatLng;
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.model.QBChatDialog;
-import com.quickblox.users.model.QBUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,6 @@ import java.util.List;
 public class Common {
     private static Common Instance = null;
     private Location location;
-    private QBUser qbUser;
     private int runType;
     private SignInParams user;
     private String password;
@@ -35,6 +33,7 @@ public class Common {
     private boolean isCatchMeFromUser = false;
     private boolean isCatchMeFromNotification = false;
     private List<LatLng> ghostTrack;
+
 
 
 
@@ -69,19 +68,11 @@ public class Common {
     }
 
 
-    public QBUser getQbUser() {
-        return qbUser;
-    }
-
-    public void setQbUser(QBUser qbUser) {
-        this.qbUser = qbUser;
-    }
-
     public void initializeQBInstance(Context context)
     {
         QBSettings.getInstance().init(context, Constants.APP_ID, Constants.AUTH_KEY, Constants.AUTH_SECRET);
         QBSettings.getInstance().setAccountKey(Constants.ACCOUNT_KEY);
-      //  QBSessio
+      //  QBSession initialization
 
     }
 
@@ -224,4 +215,6 @@ public class Common {
     public void setGhostTrack(List<LatLng> ghostTrack) {
         this.ghostTrack = ghostTrack;
     }
+
+
 }

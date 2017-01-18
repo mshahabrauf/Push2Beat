@@ -34,7 +34,6 @@ public class LoginDAL {
 
                     if (response.isSuccessful())
                     {
-
                         Common.getInstance().setUser(response.body().getData());
                         listener.onSuccess();
                         // Toast.makeText(context, "Push2Beat Login Sucessfully!", Toast.LENGTH_SHORT).show();

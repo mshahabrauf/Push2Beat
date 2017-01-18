@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,7 +25,6 @@ import com.attribes.push2beat.fragments.LoaderFragment;
 import com.attribes.push2beat.models.BodyParams.SignInParams;
 import com.attribes.push2beat.models.BodyParams.UserLoginDetailParams;
 import com.attribes.push2beat.models.Response.SocialSignUp.SocialSignUpResponse;
-import com.attribes.push2beat.models.Response.UserSignUp.SocialSignInResponse;
 import com.attribes.push2beat.models.UserProfile;
 import com.attribes.push2beat.network.DAL.LoginDAL;
 import com.attribes.push2beat.network.DAL.SocialSignIn;
@@ -46,7 +44,6 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.quickblox.chat.QBChatService;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.QBUsers;
@@ -67,11 +64,10 @@ public class SignIn extends AppCompatActivity {
     ImageView signin;
     EditText username;
     EditText password;
-    Boolean onsuccess = false;
-    AVLoadingIndicatorView progress;
-    QBChatService chatService;
-    QBUser opponent;
 
+    AVLoadingIndicatorView progress;
+
+    private UserProfile userProfile;
     private ImageButton loginButton1;
     private CallbackManager callbackManager1;
     CheckBox remember;
@@ -104,31 +100,30 @@ public class SignIn extends AppCompatActivity {
 
 
 
+
+
         loginButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                startLoader();
 
-
-                LoginManager.getInstance().logInWithReadPermissions(SignIn.this, Arrays.asList("public_profile", "user_friends", "email"));
-                facebook_id = f_name = m_name = l_name = gender = profile_image = full_name = email_id = "";
+                LoginManager.getInstance().logInWithReadPermissions(SignIn.this, Arrays.asList("email"));
 
                 LoginManager.getInstance().registerCallback(callbackManager1, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
 
                         Profile fbProfile = Profile.getCurrentProfile();
-                        final UserProfile userProfile = new UserProfile();
+                            userProfile = new UserProfile();
                         if (fbProfile != null) {
 
                             userProfile.setSocial_token(loginResult.getAccessToken().getToken());
                             userProfile.setFirstname(fbProfile.getFirstName());
                             userProfile.setLastname(fbProfile.getLastName());
+                            userProfile.setPassword("12345678");
                             userProfile.setProfile_image(fbProfile.getProfilePictureUri(400, 400));
-                            userProfile.setEmail("talhaghaffar1222@gmail.com");
-                            socialSignup(userProfile);
 
-//                    userProfile.setProfile_image(conversionInBase64Format(fbProfile.getProfilePictureUri(400, 400)));
                         }
 
                         GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
@@ -136,12 +131,11 @@ public class SignIn extends AppCompatActivity {
                                     @Override
                                     public void onCompleted(JSONObject object, GraphResponse response) {
                                         try {
-                                            String email = object.getString("email");
 
-                                            //     userProfile.setEmail("talhaghaffar922@gmail.com");
-                                            //     Bundle parameters = new Bundle();
-//                                    parameters.putString("fields", "id, first_name, last_name, email,gender, birthday, location");
+                                            userProfile.setEmail(object.getString("email"));
                                             socialSignup(userProfile);
+
+
 
                                         } catch (JSONException e) {
 
@@ -151,10 +145,14 @@ public class SignIn extends AppCompatActivity {
                                     }
 
                                 });
+
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "email");
+                        request.setParameters(parameters);
                         request.executeAsync();
 
 
-                        goMainscreen();
+                       // goMainscreen();
 
 
                     }
@@ -167,7 +165,7 @@ public class SignIn extends AppCompatActivity {
 
                     @Override
                     public void onError(FacebookException error) {
-                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),""+ error, Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -177,18 +175,7 @@ public class SignIn extends AppCompatActivity {
         });
 
 
-        remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b == true) {
 
-
-                } else {
-
-                }
-
-            }
-        });
 
 
         signin.setOnClickListener(new View.OnClickListener() {
@@ -245,7 +232,7 @@ public class SignIn extends AppCompatActivity {
     }
 
 
-    public void QbSignIn(final String email, String password) {
+    public void QbSignIn( String email, String password) {
 
         final QBUser qbUser = new QBUser();
         qbUser.setLogin(email);
@@ -254,21 +241,23 @@ public class SignIn extends AppCompatActivity {
         QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {
             @Override
             public void onSuccess(QBUser user, Bundle bundle) {
-                qbUser.setId(user.getId());
+           //     qbUser.setId(user.getId());
 
                 DevicePreferences.getInstance().saveQbuser(qbUser);
+
                 removeLoader();
 
 
-             //   Toast.makeText(getApplicationContext(), "QuickBlox SignIn Success", Toast.LENGTH_SHORT).show();
+        //       Toast.makeText(getApplicationContext(), "QuickBlox SignIn Success", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(SignIn.this, SelectActivity.class));
-                onsuccess = true;
+
 
 
             }
 
             @Override
             public void onError(QBResponseException e) {
+                Toast.makeText(SignIn.this, "QB signin failed", Toast.LENGTH_SHORT).show();
                 removeLoader();
 
             }
@@ -278,48 +267,44 @@ public class SignIn extends AppCompatActivity {
 
 
     private void socialSignup(final UserProfile userProfile) {
-        userProfile.setLattitude("12");
-        userProfile.setLongitude("23");
+        userProfile.setLattitude(String.valueOf(DevicePreferences.getInstance().getLocation().getLatitude()));
+        userProfile.setLongitude(String.valueOf(DevicePreferences.getInstance().getLocation().getLongitude()));
 
         SocialSignup.socialsignupnew(userProfile, getApplicationContext(), new OnSocialSignUpSuccess() {
 
             @Override
             public void onSuccess(SocialSignUpResponse socialSignUpResponse) {
-                if (socialSignUpResponse.getCode() == 200) {
-                    /*Todo move to next screen after saving the cache the profile*/
 
-                } else if (socialSignUpResponse.getCode() == 202) {
-                    QbSignIn(username.getText().toString().trim(), password.getText().toString().trim());
-
+                Toast.makeText(SignIn.this, "Social signup success", Toast.LENGTH_SHORT).show();
                     socialSignIn(userProfile);
-
-                }
-
 
             }
 
             @Override
             public void onFailure() {
-
+                removeLoader();
+                Toast.makeText(SignIn.this, "Social signup failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void socialSignIn(UserProfile userProfile) {
+    private void  socialSignIn(final UserProfile userProfile) {
         userProfile.setDevice_type("1");
         userProfile.setDevice_token(FirebaseInstanceId.getInstance().getToken());
         SocialSignIn.socialsigninnew(userProfile, getApplicationContext(), new OnSocialSignInSuccess() {
             @Override
-            public void onSuccess(SocialSignInResponse socialSignInResponse) {
-                if (socialSignInResponse.getCode() == 200) {
-                    QbSignIn(username.getText().toString().trim(), password.getText().toString().trim());
+            public void onSuccess() {
 
-                }
+                Toast.makeText(SignIn.this, "social signin success", Toast.LENGTH_SHORT).show();
+                DevicePreferences.getInstance().saverememberme(true);
+                QBSignUp(userProfile.getEmail(),userProfile.getPassword());
+
             }
 
             @Override
             public void onFailure() {
-
+                Toast.makeText(SignIn.this, "social signin failed", Toast.LENGTH_SHORT).show();
+                removeLoader();
             }
         });
 
@@ -372,7 +357,37 @@ public class SignIn extends AppCompatActivity {
 
 
 
+    public  void QBSignUp(final String email, final String password) {
+        QBUser qbUser = new QBUser();
+        qbUser.setLogin(email);
+        qbUser.setEmail(email);
+        qbUser.setPassword(password);
 
+        QBUsers.signUp(qbUser).performAsync( new QBEntityCallback<QBUser>() {
+            @Override
+            public void onSuccess(QBUser qbUser, Bundle bundle)
+            {
+                Toast.makeText(getApplicationContext(), "QuickBlox Signup Success", Toast.LENGTH_SHORT).show();
+                QbSignIn(userProfile.getEmail(), userProfile.getPassword());
+
+
+
+
+
+
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                removeLoader();
+                Toast.makeText(getApplicationContext(), "QuickBlox Signup Failed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+
+    }
 
 
     /**

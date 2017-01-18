@@ -10,7 +10,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
@@ -40,6 +39,7 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
    private LocationManager lm;
     private boolean gps_enabled = false;
     private boolean network_enabled = false;
+    private boolean isLocationPermission = false;
     private AlertDialog alertDialog;
 
     @Override
@@ -47,6 +47,7 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_start);
         init();
+        popupLocationPermission();
 
         initGoogleClient();
         initColorText();
@@ -148,23 +149,22 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
+    public void onConnected(Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
-                    Constants.MY_PERMISSIONS_REQUEST_READ_LOCATION);
+
             return;
         }
-        LocationServices.FusedLocationApi.requestLocationUpdates(apiClient, request, new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
+        else {
+            LocationServices.FusedLocationApi.requestLocationUpdates(apiClient, request, new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
 
-                DevicePreferences.getInstance().saveLocation(location);
-            }
-        });
-        Location location = LocationServices.FusedLocationApi.getLastLocation(apiClient);
-        DevicePreferences.getInstance().saveLocation(location);
-
+                    DevicePreferences.getInstance().saveLocation(location);
+                }
+            });
+            Location location = LocationServices.FusedLocationApi.getLastLocation(apiClient);
+            DevicePreferences.getInstance().saveLocation(location);
+        }
     }
 
     @Override
@@ -210,19 +210,18 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         switch (requestCode)
         {
             case Constants.MY_PERMISSIONS_REQUEST_READ_LOCATION:
-                if (grantResults != null ) {
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                         // Permission is granted
                     } else {
                         showPermissionDialog();
                     }
-                }
 
                     break;
 
@@ -239,10 +238,8 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                ActivityCompat.requestPermissions(MainActivityStart.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
-                        Constants.MY_PERMISSIONS_REQUEST_READ_LOCATION);
 
+                popupLocationPermission();
             }
         });
 
@@ -250,4 +247,12 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
         alertDialog.show();
     }
 
+
+
+    public void popupLocationPermission()
+    {
+        ActivityCompat.requestPermissions(MainActivityStart.this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
+                Constants.MY_PERMISSIONS_REQUEST_READ_LOCATION);
+    }
 }

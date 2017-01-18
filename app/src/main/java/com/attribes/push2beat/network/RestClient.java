@@ -49,7 +49,7 @@ public class RestClient {
                         Request request = chain.request();
                         Request newRequest;
                         newRequest = request.newBuilder()
-                                .addHeader("accept", "application/json")
+                                .addHeader("Accept", "application/json")
                                 .build();
                         return chain.proceed(newRequest);
                     }

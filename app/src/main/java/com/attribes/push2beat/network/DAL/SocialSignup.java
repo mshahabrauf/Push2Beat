@@ -1,7 +1,6 @@
 package com.attribes.push2beat.network.DAL;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.attribes.push2beat.Utils.OnSocialSignUpSuccess;
 import com.attribes.push2beat.models.Response.SocialSignUp.SocialSignUpResponse;
@@ -36,9 +35,10 @@ public class SocialSignup {
                     {
                         // }
                         // SignUp.QBSignUp(data.getEmail(),data.getPassword());
+
                         listener.onSuccess(response.body());
 
-                        Toast.makeText(context, "Facebook Signup Sucessfully!", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(context, "Facebook Signup Sucessfully!", Toast.LENGTH_SHORT).show();
 
 
                     }
