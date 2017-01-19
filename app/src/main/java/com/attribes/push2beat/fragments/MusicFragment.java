@@ -350,6 +350,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             if(myFile.exists() ){
                if(isOnGpsFragment) {
                    startPrepareFragment();
+                   DevicePreferences.getInstance().saveMusicTrackPath(extStore.getAbsolutePath() + "/push2beat/music.mp3");
                }
                 else {
                    playMusic();
