@@ -63,7 +63,7 @@
         android:background="@color/secondary_dark_purple"
 
         android:orientation="horizontal"
-        android:padding="@dimen/normal_padding"
+        android:padding="9dp"
         android:weightSum="5"
         >
         <ImageView
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/normal_margin"
+            android:layout_marginLeft="@dimen/normal_margin"
             android:src="@drawable/rat_icon"
             />
 
@@ -106,8 +106,8 @@
             android:textColor="@color/secondary_red"
             android:layout_gravity="center"
             android:gravity="center"
-            android:layout_weight="0.7"
-            android:padding="@dimen/small_padding"
+            android:layout_weight="1.1"
+
             android:textSize="@dimen/medium_text_size"
             />
     </LinearLayout>

@@ -39,8 +39,7 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
    private LocationManager lm;
     private boolean gps_enabled = false;
     private boolean network_enabled = false;
-    private boolean isLocationPermission = false;
-    private AlertDialog alertDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +54,7 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
         DevicePreferences.getInstance().init(getApplicationContext());
         Isremember= DevicePreferences.getInstance().isRemember();
         if(Isremember){
-            Intent intent = new Intent(MainActivityStart.this,SelectActivity.class);
+            Intent intent = new Intent(MainActivityStart.this,MainActivity.class);
             startActivity(intent);
             finish();
         }

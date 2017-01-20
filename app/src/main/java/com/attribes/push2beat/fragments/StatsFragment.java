@@ -14,7 +14,6 @@ import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.databinding.FragmentStatsBinding;
-import com.attribes.push2beat.mainnavigation.MainActivity;
 import com.attribes.push2beat.models.StatsData;
 
 /**
@@ -48,7 +47,8 @@ public class StatsFragment extends Fragment {
         binding.layoutGudjob.goodJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().finish();
+              getActivity().onBackPressed();
+
             }
         });
     }

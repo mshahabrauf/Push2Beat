@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.RecyclerAdapterInterface;
 import com.attribes.push2beat.adapter.viewholders.MyStatsListHolder;
@@ -40,13 +41,28 @@ public class MyStatsAdapter extends RecyclerView.Adapter<MyStatsListHolder>{
 
         holder.mystats_cal_current.setText(mData.get(position).getCaleries_current());
         holder.mystats_cal_goal.setText(mData.get(position).getCaleries_goal());
-        holder.mystats_distance_current.setText(mData.get(position).getDistance_current());
+        holder.mystats_distance_current.setText(roundOffDecimals(mData.get(position).getDistance_current()));
         holder.mystats_distance_goal.setText(mData.get(position).getDistance_goal());
 
+//        if(mData.get(position).getProfile_image() != "") {
+//            holder.profile_image.setImageURI(Uri.parse(mData.get(position).getProfile_image()));
+//
+//        }
+
+
         //Todo Display profile picture if available
-        //holder.profile_image.setImageURI(Uri.parse(mData.get(position).getProfile_image()));
 
     }
+
+
+    public String roundOffDecimals(String value)
+    {
+        double roundOff = Math.round(Double.valueOf(value) * 100.0) / 100.0;
+        return ""+ roundOff;
+
+    }
+
+
     @Override
     public int getItemCount() {
         return mData.size();

@@ -14,6 +14,7 @@ import com.attribes.push2beat.fragments.GpsFragment;
 import com.attribes.push2beat.fragments.MusicFragment;
 import com.attribes.push2beat.fragments.MyProfileFragment;
 import com.attribes.push2beat.fragments.MyStatsFragment;
+import com.attribes.push2beat.fragments.SelectFragment;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -35,14 +36,23 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         {
             case 0:
 
-                switch (Common.getInstance().getRunType()) {
-                    case 1: MusicFragment musicFragment = new MusicFragment(true);
-                        return musicFragment;
-                    case 2:
-                    case 3:
-                        GpsFragment gpsFragment = new GpsFragment();
-                        return gpsFragment;
+                if(Common.getInstance().getRunType() == 3)
+                {
+                    GpsFragment gpsFragment = new GpsFragment();
+                    return gpsFragment;
+
                 }
+                else {
+                    SelectFragment selectFragment = new SelectFragment();
+                    return selectFragment;
+                }
+
+//                switch (Common.getInstance().getRunType()) {
+//                    case 1: MusicFragment musicFragment = new MusicFragment(true);
+//                        return musicFragment;
+//                    case 2:
+//                    case 3:
+//                }
             case 1:
                 MusicFragment musicFragment = new MusicFragment();
                 return musicFragment;

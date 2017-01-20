@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <LinearLayout
+    <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/main_container"
-        >
+        android:background="@drawable/bg"
+        android:id="@+id/main_container">
+
+
 
 
 
@@ -20,15 +21,14 @@
             android:background="@drawable/bg">
 
 
-            <include android:id="@+id/appbar"
-                layout="@layout/custom_app_bar" />
 
             <include
+
                 android:id="@+id/timer_ghost"
                 layout="@layout/timer_ghost"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="@dimen/extra_large_margin"/>
 
             <include
                 android:id="@+id/timer_cmiyc"
@@ -44,7 +44,7 @@
                     android:background="#CD1253"
                     android:id="@+id/btn"
                     android:layout_marginTop="20dp"
-                    android:text="START YOUR HIT WORKOUT"
+                    android:text="START YOUR HIIT WORKOUT"
                     android:textColor="#ffffff"/>
 
             <TextView
@@ -58,5 +58,6 @@
                     android:textColor="#ffffff"/>
 
         </LinearLayout>
-    </LinearLayout>
+    </FrameLayout>
+
 </layout>

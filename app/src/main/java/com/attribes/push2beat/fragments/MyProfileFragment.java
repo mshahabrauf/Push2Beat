@@ -3,6 +3,7 @@ package com.attribes.push2beat.fragments;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -35,6 +36,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Maaz on 12/11/2016.
  */
@@ -42,8 +45,8 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
 
     private static int PROFILE_PIC_COUNT = 0 ;
     FragmentMyProfileBinding mpBinding;
-    private static final int REQUEST_CAMERA = 1;
-    private static final int SELECT_FILE = 2;
+    private static final int REQUEST_CAMERA = 3;
+    private static final int SELECT_FILE = 4;
     UpdateProfileParams profileParams = new UpdateProfileParams();
 
     public MyProfileFragment() {
@@ -67,28 +70,27 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
 
         switch(requestCode) {
-            case 1:
-                if(requestCode == REQUEST_CAMERA){
-                    Uri selectedImage = data.getData();
-                    updateProfilePic(selectedImage);
-                    //mpBinding.profileImage.setImageURI(selectedImage);
-                }
-
+            case REQUEST_CAMERA:
+                    if(resultCode == RESULT_OK) {
+                        Bitmap photo = (Bitmap) data.getExtras().get("data");
+                       // updateProfilePic(photo);
+                        mpBinding.profileImage.setImageBitmap(photo);
+                    }
                 break;
-            case 2:
-                if(requestCode == SELECT_FILE){
-                    Uri selectedImage = data.getData();
-                    updateProfilePic(selectedImage);
-                    //mpBinding.profileImage.setImageURI(selectedImage);
-                }
+            case SELECT_FILE:
+
+                    Uri selectedImagefile = data.getData();
+                   // updateProfilePic(selectedImagefile);
+                    mpBinding.profileImage.setImageURI(selectedImagefile);
+
                 break;
         }
     }
 
-    private void updateProfilePic(Uri selectedImage) {
+    private void updateProfilePic(Bitmap selectedImage) {
         String encodedProfileImageString = conversionInBase64Format(selectedImage);
         profileParams.setUser_id(DevicePreferences.getInstance().getuser().getId());
         profileParams.setProfile_image(encodedProfileImageString);
@@ -96,7 +98,7 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
 
     }
 
-    private String conversionInBase64Format(Uri selectedImage) {
+    private String conversionInBase64Format(Bitmap selectedImage) {
 
         InputStream inputStream = null;//You can get an inputStream using any IO API
         try {
@@ -225,7 +227,7 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
         public void onClick(View view) {
            String editedName = mpBinding.userProfile.userNameEdittv.getText().toString();
             UpdateProfileParams params = new UpdateProfileParams();
-            params.setUser_id("48");
+            params.setUser_id(DevicePreferences.getInstance().getuser().getId());
             params.setFirst_name(editedName);
             params.setProfile_image(Common.getInstance().getProfile_image());
             UpdateProfileDAL.updateProfile(params,getActivity());

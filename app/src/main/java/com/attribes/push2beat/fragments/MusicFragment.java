@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.android.vending.billing.IInAppBillingService;
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.databinding.FragmentMusicBinding;
 import com.attribes.push2beat.mainnavigation.MainActivity;
@@ -43,6 +44,8 @@ import utils_in_app_purchase.IabHelper;
 import utils_in_app_purchase.IabResult;
 import utils_in_app_purchase.Inventory;
 import utils_in_app_purchase.Purchase;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Maaz on 12/30/2016.
@@ -75,6 +78,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     @SuppressLint("ValidFragment")
     public MusicFragment(boolean bool)
     {
+        Common.getInstance().updateFragmentCounter();
         isOnGpsFragment = bool;
     }
 
@@ -297,11 +301,21 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
+
+        if (resultCode == RESULT_OK  && requestCode==1) {
+            Uri uri = data.getData();
+            DevicePreferences.getInstance().saveMusicTrackPath(uri.toString());
+            if(isOnGpsFragment) {
+                startPrepareFragment();
+            }
+        }
+
+
         if (mHelper == null) return;
 
         // Pass on the activity result to the helper for handling
         if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
+       //     super.onActivityResult(requestCode, resultCode, data);
             // not handled, so handle it ourselves (here's where you'd
             // perform any handling of activity results not related to in-app
             // billing...
@@ -544,9 +558,11 @@ public class MusicFragment extends android.support.v4.app.Fragment {
 
     private void startPrepareFragment()
     {
+
+
         PrepareFragment prepareFragment = new PrepareFragment();
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        ft.add(R.id.music_container, prepareFragment).commit();
+        ft.add(R.id.music_container, prepareFragment).commitAllowingStateLoss();
     }
 
 
@@ -593,14 +609,8 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         @Override
         public void onClick(View view) {
             Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(i,1);
-        if(isOnGpsFragment) {
+           startActivityForResult(i,1);
 
-//            if(((MainActivity)getActivity()).activityResult)
-//            {
-                startPrepareFragment();
-//            }
-        }
         }
     }
 
@@ -613,4 +623,8 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             }
         }
     }
-}
+
+
+    }
+
+

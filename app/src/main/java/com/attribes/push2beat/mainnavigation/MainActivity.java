@@ -4,12 +4,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.attribes.push2beat.R;
@@ -18,6 +18,9 @@ import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.adapter.SectionsPagerAdapter;
 import com.attribes.push2beat.databinding.ActivityMainBinding;
 import com.attribes.push2beat.models.CatchMeModel;
+import com.quickblox.chat.QBChatService;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
     private ActivityMainBinding binding;
-    public boolean activityResult = false;
+    private String gpsTitle = "Select Your Workout";
+    //public boolean activityResult = false;
 
 
 
@@ -46,9 +50,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+
+        DevicePreferences.getInstance().init(getApplicationContext());
+        createChatService();
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         Bundle bundle = getIntent().getExtras();
@@ -61,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
             {
                 String message = bundle.getString("text");
                 showEndingDialog(message);
+                Common.getInstance().resetFragmentCounter();
             }
             if(isCatcheMe)
             {
@@ -75,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 data.setLongitude(Double.parseDouble(bundle.getString("longitude")));
 
                 Common.getInstance().setOppData(data);
+                Common.getInstance().resetFragmentCounter();
 
             }
             else if(isFromNotification)
@@ -90,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 data.setLatitude(Double.parseDouble(bundle.getString("latitude")));
                 data.setLongitude(Double.parseDouble(bundle.getString("longitude")));
                 Common.getInstance().setOppData(data);
+                Common.getInstance().resetFragmentCounter();
 
             }
 
@@ -131,14 +142,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    private void createChatService() {
+        Common.getInstance().initializeQBInstance(getApplicationContext());
+        final QBChatService chatService = QBChatService.getInstance();
+
+
+        chatService.login(DevicePreferences.getInstance().getQbUser(), new QBEntityCallback() {
+            @Override
+            public void onSuccess(Object o, Bundle bundle) {
+                Common.getInstance().setChatService(chatService);
+            }
+
+            @Override
+            public void onError(QBResponseException e) {
+                Log.d("mChat", "" + e);
+            }
+        });
+
+    }
+
     private void showEndingDialog(String message) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Catch me if you can");
         builder.setMessage(message);
+        builder.setCancelable(false);
         builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                Common.getInstance().setRunType(0);
+                restartThisActivity();
 
             }
         });
@@ -157,10 +191,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     private void setAppBarTitle(int currentItem)
     {
      switch (currentItem) {
-         case 0:  binding.appbar.text.setText("GPS");
+         case 0:  binding.appbar.text.setText(gpsTitle);
              break;
          case 1:  binding.appbar.text.setText("My Music");
              break;
@@ -173,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeTitle(String title)
     {
+        gpsTitle = title;
         binding.appbar.text.setText(title);
     }
 
@@ -180,7 +217,21 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         Common.getInstance().setCatchMeFromUser(false);
         Common.getInstance().setCatchMeFromNotification(false);
-        super.onBackPressed();
+        Common.getInstance().setRunType(0);
+
+        if(Common.getInstance().getFragmentCount() > 0) {
+            Common.getInstance().resetFragmentCounter();
+            restartThisActivity();
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    private void restartThisActivity()
+    {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     private class BackButtonListener implements View.OnClickListener {
@@ -192,15 +243,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (resultCode == RESULT_OK ) {
-            Uri uri = data.getData();
-            DevicePreferences.getInstance().saveMusicTrackPath(uri.toString());
-            activityResult = true;
-        }
-        else {
-            activityResult = false;
-        }
+        super.onActivityResult(requestCode, resultCode, data);
+//        else if(requestCode ==3 && requestCode == RESULT_OK)
+//        {
+//            Uri uri = data.getData();
+//        }
+//        else {
+//           // activityResult = false;
+//        }
     }
+
+
 
 }

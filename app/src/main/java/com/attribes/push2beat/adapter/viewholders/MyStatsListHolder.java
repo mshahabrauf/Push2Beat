@@ -3,6 +3,7 @@ package com.attribes.push2beat.adapter.viewholders;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
 import com.attribes.push2beat.R;
 
 /**
@@ -14,6 +15,7 @@ public class MyStatsListHolder extends RecyclerView.ViewHolder {
     public TextView mystats_distance_goal;
     public TextView mystats_cal_current;
     public TextView mystats_distance_current;
+
 
     public MyStatsListHolder(View itemView) {
         super(itemView);

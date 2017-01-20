@@ -97,6 +97,8 @@ signify the end of that interval."
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
                           android:layout_marginTop="15dp"
+                          android:text="The HIIT workout is great for Indoor/Outdoor cycling (GPS) Rowing (GPS)
+"
                           android:textSize="15sp"
                           android:gravity="center"
                           android:textColor="@color/white" />

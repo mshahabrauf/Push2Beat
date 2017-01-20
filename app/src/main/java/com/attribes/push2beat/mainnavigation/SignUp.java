@@ -101,6 +101,10 @@ public class SignUp extends AppCompatActivity {
                 {
                     Toast.makeText(getApplicationContext(), "Kindly, complete this form", Toast.LENGTH_SHORT).show();
                 }
+                else if(Common.getInstance().emailValidator(email.getText().toString()) == false)
+                {
+                    Toast.makeText(getApplicationContext(), "This Email Address is not valid", Toast.LENGTH_SHORT).show();
+                }
                 else if(user.getPassword().equals(repeatpassword.getText().toString())==false){
                     Toast.makeText(getApplicationContext(), "Password and Repeat Password Not Matched", Toast.LENGTH_SHORT).show();
                 }
@@ -187,6 +191,8 @@ public class SignUp extends AppCompatActivity {
     }
 
 
+
+
     public  void QBSignUp(final String email, final String password) {
         QBUser qbUser = new QBUser();
         qbUser.setLogin(email);
@@ -228,7 +234,7 @@ public class SignUp extends AppCompatActivity {
 
                 DevicePreferences.getInstance().saveQbuser(qbUser);
                 removeLoader();
-                startActivity(new Intent(SignUp.this, SelectActivity.class));
+                startActivity(new Intent(SignUp.this, MainActivity.class));
 
                 finish();
 

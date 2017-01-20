@@ -15,7 +15,7 @@
            <RelativeLayout
                    android:layout_height="0dp"
                    android:layout_width="match_parent"
-                   android:layout_weight="1"
+               android:layout_weight="0.6"
                    android:padding="15dp"
                    android:elevation="@dimen/normal_elevation"
                    android:layout_gravity="center"
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/secondary_dark_purple"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:orientation="horizontal"
                 android:padding="@dimen/md_button_padding_frame_side"
                 android:weightSum="5"
@@ -71,7 +71,7 @@
             <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Goal"
+                    android:text="Goal : "
                     android:textColor="@color/white"
                     android:layout_gravity="center"
                     android:gravity="end"
@@ -88,9 +88,9 @@
                     android:textStyle="bold"
                     android:textColor="@color/secondary_red"
                     android:layout_gravity="center"
-                    android:gravity="center"
+
                     android:layout_weight="1.2"
-                    android:padding="@dimen/small_padding"
+
                     android:textSize="@dimen/medium_text_size"
             />
         </LinearLayout>
@@ -107,7 +107,7 @@
             <RelativeLayout
                     android:layout_height="0dp"
                     android:layout_width="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.6"
                     android:padding="15dp"
                     android:elevation="@dimen/normal_elevation"
                     android:layout_gravity="center"
@@ -147,7 +147,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:background="@color/secondary_dark_purple"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:orientation="horizontal"
                     android:padding="@dimen/md_button_padding_frame_side"
                     android:weightSum="5"
@@ -163,7 +163,7 @@
                 <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Goal"
+                        android:text="Goal : "
                         android:textColor="@color/white"
                         android:layout_gravity="center"
                         android:gravity="end"
@@ -180,9 +180,9 @@
                         android:textStyle="bold"
                         android:textColor="@color/secondary_red"
                         android:layout_gravity="center"
-                        android:gravity="center"
+
                         android:layout_weight="1.2"
-                        android:padding="@dimen/small_padding"
+
                         android:textSize="@dimen/medium_text_size"
                 />
             </LinearLayout>

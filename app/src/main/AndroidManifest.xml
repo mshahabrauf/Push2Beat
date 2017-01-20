@@ -64,18 +64,15 @@
     </activity>
     <activity android:name=".mainnavigation.SignUp">
     </activity>
-    <activity android:name=".mainnavigation.SelectActivity">
 
-    </activity>
 
         <activity android:name=".Utils.ChallengeDialog"
-            android:theme="@android:style/Theme.Dialog"
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar.MinWidth"
             >
 
         </activity>
 
-        <activity android:name=".mainnavigation.FBLogin">
-        </activity>
+
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data

@@ -32,7 +32,6 @@ import com.attribes.push2beat.Utils.CustomConnectionListener;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.databinding.FragmentTimerBinding;
 import com.attribes.push2beat.mainnavigation.MainActivity;
-import com.attribes.push2beat.mainnavigation.SelectActivity;
 import com.attribes.push2beat.models.BodyParams.AddTrackParams;
 import com.attribes.push2beat.models.CatchMeModel;
 import com.attribes.push2beat.models.Response.UserList.Datum;
@@ -89,6 +88,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     private List<LatLng> track;
     private List<LatLng> ghostTrack;
 
+    private boolean isCatchMeRunning = true;
     private String trackPath = "";
     private boolean isSavedButtonClicked = false;
     private String trackId;
@@ -125,6 +125,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
     public GpsFragment() {
+        Common.getInstance().updateFragmentCounter();
     }
 
 
@@ -400,10 +401,13 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
             {
                 if(hrs >= ghostHrs && mins >= ghostMins && secs >= ghostSecs)
                 {
-                    stopTimer();
+
                     binding.layoutTimerSubReplace.timerStop.callOnClick();
-                    isUserOnTrackPosition = false;
+
                     Toast.makeText(getContext(), "Your time is up", Toast.LENGTH_SHORT).show();
+                    isUserOnTrackPosition = false;
+                    stopTimer();
+
 
                 }
 
@@ -517,34 +521,37 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
             manager.addDialogMessageListener(new QBChatDialogMessageListener() {
                 @Override
                 public void processMessage(String s, QBChatMessage qbChatMessage, Integer integer) {
-                    String message = qbChatMessage.getBody();
-                    String[] str = message.split(",");
-                    double lat = Double.parseDouble(str[0]);
-                    double lng = Double.parseDouble(str[1]);
-                    Location opponent = new Location("a");
-                    opponent.setLatitude(lat);
-                    opponent.setLongitude(lng);
-                    double opponentDistance = calculateDistance(opponent,DevicePreferences.getInstance().getLocation());
-                    binding.layoutCounterCal.catchDistance.setText(String.valueOf(Math.round(opponentDistance * 100) / 100) + "m");
-                    if(opponentDistance < 5)
-                    {
-                        isCatchMeIfYouCan = false;
-                        binding.layoutTimerSubReplace.timerStop.callOnClick();
-                        if(Common.getInstance().isCatchMeFromNotification()) {
-                            ChallengeResultDAL.sendResultChallenge(DevicePreferences.getInstance().getuser().getId(),Common.getInstance().getOppData().getId());
-                            manager.removeDialogMessageListrener(this);
-                        }
-                        else if(Common.getInstance().isCatchMeFromUser())
-                        {
-                            ChallengeResultDAL.sendResultChallenge(Common.getInstance().getOppData().getId(),DevicePreferences.getInstance().getuser().getId());
-                            manager.removeDialogMessageListrener(this);
-                        }
+                   if(isCatchMeRunning) {
+                       String message = qbChatMessage.getBody();
+                       String[] str = message.split(",");
+                       double lat = Double.parseDouble(str[0]);
+                       double lng = Double.parseDouble(str[1]);
+                       Location opponent = new Location("a");
+                       opponent.setLatitude(lat);
+                       opponent.setLongitude(lng);
+                       double opponentDistance = calculateDistance(opponent, DevicePreferences.getInstance().getLocation());
+                       binding.layoutCounterCal.catchDistance.setText(String.valueOf(Math.round(opponentDistance * 100) / 100) + "m");
+                       if (opponentDistance < 5) {
+                           isCatchMeIfYouCan = false;
+                           isCatchMeRunning = false;
+                           binding.layoutTimerSubReplace.timerStop.callOnClick();
+                           if (Common.getInstance().isCatchMeFromNotification()) {
+                               ChallengeResultDAL.sendResultChallenge(DevicePreferences.getInstance().getuser().getId(), Common.getInstance().getOppData().getId());
+//                               ChallengeResultDAL.sendResultChallenge(Common.getInstance().getOppData().getId(),DevicePreferences.getInstance().getuser().getId());
+                               manager.removeDialogMessageListrener(this);
+                           }
+//                        else if(Common.getInstance().isCatchMeFromUser())
+//                        {
+//
+//                            manager.removeDialogMessageListrener(this);
+//                        }
 
-                    }
-                    getMapFragment().addOpponentMaker(opponent.getLatitude(),opponent.getLongitude());
-                    getMapFragment().moveOpponent(lat, lng);
+                       }
 
+                       getMapFragment().addOpponentMaker(opponent.getLatitude(), opponent.getLongitude());
+                       getMapFragment().moveOpponent(lat, lng);
 
+                   }
                 }
 
                 @Override
@@ -586,6 +593,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
     public void onStartGhostRider(com.attribes.push2beat.models.Response.TrackList.Datum datum) {
 
+        stopTimer();
         removeGhostFragment();
         updateUIforGhostRider();
 
@@ -665,8 +673,9 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                 } catch (SmackException.NotConnectedException e) {
                     e.printStackTrace();
                     Log.d("mChat",""+e);
+                }catch (Exception e) {
+                    Log.d("chat",""+e.getMessage());
                 }
-
                 }
             }
 
@@ -736,7 +745,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(getActivity(), SelectActivity.class);
+                Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -777,7 +786,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                     }
                     else{
                        callAddTrackApi();
-                        startStatsScreen();
+                       startStatsScreen();
 
 
                     }
@@ -871,6 +880,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
             else if(ghostTrack.size() == 0 && (isGhostRider || isUserOnTrackPosition) )
             {
                 Toast.makeText(getContext(), "No Track found", Toast.LENGTH_SHORT).show();
+
             }
             else {
 

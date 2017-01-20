@@ -46,7 +46,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListHolder> {
 
     @Override
     public void onBindViewHolder(UserListHolder holder, int position) {
-        holder.fullName.setText(mData.get(position).getUser_name()+" "+mData.get(position).getUser_lastname());
+
+        holder.fullName.setText(mData.get(position).getUser_name());
         holder.distance.setText(Common.getInstance().calulateDistance(mData.get(position).getLat(),mData.get(position).getLng()));
         holder.startBtn.setOnClickListener(new startButtonListener(position));
 

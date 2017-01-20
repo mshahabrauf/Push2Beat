@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -181,33 +182,18 @@ public class SignIn extends AppCompatActivity {
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startLoader();
+                if(username.getText().toString().equals("") ||  password.getText().toString().equals("") )
+                {
+                    Toast.makeText(getApplicationContext(), "Kindly, complete this form", Toast.LENGTH_SHORT).show();
+                }
+                else if(Common.getInstance().emailValidator(username.getText().toString()) == false)
+                {
+                    Toast.makeText(getApplicationContext(), "This Email Address is not valid", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    signIn();
+                }
 
-                UserLoginDetailParams detail = new UserLoginDetailParams();
-                detail.setUser_email(username.getText().toString());
-                detail.setDevice_type("1");
-                detail.setDevice_token(FirebaseInstanceId.getInstance().getToken());
-                detail.setPassword(password.getText().toString());
-
-
-                LoginDAL.userLogin(detail, new OnSignUpSuccess() {
-                    @Override
-                    public void onSuccess() {
-                        QbSignIn(username.getText().toString().trim(), password.getText().toString().trim());
-                        Common.getInstance().setPassword(password.getText().toString());
-
-
-                        DevicePreferences.getInstance().saverememberme(remember.isChecked());
-
-                        DevicePreferences.getInstance().saveusers(Common.getInstance().getUser());
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        removeLoader();
-                        Toast.makeText(SignIn.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
-                    }
-                });
 
 
             }
@@ -215,6 +201,37 @@ public class SignIn extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    public void signIn()
+    {
+        startLoader();
+
+        UserLoginDetailParams detail = new UserLoginDetailParams();
+        detail.setUser_email(username.getText().toString());
+        detail.setDevice_type("1");
+        detail.setDevice_token(FirebaseInstanceId.getInstance().getToken());
+        detail.setPassword(password.getText().toString());
+
+
+        LoginDAL.userLogin(detail, new OnSignUpSuccess() {
+            @Override
+            public void onSuccess() {
+                QbSignIn(username.getText().toString().trim(), password.getText().toString().trim());
+                Common.getInstance().setPassword(password.getText().toString());
+
+
+                DevicePreferences.getInstance().saverememberme(remember.isChecked());
+
+                DevicePreferences.getInstance().saveusers(Common.getInstance().getUser());
+            }
+
+            @Override
+            public void onFailure() {
+                removeLoader();
+                Toast.makeText(SignIn.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void startLoader() {
@@ -225,17 +242,27 @@ public class SignIn extends AppCompatActivity {
 
     private void removeLoader()
     {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(Constants.CATCH_LOADER_TAG);
+
+
+    try
+    {
+         Fragment fragment = getSupportFragmentManager().findFragmentByTag(Constants.CATCH_LOADER_TAG);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.remove(fragment);
         ft.commit();
+    }
+    catch(Exception e)
+    {
+     Log.e("crash", "removeLoader:"  + e.getMessage());
+    }
+
     }
 
 
     public void QbSignIn( String email, String password) {
 
         final QBUser qbUser = new QBUser();
-        qbUser.setLogin(email);
+     //  qbUser.setLogin(email);
         qbUser.setEmail(email);
         qbUser.setPassword(password);
         QBUsers.signIn(qbUser).performAsync(new QBEntityCallback<QBUser>() {
@@ -249,7 +276,7 @@ public class SignIn extends AppCompatActivity {
 
 
         //       Toast.makeText(getApplicationContext(), "QuickBlox SignIn Success", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SignIn.this, SelectActivity.class));
+                startActivity(new Intent(SignIn.this, MainActivity.class));
 
 
 
@@ -313,17 +340,6 @@ public class SignIn extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-    private void goMainscreen(){
-        Intent intent = new Intent(this,SelectActivity.class);
-        startActivity(intent);
-
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

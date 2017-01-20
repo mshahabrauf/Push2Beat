@@ -13,6 +13,8 @@ import com.quickblox.chat.model.QBChatDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by android on 12/9/16.
@@ -21,7 +23,7 @@ import java.util.List;
 public class Common {
     private static Common Instance = null;
     private Location location;
-    private int runType;
+    private int runType = 0;
     private SignInParams user;
     private String password;
     private int SpeedValue;
@@ -33,6 +35,7 @@ public class Common {
     private boolean isCatchMeFromUser = false;
     private boolean isCatchMeFromNotification = false;
     private List<LatLng> ghostTrack;
+    private int fragmentCount = 0;
 
 
 
@@ -217,4 +220,25 @@ public class Common {
     }
 
 
+    public void resetFragmentCounter() {
+         fragmentCount = 0;
+    }
+
+    public void updateFragmentCounter() {
+        fragmentCount++;
+    }
+
+    public int getFragmentCount() {
+        return fragmentCount;
+    }
+
+    public boolean emailValidator(String email)
+    {
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 }

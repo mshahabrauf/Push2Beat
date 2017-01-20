@@ -4,7 +4,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:background="@drawable/bg"
         android:id="@+id/music_container">
 
     <LinearLayout
@@ -22,7 +22,7 @@
                     android:id="@+id/hit_one"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:text="HIT ONE"
+                    android:text="HIIT ONE"
                     android:textSize="20sp"
                     android:textColor="@color/white"
                     android:background="@color/primary_pink"
@@ -32,7 +32,7 @@
                     android:id="@+id/hit_two"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:text="HIT TWO"
+                    android:text="HIIT TWO"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:background="@color/primary_pink"
@@ -140,7 +140,7 @@
                             android:id="@+id/three_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Minutes HIT"
+                            android:text="Minutes HIIT"
                             android:layout_toRightOf="@+id/three"
                             android:layout_toEndOf="@+id/three"
 
@@ -181,6 +181,7 @@
                     android:layout_marginLeft="@dimen/fab_margin"
                     android:layout_gravity="center"
                     android:layout_weight="2"
+                    android:padding="@dimen/normal_padding"
                     />
 
                 <ImageView
@@ -199,8 +200,8 @@
                     android:textColor="@color/white"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:layout_weight="1.5"
-
+                    android:layout_weight="1.7"
+                    android:maxLines="1"
                     android:textSize="@dimen/small_text_size"
                     />
 
@@ -258,7 +259,7 @@
                         android:id="@+id/three_text1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Minutes HIT"
+                        android:text="Minutes HIIT"
                         android:layout_toRightOf="@+id/three1"
                         android:layout_toEndOf="@+id/three1"
 
@@ -299,6 +300,7 @@
                     android:layout_marginLeft="@dimen/fab_margin"
                     android:layout_gravity="center"
                     android:layout_weight="2"
+                    android:padding="@dimen/normal_padding"
                     />
 
                 <ImageView
@@ -317,8 +319,8 @@
                     android:textColor="@color/white"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:layout_weight="1.5"
-
+                    android:layout_weight="1.7"
+                    android:maxLines="1"
                     android:textSize="@dimen/small_text_size"
                     />
 
@@ -326,7 +328,7 @@
 
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="300+"
+                    android:text="500+"
 
                     android:maxLines="1"
                     android:textStyle="bold"
@@ -376,7 +378,7 @@
                         android:id="@+id/three_text2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Minutes HIT"
+                        android:text="Minutes HIIT"
                         android:layout_toRightOf="@+id/three2"
                         android:layout_toEndOf="@+id/three2"
 
@@ -416,6 +418,7 @@
                     android:src="@drawable/p2b_icon"
                     android:layout_marginLeft="@dimen/fab_margin"
                     android:layout_gravity="center"
+                    android:padding="@dimen/normal_padding"
                     android:layout_weight="2"
                     />
 
@@ -435,7 +438,8 @@
                     android:textColor="@color/white"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.7"
+                    android:maxLines="1"
 
                     android:textSize="@dimen/small_text_size"
                     />
@@ -444,7 +448,7 @@
 
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="200+"
+                    android:text="500+"
 
                     android:maxLines="1"
                     android:textStyle="bold"
@@ -494,7 +498,7 @@
                         android:id="@+id/three_text3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Minutes HIT"
+                        android:text="Minutes HIIT"
                         android:layout_toRightOf="@+id/three3"
                         android:layout_toEndOf="@+id/three3"
 
@@ -533,6 +537,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/p2b_icon"
                     android:layout_marginLeft="@dimen/fab_margin"
+                    android:padding="@dimen/normal_padding"
                     android:layout_gravity="center"
                     android:layout_weight="2"
                     />
@@ -553,16 +558,16 @@
                     android:textColor="@color/white"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1.7"
+                    android:maxLines="1"
 
                     android:textSize="@dimen/small_text_size"
                     />
 
                 <TextView
-
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="200+"
+                    android:text="500+"
 
                     android:maxLines="1"
                     android:textStyle="bold"
@@ -598,7 +603,7 @@
                         android:id="@+id/three4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="7"
+                        android:text="30"
                         android:layout_toRightOf="@+id/clock4"
                         android:layout_toEndOf="@+id/clock4"
 
@@ -612,7 +617,7 @@
                         android:id="@+id/three_text4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Minutes HIT"
+                        android:text="Minutes HIIT"
                         android:layout_toRightOf="@+id/three4"
                         android:layout_toEndOf="@+id/three4"
 
@@ -651,6 +656,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/p2b_icon"
                     android:layout_marginLeft="@dimen/fab_margin"
+                    android:padding="@dimen/normal_padding"
                     android:layout_gravity="center"
                     android:layout_weight="2"
                     />
@@ -671,8 +677,8 @@
                     android:textColor="@color/white"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:layout_weight="1.5"
-
+                    android:layout_weight="1.7"
+                    android:maxLines="1"
                     android:textSize="@dimen/small_text_size"
                     />
 
@@ -680,7 +686,7 @@
 
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="200+"
+                    android:text="500+"
 
                     android:maxLines="1"
                     android:textStyle="bold"
