@@ -68,6 +68,9 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     String twentytwoM_HIT = "com.attribes.push2beat.22minutes";
     String thirtyM_HIT = "com.attribes.push2beat.30minutes";
 
+
+
+
     private ProgressDialog pDialog;
     public static final int progress_bar_type = 0;     // Progress dialog type (0 - for Horizontal progress bar)
     private boolean isOnGpsFragment = false;
@@ -127,6 +130,16 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         musicBinding.fifteenHitBtn.setOnClickListener(new FifteenHITListner());
         musicBinding.twentytwoHitBtn.setOnClickListener(new TwentwoHITListner());
         musicBinding.thirtyHitBtn.setOnClickListener(new ThirtyHITListner());
+
+        //
+        musicBinding.hitTwoLayout.sevenHitBtn.setOnClickListener(new HitTwoSevenListener() );
+
+        musicBinding.hitTwoLayout.fifteenHitBtn.setOnClickListener(new HitTwoSevenListener() );
+        musicBinding.hitTwoLayout.twentytwosHitBtn.setOnClickListener(new TwentwoHITListner());
+        musicBinding.hitTwoLayout.twentytwoHitBtn.setOnClickListener(new HitTwoSevenListener() );
+        musicBinding.hitTwoLayout.thirtyHitBtn.setOnClickListener(new HitTwoSevenListener() );
+        musicBinding.hitTwoLayout.freeBtn.setOnClickListener(new FreeHITListner() );
+
     }
 
 
@@ -367,6 +380,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
                    DevicePreferences.getInstance().saveMusicTrackPath(extStore.getAbsolutePath() + "/push2beat/music.mp3");
                }
                 else {
+                   DevicePreferences.getInstance().saveMusicTrackPath(extStore.getAbsolutePath() + "/push2beat/music.mp3");
                    playMusic();
                }
             }
@@ -383,6 +397,14 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         public void onClick(View view) {
             String payload = "";
             mHelper.launchPurchaseFlow(getActivity(), sevenM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+        }
+    }
+
+    private class HitTwoSevenListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            String payload = "";
+            mHelper.launchPurchaseFlow(getActivity(), fifteenM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
         }
     }
 
@@ -506,6 +528,8 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         }
     }
 
+
+
     private class HIT_TwoListner implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -625,6 +649,8 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     }
 
 
-    }
+
+
+}
 
 

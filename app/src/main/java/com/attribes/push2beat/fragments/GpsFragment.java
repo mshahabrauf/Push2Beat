@@ -65,6 +65,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static com.google.android.gms.location.LocationRequest.create;
 
 /**
@@ -150,7 +151,10 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     private void setScreenForRunType() {
         switch ( Common.getInstance().getRunType())
         {
+            case 0:
+                break;
             case 1:
+                playMusic();
                 break;
             case 2:
                ghostButtonCaller();
@@ -241,6 +245,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
         binding.layoutTimerSubReplace.btnGps.setOnClickListener(new GpsButtonListener());
         binding.layoutTimerSubReplace.timerStop.setOnClickListener(new StopButtonListener());
+        binding.pickMusic.setOnClickListener(new PickMusicListener());
 
 
 
@@ -629,7 +634,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     }
 
     private void updateUIforGhostRider() {
-        binding.layoutTimerSubReplace.timerStop.setBackgroundResource(R.drawable.stop);
+        binding.layoutTimerSubReplace.timerStop.setBackgroundResource(R.drawable.stop_ghost);
         binding.layoutTimerSubReplace.btnGps.setVisibility(View.GONE);
         //binding.layoutTimerSubReplace.timerRecord.setVisibility(View.VISIBLE);
         binding.layoutCounterCal.timerRow.setBackgroundColor(getResources().getColor(R.color.secondary_dark_grey));
@@ -837,6 +842,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     private void ghostButtonCaller()
     {
             startGhostFragment();
+        binding.pickMusic.setVisibility(View.GONE);
     }
 
 
@@ -864,6 +870,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     {
 
             startCatchMeFragment();
+        binding.pickMusic.setVisibility(View.GONE);
 
     }
 
@@ -900,6 +907,15 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                 apiClient.disconnect(); // to stop getting any further locations Todo :Should connect again
 
             }
+        }
+    }
+
+
+    private class PickMusicListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i,5);
         }
     }
 
@@ -953,6 +969,19 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+      //  super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK  && requestCode==5) {
+            Uri uri = data.getData();
+            DevicePreferences.getInstance().saveMusicTrackPath(uri.toString());
+            //mPlayer.reset();
+
+           // stopMusic();
+            playMusic();
+        }
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -962,12 +991,13 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     public void onStart() {
         super.onStart();
         apiClient.connect();
-        playMusic();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
         apiClient.connect();
         setScreenForRunType();
         if(Common.getInstance().isCatchMeFromUser() || Common.getInstance().isCatchMeFromNotification()){
@@ -1042,8 +1072,16 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
     private void playMusic() {
 
-        if(DevicePreferences.getInstance().getMusicTrackPath() != null && Common.getInstance().getRunType() == 1) {
+        if(DevicePreferences.getInstance().getMusicTrackPath() != null && (Common.getInstance().getRunType() == 1 || Common.getInstance().getRunType() == 0) ) {
 
+            if(mPlayer !=null) {
+                if (mPlayer.isPlaying()) {
+                    mPlayer.release();
+                    mPlayer = null;
+                }
+            }
+
+            mPlayer = new MediaPlayer();
             Uri myUri = Uri.parse(DevicePreferences.getInstance().getMusicTrackPath());
             mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             try {
@@ -1051,10 +1089,13 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                 mPlayer.prepare();
                 mPlayer.start();
             } catch (IllegalArgumentException e) {
+                e.printStackTrace();
 
             } catch (SecurityException e) {
+                e.printStackTrace();
 
             } catch (IllegalStateException e) {
+                e.printStackTrace();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -1078,7 +1119,9 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     private void stopMusic(){
         if(mPlayer!=null && mPlayer.isPlaying()){
             mPlayer.stop();
-        }
+         //   mPlayer.release();
+                 }
     }
+
 
 }

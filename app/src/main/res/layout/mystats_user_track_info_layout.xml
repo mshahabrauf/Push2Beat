@@ -13,8 +13,8 @@
                 android:orientation="horizontal">
 
             <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="25dp"
                     android:background="@drawable/stats_icon"/>
 
             <TextView
@@ -47,8 +47,8 @@
                 android:layout_marginTop="10dp">
 
             <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="25dp"
                     android:background="@drawable/stats_icon"/>
 
             <TextView
@@ -81,8 +81,8 @@
                 android:layout_marginTop="10dp">
 
             <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="25dp"
                     android:background="@drawable/stats_icon"/>
 
             <TextView
@@ -115,8 +115,8 @@
                 android:layout_marginTop="10dp">
 
             <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                android:layout_width="20dp"
+                android:layout_height="25dp"
                     android:background="@drawable/stats_icon"/>
 
             <TextView

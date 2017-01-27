@@ -10,7 +10,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private ActivityMainBinding binding;
     private String gpsTitle = "Select Your Workout";
+    private View tabView;
+    private ImageView image;
     //public boolean activityResult = false;
 
 
@@ -183,11 +187,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void addTabsIcons() {
+        tabView = LayoutInflater.from(this).inflate(R.layout.tab_item_layout,null);
+        binding.tabs.getTabAt(0).setCustomView(tabView);
 
-        binding.tabs.getTabAt(0).setIcon(R.drawable.ic_gps);
-        binding.tabs.getTabAt(1).setIcon(R.drawable.ic_music);
-        binding.tabs.getTabAt(2).setIcon(R.drawable.ic_stats);
-        binding.tabs.getTabAt(3).setIcon(R.drawable.ic_action_name);
+
+        tabView = LayoutInflater.from(this).inflate(R.layout.tab_item_layout_music,null);
+        binding.tabs.getTabAt(1).setCustomView(tabView);
+
+        //binding.tabs.getTabAt(0).setIcon(R.drawable.ic_gps);
+        tabView = LayoutInflater.from(this).inflate(R.layout.tab_item_layout_stats,null);
+        binding.tabs.getTabAt(2).setCustomView(tabView);
+
+        tabView = LayoutInflater.from(this).inflate(R.layout.tab_item_layout_profile,null);
+        binding.tabs.getTabAt(3).setCustomView(tabView);
 
     }
 

@@ -2,6 +2,7 @@
 <layout>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
+
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
 
@@ -17,7 +18,7 @@
 
     <TextView
             android:id="@+id/user_name_tv"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="MBK Alam"
             android:layout_gravity="center"
@@ -36,6 +37,16 @@
                 android:paddingStart="20dp"
                 android:textColor="@color/black"
                 android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/edit_name"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:src="@android:drawable/ic_menu_edit"
+            android:backgroundTint="@color/white"
+
+            />
 
     </LinearLayout>
 

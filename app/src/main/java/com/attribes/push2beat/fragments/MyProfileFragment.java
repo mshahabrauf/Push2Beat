@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.DevicePreferences;
+import com.attribes.push2beat.Utils.OnSignUpSuccess;
 import com.attribes.push2beat.Utils.ReverseGeoLocationTask;
 import com.attribes.push2beat.databinding.FragmentMyProfileBinding;
 import com.attribes.push2beat.mainnavigation.MainActivityStart;
@@ -64,7 +66,7 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
 
     private void init() {
         mpBinding.profileImage.setOnClickListener(new ImageUploadListner());
-        mpBinding.userProfile.userNameTv.setOnClickListener(new NameEditListner());
+        mpBinding.userProfile.editName.setOnClickListener(new NameEditListner());
         mpBinding.logoutUserBtn.setOnClickListener(new LogOutListener());
     }
 
@@ -76,29 +78,52 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
             case REQUEST_CAMERA:
                     if(resultCode == RESULT_OK) {
                         Bitmap photo = (Bitmap) data.getExtras().get("data");
-                       // updateProfilePic(photo);
+
+                       String base =  convertBitmaptoBase64(photo);
+                        updateProfilePic(base);
+
                         mpBinding.profileImage.setImageBitmap(photo);
                     }
                 break;
             case SELECT_FILE:
 
                     Uri selectedImagefile = data.getData();
-                   // updateProfilePic(selectedImagefile);
+                String encodedProfileImageString = conversionInBase64Format(selectedImagefile);
+                    updateProfilePic(encodedProfileImageString);
                     mpBinding.profileImage.setImageURI(selectedImagefile);
 
                 break;
         }
     }
 
-    private void updateProfilePic(Bitmap selectedImage) {
-        String encodedProfileImageString = conversionInBase64Format(selectedImage);
+    private String convertBitmaptoBase64(Bitmap photo) {
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        return encoded;
+    }
+
+    private void updateProfilePic(String selectedImage) {
+
         profileParams.setUser_id(DevicePreferences.getInstance().getuser().getId());
-        profileParams.setProfile_image(encodedProfileImageString);
-        UpdateProfileDAL.updateProfile(profileParams,getActivity());
+        profileParams.setProfile_image(selectedImage);
+        UpdateProfileDAL.updateProfile(profileParams, new OnSignUpSuccess() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        });
 
     }
 
-    private String conversionInBase64Format(Bitmap selectedImage) {
+    private String conversionInBase64Format(Uri selectedImage) {
 
         InputStream inputStream = null;//You can get an inputStream using any IO API
         try {
@@ -131,9 +156,18 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
                 mpBinding.userProfile.userNameTv.setText("" + data.getFirst_name());
                 mpBinding.userProfile.userMailTv.setText("" + data.getEmail());
                 makeAddressFromLatLong(data.getLattitude(),data.getLongitude());
-                setProfileImage(data.getProfile_image());
-                Common.getInstance().setProfile_image(data.getProfile_image());
-            }
+               if(data.getProfile_image() != null) {
+                   if (data.getProfile_image().contains("http")) {
+                       mpBinding.profileImage.setImageURI(Uri.parse(data.getProfile_image()));
+                   } else {
+                       mpBinding.profileImage.setImageBitmap(decodeImage(data.getProfile_image()));
+                   }
+
+                   setProfileImage(data.getProfile_image());
+                   Common.getInstance().setProfile_image(data.getProfile_image());
+
+               }
+               }
 
             @Override
             public void onEmptyData(String msg) {
@@ -154,21 +188,21 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
     private void makeAddressFromLatLong(String lattitude, String longitude) {
         Geocoder geocoder;
         List<Address> addresses;
-        //geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
 
         try {
-//            addresses = geocoder.getFromLocation(Double.parseDouble(lattitude),Double.parseDouble(longitude), 1);
-//
-//            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-//            String city = addresses.get(0).getLocality();
-//            String state = addresses.get(0).getAdminArea();
-//            String country = addresses.get(0).getCountryName();
-//
-//            String completeAddress = " "+address+", "+" "+country;
+
             String pick_location= new ReverseGeoLocationTask(getActivity()).execute(DevicePreferences.getInstance().getLocation().getLatitude(),DevicePreferences.getInstance().getLocation().getLongitude()).get();
 
-            mpBinding.userProfile.userLocTv.setText(""+pick_location);
-        } catch (InterruptedException e) {
+            if(pick_location.contains("null"))
+            {
+              pick_location =  pick_location.replace("null","");
+                mpBinding.userProfile.userLocTv.setText(""+pick_location);
+            }
+            else {
+                mpBinding.userProfile.userLocTv.setText("" + pick_location);
+            }
+            } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -218,20 +252,14 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
         public void onClick(View view) {
             mpBinding.userProfile.userNameTv.setVisibility(View.GONE);
             mpBinding.userProfile.userNameEdittv.setVisibility(View.VISIBLE);
-            mpBinding.userProfile.userNameEdittv.setOnClickListener(new EditListner());
+            mpBinding.userProfile.userNameEdittv.setOnFocusChangeListener(new EditListner());
         }
     }
 
-    private class EditListner implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-           String editedName = mpBinding.userProfile.userNameEdittv.getText().toString();
-            UpdateProfileParams params = new UpdateProfileParams();
-            params.setUser_id(DevicePreferences.getInstance().getuser().getId());
-            params.setFirst_name(editedName);
-            params.setProfile_image(Common.getInstance().getProfile_image());
-            UpdateProfileDAL.updateProfile(params,getActivity());
-        }
+    private class EditListners
+    {
+
+
     }
 
 
@@ -243,6 +271,48 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
             Intent intent = new Intent(getActivity(), MainActivityStart.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+
+        }
+    }
+
+
+    public Bitmap decodeImage(String code)
+    {
+        byte[] decodedString = Base64.decode(code, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        return decodedByte;
+    }
+
+    private class EditListner implements View.OnFocusChangeListener {
+        @Override
+        public void onFocusChange(View view, boolean b) {
+            if(!b && !mpBinding.userProfile.userNameEdittv.getText().toString().equals("")) {
+
+                String editedName = mpBinding.userProfile.userNameEdittv.getText().toString();
+                UpdateProfileParams params = new UpdateProfileParams();
+                params.setUser_id(DevicePreferences.getInstance().getuser().getId());
+                params.setFirst_name(editedName);
+                params.setLast_name("");
+                params.setProfile_image(Common.getInstance().getProfile_image());
+                UpdateProfileDAL.updateProfile(params, new OnSignUpSuccess() {
+                    @Override
+                    public void onSuccess() {
+                        getMyProfileData();
+                    }
+
+                    @Override
+                    public void onFailure() {
+
+                    }
+                });
+
+
+            }
+            else if(!b){
+                mpBinding.userProfile.userNameTv.setVisibility(View.VISIBLE);
+                mpBinding.userProfile.userNameEdittv.setVisibility(View.GONE);
+                mpBinding.userProfile.userNameEdittv.setOnFocusChangeListener(null);
+            }
 
         }
     }

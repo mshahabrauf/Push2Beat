@@ -229,7 +229,7 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onFailure() {
                 removeLoader();
-                Toast.makeText(SignIn.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignIn.this, "Email or password is wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -302,7 +302,7 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onSuccess(SocialSignUpResponse socialSignUpResponse) {
 
-                Toast.makeText(SignIn.this, "Social signup success", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(SignIn.this, "Social signup success", Toast.LENGTH_SHORT).show();
                     socialSignIn(userProfile);
 
             }
@@ -310,7 +310,7 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onFailure() {
                 removeLoader();
-                Toast.makeText(SignIn.this, "Social signup failed", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(SignIn.this, "Social signup failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -322,7 +322,7 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onSuccess() {
 
-                Toast.makeText(SignIn.this, "social signin success", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(SignIn.this, "social signin success", Toast.LENGTH_SHORT).show();
                 DevicePreferences.getInstance().saverememberme(true);
                 QBSignUp(userProfile.getEmail(),userProfile.getPassword());
 
@@ -383,21 +383,24 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onSuccess(QBUser qbUser, Bundle bundle)
             {
-                Toast.makeText(getApplicationContext(), "QuickBlox Signup Success", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getApplicationContext(), "QuickBlox Signup Success", Toast.LENGTH_SHORT).show();
                 QbSignIn(userProfile.getEmail(), userProfile.getPassword());
-
-
-
-
-
 
             }
 
             @Override
             public void onError(QBResponseException e) {
-                removeLoader();
-                Toast.makeText(getApplicationContext(), "QuickBlox Signup Failed", Toast.LENGTH_SHORT).show();
 
+
+                if (e.getMessage().equals("login has already been taken,email has already been taken"))
+                {
+                    QbSignIn(userProfile.getEmail(),userProfile.getPassword());
+                }
+                else
+                {
+                    Toast.makeText(SignIn.this, "Unexpected error!!", Toast.LENGTH_SHORT).show();
+                    removeLoader();
+                }
             }
         });
 

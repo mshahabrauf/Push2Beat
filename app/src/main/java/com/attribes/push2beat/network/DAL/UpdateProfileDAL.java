@@ -1,22 +1,22 @@
 package com.attribes.push2beat.network.DAL;
 
-import android.content.Context;
-import android.widget.Toast;
+import com.attribes.push2beat.Utils.OnSignUpSuccess;
 import com.attribes.push2beat.models.BodyParams.UpdateProfileParams;
 import com.attribes.push2beat.models.Response.UpdateProfileResponse;
 import com.attribes.push2beat.network.RestClient;
+
+import java.util.HashMap;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import java.util.HashMap;
 
 /**
  * Created by Maaz on 12/24/2016.
  */
 public class UpdateProfileDAL {
 
-    public static void updateProfile(UpdateProfileParams profileData,final Context context){
+    public static void updateProfile(UpdateProfileParams profileData,final OnSignUpSuccess listener){
 
         HashMap<String,Object> params = new HashMap<>();
         params.put("user_id",profileData.getUser_id());
@@ -29,13 +29,14 @@ public class UpdateProfileDAL {
             public void onResponse(Call<UpdateProfileResponse> call, Response<UpdateProfileResponse> response) {
                 if(response.isSuccessful())
                 {
-                    Toast.makeText(context, "Updated Sucessfully !", Toast.LENGTH_SHORT).show();
+                    listener.onSuccess();
                 }
             }
 
             @Override
             public void onFailure(Call<UpdateProfileResponse> call, Throwable t) {
-                Toast.makeText(context, "Something went wrong !", Toast.LENGTH_SHORT).show();
+               listener.onFailure();
+
             }
         });
     }

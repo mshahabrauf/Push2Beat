@@ -39,7 +39,9 @@ public class MyStatsAdapter extends RecyclerView.Adapter<MyStatsListHolder>{
     @Override
     public void onBindViewHolder(MyStatsListHolder holder, int position) {
 
-        holder.mystats_cal_current.setText(mData.get(position).getCaleries_current());
+        int cal =(int) Double.parseDouble(mData.get(position).getCaleries_current());
+
+        holder.mystats_cal_current.setText(""+cal);
         holder.mystats_cal_goal.setText(mData.get(position).getCaleries_goal());
         holder.mystats_distance_current.setText(roundOffDecimals(mData.get(position).getDistance_current()));
         holder.mystats_distance_goal.setText(mData.get(position).getDistance_goal());

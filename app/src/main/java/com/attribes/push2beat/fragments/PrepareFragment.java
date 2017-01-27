@@ -43,8 +43,8 @@ public class PrepareFragment extends Fragment {
     }
 
     private void colorHIT_Texts() {
-        SpannableString text = new SpannableString("The HIT workout is great for Indoor/Outdoor cycling (GPS)Rowing (GPS)");
-        text.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.primary_pink)), 4, 15, 1);
+        SpannableString text = new SpannableString("The HIIT workout is great for Indoor/Outdoor cycling (GPS)Rowing (GPS)");
+        text.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.primary_pink)), 4, 16, 1);
         binding.hitTv.setText(text, TextView.BufferType.SPANNABLE);
     }
 

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/small_padding"
+
     android:gravity="center_horizontal"
     >
 
@@ -14,12 +15,14 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="Terrain"
+
         android:textSize="@dimen/medium_text_size"
         android:textColor="@color/secondary_red"
         />
     
     <ImageView
         android:layout_width="25dp"
+        android:layout_marginLeft="7dp"
         android:layout_height="25dp"
         android:src="@drawable/gps_white"
         />
@@ -28,7 +31,8 @@
         android:id="@+id/satelite"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Satelite"
+        android:layout_marginLeft="7dp"
+        android:text="Satellite"
         android:textColor="@color/white"
         android:textSize="@dimen/medium_text_size"
         />

@@ -82,5 +82,17 @@ public class SelectFragment extends Fragment{
         });
 
 
+        binding.moveNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Common.getInstance().setRunType(0);
+                GpsFragment gpsFragment = new GpsFragment();
+                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                ft.add(R.id.main_container,gpsFragment);
+                ft.commit();
+
+            }
+        });
+
     }
 }

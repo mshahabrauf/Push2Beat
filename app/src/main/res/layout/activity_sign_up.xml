@@ -107,8 +107,8 @@
                 android:id="@+id/checkbox"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-
-                android:buttonTint="@color/white"
+                android:background="@drawable/blackcheckbox"
+                android:button="@drawable/selector"
                 android:layout_centerVertical="true"
                 />
 

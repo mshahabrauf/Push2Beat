@@ -68,7 +68,9 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
-            android:buttonTint="@color/white"
+            android:button="@drawable/selector"
+        android:gravity="center"
+            android:background="@drawable/blackcheckbox"
             android:id="@+id/checkBox"/>
 
 

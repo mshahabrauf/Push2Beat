@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -60,26 +59,6 @@ public class SignUp extends AppCompatActivity {
 
         repeatpassword = (EditText) findViewById(R.id.repeatpassword);
         createacount = (Button) findViewById(R.id.create);
-
-
-
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-
-
-                if (isChecked) {
-                    createacount.setEnabled(true);
-
-                } else {
-                    createacount.setEnabled(false);
-                    Toast.makeText(getApplicationContext(), "You Must Agree Terms And Conditions", Toast.LENGTH_SHORT).show();
-
-
-                }
-
-            }
-        });
 
         createacount.setOnClickListener(new View.OnClickListener() {
 

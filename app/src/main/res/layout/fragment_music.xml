@@ -45,14 +45,15 @@
             <ImageView
                     android:id="@+id/library_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/pick_from_library"
+                    android:layout_height="25dp"
+                    android:src="@drawable/library"
                     android:layout_marginStart="40dp"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"
                     android:layout_marginEnd="40dp"/>
 
         <LinearLayout
+            android:layout_marginTop="5dp"
             android:id="@+id/widget_player"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -114,8 +115,10 @@
 
                     <ImageView
                             android:id="@+id/clock"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                        android:layout_width="24dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="15dp"
+
                             android:background="@drawable/clock_icon"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
@@ -188,8 +191,12 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:layout_gravity="center"
-                    android:padding="@dimen/normal_margin"
+                    android:layout_gravity="right"
+
+                   android:paddingTop="@dimen/normal_padding"
+                    android:paddingBottom="15dp"
+
+                   android:paddingLeft="@dimen/normal_padding"
                     android:src="@drawable/calories_red"
                     />
 
@@ -215,7 +222,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/secondary_red"
                     android:layout_gravity="center"
-                    android:gravity="center"
+
                     android:layout_weight="0.7"
                     android:padding="@dimen/small_padding"
                     android:textSize="@dimen/small_text_size"
@@ -233,8 +240,9 @@
 
                 <ImageView
                         android:id="@+id/clock1"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                    android:layout_width="24dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="15dp"
                         android:background="@drawable/clock_icon"
                         android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
@@ -308,7 +316,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:layout_gravity="center"
-                    android:padding="@dimen/normal_margin"
+                    android:paddingTop="@dimen/normal_padding"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="@dimen/normal_padding"
                     android:src="@drawable/calories_red"
                     />
 
@@ -352,8 +362,9 @@
 
                 <ImageView
                         android:id="@+id/clock2"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                    android:layout_width="24dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="15dp"
                         android:background="@drawable/clock_icon"
                         android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
@@ -427,7 +438,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:layout_gravity="center"
-                    android:padding="@dimen/normal_margin"
+                    android:paddingTop="@dimen/normal_padding"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="@dimen/normal_padding"
                     android:src="@drawable/calories_red"
                     />
 
@@ -472,8 +485,9 @@
 
                 <ImageView
                         android:id="@+id/clock3"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                    android:layout_width="24dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="15dp"
                         android:background="@drawable/clock_icon"
                         android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
@@ -547,7 +561,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:layout_gravity="center"
-                    android:padding="@dimen/normal_margin"
+                    android:paddingTop="@dimen/normal_padding"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="@dimen/normal_padding"
                     android:src="@drawable/calories_red"
                     />
 
@@ -591,8 +607,9 @@
 
                 <ImageView
                         android:id="@+id/clock4"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                    android:layout_width="24dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="15dp"
                         android:background="@drawable/clock_icon"
                         android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
@@ -666,7 +683,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:layout_gravity="center"
-                    android:padding="@dimen/normal_margin"
+                    android:paddingTop="@dimen/normal_padding"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="@dimen/normal_padding"
                     android:src="@drawable/calories_red"
                     />
 

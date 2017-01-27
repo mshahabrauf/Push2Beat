@@ -122,9 +122,9 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
 
         TextView pTob = (TextView)findViewById(R.id.p2b_tv);
 
-        SpannableString text = new SpannableString("Push2Beat is the latest Hit (High Intensity interval training) app on the market for cycling. The ultimate experience in Music vs Excercise.");   // this is the text we'll be operating on
+        SpannableString text = new SpannableString("Push2Beat is the latest HIIT (High Intensity interval training) app on the market for cycling. The ultimate experience in Music vs Excercise.");   // this is the text we'll be operating on
         text.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.primary_pink)), 0, 9, 0);
-        text.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.primary_pink)), 121, 140, 1);
+        text.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.primary_pink)), 122, 141, 1);
         pTob.setText(text, TextView.BufferType.SPANNABLE);
     }
 

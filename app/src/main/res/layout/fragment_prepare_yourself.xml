@@ -37,7 +37,7 @@
                           android:textSize="15sp"
                           android:gravity="center"
                           android:text="The first minute is your warm up
-Try and ride 25-50% of your maximum"
+Try and ride 25-50% of your maximum."
                           android:textColor="@color/white"/>
 
                 <TextView android:id="@+id/hard_tv"
@@ -107,7 +107,7 @@ signify the end of that interval."
                           android:layout_height="wrap_content"
                           android:layout_marginTop="10dp"
                           android:text="Outdoor Jog/Walk (GPS)
- Stair-Masterx/X-Trainer
+ Stair-Master/X-Trainer
  Rowing Machines"
                           android:textSize="15sp"
                           android:gravity="center"
@@ -145,9 +145,9 @@ signify the end of that interval."
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:id="@+id/start"
-            android:text="CLICK HERE TO START!"
+            android:text="CLICK HERE TO START!    >"
             android:textColor="@color/white"
-            android:textStyle="bold"
+
             android:textSize="@dimen/medium_text_size"
             android:background="@color/secondary_red"
             android:adjustViewBounds="true"
