@@ -207,6 +207,11 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     private void UpdateProfilePic() {

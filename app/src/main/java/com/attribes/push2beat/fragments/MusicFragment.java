@@ -55,6 +55,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     FragmentMusicBinding musicBinding;
     private IInAppBillingService mService;
     private ServiceConnection mServiceConn;
+    private String fileName;
 
     static final String TAG = "Music HIT";   // Debug tag, for logging
     static final int RC_REQUEST = 10001;    // (arbitrary) request code for the purchase flow
@@ -138,7 +139,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         musicBinding.hitTwoLayout.twentytwosHitBtn.setOnClickListener(new TwentwoHITListner());
         musicBinding.hitTwoLayout.twentytwoHitBtn.setOnClickListener(new HitTwoSevenListener() );
         musicBinding.hitTwoLayout.thirtyHitBtn.setOnClickListener(new HitTwoSevenListener() );
-        musicBinding.hitTwoLayout.freeBtn.setOnClickListener(new FreeHITListner() );
+        musicBinding.hitTwoLayout.freeBtn.setOnClickListener(new FreeHIT2Listner() );
 
     }
 
@@ -354,7 +355,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
 
     private void alert(String message) {
         AlertDialog.Builder bld = new AlertDialog.Builder(getActivity());
-        bld.setMessage(message);
+        bld.setMessage("There is some issue occur in your In-App purchasing kindly retry later");
         bld.setNeutralButton("OK", null);
         Log.d(TAG, "Showing alert dialog: " + message);
         bld.create().show();
@@ -366,26 +367,57 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     }
 
 
+    private class FreeHIT2Listner implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+
+
+            File extStore = Environment.getExternalStorageDirectory();
+            File myFile = new File(extStore.getAbsolutePath() + "/push2beat/0-8.25.mp3");
+
+            if(myFile.exists() ){
+                if(isOnGpsFragment) {
+                    DevicePreferences.getInstance().saveMusicTrackPath(extStore.getAbsolutePath() + "/push2beat/0-8.25.mp3");
+                    startPrepareFragment();
+                }
+                else {
+                    DevicePreferences.getInstance().saveMusicTrackPath(extStore.getAbsolutePath() + "/push2beat/0-8.25.mp3");
+                    playMusic();
+                }
+            }
+            else {
+                fileName = "0-8.25.mp3";
+                new DownloadFileFromURL().execute("https://www.dropbox.com/s/q67r5s94dm3ny1m/0-8.25.mp3?dl=1");
+
+            }
+        }
+        // mHelper.launchPurchaseFlow(getActivity(), threeM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+
+    }
+
+
     private class FreeHITListner implements View.OnClickListener {
         @Override
         public void onClick(View view) {
 
 
             File extStore = Environment.getExternalStorageDirectory();
-            File myFile = new File(extStore.getAbsolutePath() + "/push2beat/music.mp3");
+            File myFile = new File(extStore.getAbsolutePath() + "/push2beat/first3.mp3");
 
             if(myFile.exists() ){
                if(isOnGpsFragment) {
                    startPrepareFragment();
-                   DevicePreferences.getInstance().saveMusicTrackPath(extStore.getAbsolutePath() + "/push2beat/music.mp3");
+                   DevicePreferences.getInstance().saveMusicTrackPath(extStore.getAbsolutePath() + "/push2beat/first3.mp3");
                }
                 else {
-                   DevicePreferences.getInstance().saveMusicTrackPath(extStore.getAbsolutePath() + "/push2beat/music.mp3");
+                   DevicePreferences.getInstance().saveMusicTrackPath(extStore.getAbsolutePath() + "/push2beat/first3.mp3");
                    playMusic();
                }
             }
             else {
+                fileName = "first3.mp3";
                 new DownloadFileFromURL().execute("https://www.dropbox.com/s/1vyy0x5r4zmrhsq/first3.mp3?dl=1");
+
             }
         }
         // mHelper.launchPurchaseFlow(getActivity(), threeM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
@@ -396,7 +428,13 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         @Override
         public void onClick(View view) {
             String payload = "";
-            mHelper.launchPurchaseFlow(getActivity(), sevenM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+
+                try {
+                    mHelper.launchPurchaseFlow(getActivity(), sevenM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+                }
+                catch(IllegalStateException ex){
+                    Toast.makeText(getContext(), "Please retry in a few seconds.", Toast.LENGTH_SHORT).show();
+                }
         }
     }
 
@@ -404,7 +442,12 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         @Override
         public void onClick(View view) {
             String payload = "";
-            mHelper.launchPurchaseFlow(getActivity(), fifteenM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+            try {
+                mHelper.launchPurchaseFlow(getActivity(), fifteenM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+            } catch(IllegalStateException ex){
+                Toast.makeText(getContext(), "Please retry in a few seconds.", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 
@@ -412,7 +455,12 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         @Override
         public void onClick(View view) {
             String payload = "";
-            mHelper.launchPurchaseFlow(getActivity(), fifteenM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+    try {
+    mHelper.launchPurchaseFlow(getActivity(), fifteenM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+    }
+    catch(IllegalStateException ex){
+    Toast.makeText(getContext(), "Please retry in a few seconds.", Toast.LENGTH_SHORT).show();
+}
         }
     }
 
@@ -420,7 +468,13 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         @Override
         public void onClick(View view) {
             String payload = "";
-            mHelper.launchPurchaseFlow(getActivity(), twentytwoM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+            try {
+                mHelper.launchPurchaseFlow(getActivity(), twentytwoM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+            }
+            catch(IllegalStateException ex){
+                Toast.makeText(getContext(), "Please retry in a few seconds.", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 
@@ -428,7 +482,12 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         @Override
         public void onClick(View view) {
             String payload = "";
-            mHelper.launchPurchaseFlow(getActivity(), thirtyM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+            try{
+                mHelper.launchPurchaseFlow(getActivity(), thirtyM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+            }  catch(IllegalStateException ex){
+                Toast.makeText(getContext(), "Please retry in a few seconds.", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 
@@ -447,17 +506,18 @@ public class MusicFragment extends android.support.v4.app.Fragment {
 
             Uri downloadUri = Uri.parse(file_url[0]);
             DownloadManager.Request request = new DownloadManager.Request(downloadUri);
+            DevicePreferences.getInstance().saveMusicTrackPath(Environment.getExternalStorageDirectory().getAbsolutePath() + "/push2beat/"+fileName);
+
 
             request.setAllowedNetworkTypes( DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
                     .setAllowedOverRoaming(false).setTitle("Music")
-                    .setDestinationInExternalPublicDir("/push2beat","music.mp3");
-            DevicePreferences.getInstance().saveMusicTrackPath(file_path+"/music.mp3");
+                    .setDestinationInExternalPublicDir("push2beat/",fileName);
+           // DevicePreferences.getInstance().saveMusicTrackPath(file_path+"/music.mp3");
             long lastDownload = mgr.enqueue(request);
 
 
             boolean downloading = true;
             while (downloading) {
-
                 DownloadManager.Query q = new DownloadManager.Query();
                 q.setFilterById(lastDownload);
 
@@ -469,6 +529,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
                 publishProgress(String.valueOf(bytes_total), String.valueOf(bytes_downloaded));
                 if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
                     pDialog.dismiss();
+
                     if(isOnGpsFragment)
                     {
                         startPrepareFragment();
@@ -649,8 +710,18 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     }
 
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (pDialog != null) {
+            pDialog.dismiss();
+            pDialog = null;
+        }
 
+
+    }
 
 }
+
 
 

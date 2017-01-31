@@ -43,7 +43,7 @@ public class MyStatsAdapter extends RecyclerView.Adapter<MyStatsListHolder>{
 
         holder.mystats_cal_current.setText(""+cal);
         holder.mystats_cal_goal.setText(mData.get(position).getCaleries_goal());
-        holder.mystats_distance_current.setText(roundOffDecimals(mData.get(position).getDistance_current()));
+        holder.mystats_distance_current.setText(roundOffDecimals(mData.get(position).getDistance_current())+" km");
         holder.mystats_distance_goal.setText(mData.get(position).getDistance_goal());
 
 //        if(mData.get(position).getProfile_image() != "") {

@@ -221,7 +221,7 @@ public class SignIn extends AppCompatActivity {
                 Common.getInstance().setPassword(password.getText().toString());
 
 
-                DevicePreferences.getInstance().saverememberme(remember.isChecked());
+
 
                 DevicePreferences.getInstance().saveusers(Common.getInstance().getUser());
             }
@@ -270,6 +270,7 @@ public class SignIn extends AppCompatActivity {
             public void onSuccess(QBUser user, Bundle bundle) {
            //     qbUser.setId(user.getId());
 
+                DevicePreferences.getInstance().saverememberme(remember.isChecked());
                 DevicePreferences.getInstance().saveQbuser(qbUser);
 
                 removeLoader();
@@ -284,7 +285,7 @@ public class SignIn extends AppCompatActivity {
 
             @Override
             public void onError(QBResponseException e) {
-                Toast.makeText(SignIn.this, "QB signin failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignIn.this, "Your time/date is not correct", Toast.LENGTH_SHORT).show();
                 removeLoader();
 
             }

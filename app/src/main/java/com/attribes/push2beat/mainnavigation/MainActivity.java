@@ -186,6 +186,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void switchTabtoMusic()
+    {
+
+    }
+
     private void addTabsIcons() {
         tabView = LayoutInflater.from(this).inflate(R.layout.tab_item_layout,null);
         binding.tabs.getTabAt(0).setCustomView(tabView);

@@ -634,7 +634,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     }
 
     private void updateUIforGhostRider() {
-        binding.layoutTimerSubReplace.timerStop.setBackgroundResource(R.drawable.stop_ghost);
+  //      binding.layoutTimerSubReplace.timerStop.setBackgroundResource(R.drawable.stop_ghost);
         binding.layoutTimerSubReplace.btnGps.setVisibility(View.GONE);
         //binding.layoutTimerSubReplace.timerRecord.setVisibility(View.VISIBLE);
         binding.layoutCounterCal.timerRow.setBackgroundColor(getResources().getColor(R.color.secondary_dark_grey));
@@ -842,7 +842,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     private void ghostButtonCaller()
     {
             startGhostFragment();
-        binding.pickMusic.setVisibility(View.GONE);
+     //   binding.pickMusic.setVisibility(View.GONE);
     }
 
 
@@ -870,7 +870,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     {
 
             startCatchMeFragment();
-        binding.pickMusic.setVisibility(View.GONE);
+      //  binding.pickMusic.setVisibility(View.GONE);
 
     }
 
