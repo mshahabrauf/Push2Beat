@@ -58,6 +58,7 @@ public class MyStatsFragment extends android.support.v4.app.Fragment  {
                 mtBinding.loaderLayout.progressWheel.setVisibility(View.GONE);
                 setProfileImage(data.get(0).getProfile_image());
                 mtBinding.mystatsProfileName.setText(data.get(0).getFirst_name());
+               // mtBinding.mystatsProfileImage.setImageURI(data.get(0).getProfile_image());
                 mRecycle.setAdapter(new MyStatsAdapter(data, new RecyclerAdapterInterface() {
                     @Override
                     public void onstartCallback(int position) {

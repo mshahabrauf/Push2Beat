@@ -277,7 +277,9 @@ public class SignIn extends AppCompatActivity {
 
 
         //       Toast.makeText(getApplicationContext(), "QuickBlox SignIn Success", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SignIn.this, MainActivity.class));
+                Intent intent = new Intent(SignIn.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
 
 
 
@@ -347,30 +349,7 @@ public class SignIn extends AppCompatActivity {
         callbackManager1.onActivityResult(requestCode, resultCode, data);
     }
 
-    private String conversionInBase64Format(Uri selectedImage) {
 
-        InputStream inputStream = null;//You can get an inputStream using any IO API
-        try {
-            inputStream = new FileInputStream(String.valueOf(selectedImage));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        byte[] bytes;
-        byte[] buffer = new byte[8192];
-        int bytesRead;
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        try {
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                output.write(buffer, 0, bytesRead);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        bytes = output.toByteArray();
-        String encodedString = Base64.encodeToString(bytes, Base64.DEFAULT);
-
-        return encodedString;
-    }
 
 
 

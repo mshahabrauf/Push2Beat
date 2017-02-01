@@ -152,9 +152,12 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         switch ( Common.getInstance().getRunType())
         {
             case 0:
+                binding.pickMusic.setVisibility(View.VISIBLE);
                 break;
             case 1:
+                binding.pickMusic.setVisibility(View.VISIBLE);
                 playMusic();
+
                 break;
             case 2:
                ghostButtonCaller();
@@ -570,12 +573,10 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
 
-    private void showOpponentDetail(Datum datum) {
-       binding.layoutCounterCal.userFname.setText(datum.getUser_name()+" "+datum.getUser_lastname());
-       binding.layoutCounterCal.catchDistance.setText(Common.getInstance().calulateDistance(datum.getLat(),datum.getLng()));
-    }
+
 
     private void updateUiforCmifyc() {
+        binding.pickMusic.setVisibility(View.VISIBLE);
         binding.layoutTimerSubReplace.timerStop.setVisibility(View.GONE);
         binding.layoutTimerSubReplace.timeSubReplaceRow.setVisibility(View.VISIBLE);
         binding.layoutCounterCal.userRow.setVisibility(View.VISIBLE);
@@ -583,19 +584,13 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
     }
 
-    private void startLoaderFragment() {
-        LoaderFragment fragment = new LoaderFragment("Waiting for opponent...");
-        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        ft.add(R.id.container_full,fragment).commit();
 
-    }
 
     /**
      *
      * this is a callback of child fragment Ghost Rider
      * @param datum
      */
-
     public void onStartGhostRider(com.attribes.push2beat.models.Response.TrackList.Datum datum) {
 
         stopTimer();
@@ -634,6 +629,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     }
 
     private void updateUIforGhostRider() {
+        binding.pickMusic.setVisibility(View.VISIBLE);
   //      binding.layoutTimerSubReplace.timerStop.setBackgroundResource(R.drawable.stop_ghost);
         binding.layoutTimerSubReplace.btnGps.setVisibility(View.GONE);
         //binding.layoutTimerSubReplace.timerRecord.setVisibility(View.VISIBLE);
@@ -879,7 +875,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         public void onClick(View view) {
 
             stopMusic();
-
+            Common.getInstance().setOnSaveState(true);
 
             if (track.size() == 0 && !isGhostRider && !isUserOnTrackPosition) {
                 Toast.makeText(getContext(), "No Track found", Toast.LENGTH_SHORT).show();
@@ -914,8 +910,10 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     private class PickMusicListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(i,5);
+//            Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+//            startActivityForResult(i,5);
+
+            ((MainActivity) getActivity()).switchTabtoMusic();
         }
     }
 

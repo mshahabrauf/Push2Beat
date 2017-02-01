@@ -13,13 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="gone"
+
         android:gravity="right"
         android:layout_gravity="right"
         >
 
         <ImageView
             android:id="@+id/pick_music"
+            android:visibility="gone"
             android:layout_width="25dp"
             android:layout_height="20dp"
             android:src="@drawable/ic_music"

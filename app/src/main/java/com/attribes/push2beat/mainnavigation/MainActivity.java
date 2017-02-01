@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void switchTabtoMusic()
     {
+        binding.tabs.getTabAt(1).select();
 
     }
 
@@ -236,7 +237,11 @@ public class MainActivity extends AppCompatActivity {
         Common.getInstance().setCatchMeFromNotification(false);
         Common.getInstance().setRunType(0);
 
-        if(Common.getInstance().getFragmentCount() > 0) {
+        if(Common.getInstance().isOnSaveState())
+        {
+            ShowDialog();
+        }
+        else if(Common.getInstance().getFragmentCount() > 0) {
             Common.getInstance().resetFragmentCounter();
             restartThisActivity();
         }
@@ -244,6 +249,33 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+    private void ShowDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Alert");
+        builder.setCancelable(false);
+        builder.setMessage("Do you really want quit this without saving?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Common.getInstance().setOnSaveState(false);
+                onBackPressed();
+
+
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog  = builder.create();
+        alertDialog.show();
+    }
+
 
     private void restartThisActivity()
     {

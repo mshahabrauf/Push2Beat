@@ -36,6 +36,7 @@ public class Common {
     private boolean isCatchMeFromNotification = false;
     private List<LatLng> ghostTrack;
     private int fragmentCount = 0;
+    private boolean isOnSaveState =  false;
 
 
 
@@ -240,5 +241,13 @@ public class Common {
         pattern = Pattern.compile(EMAIL_PATTERN);
         matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    public boolean isOnSaveState() {
+        return isOnSaveState;
+    }
+
+    public void setOnSaveState(boolean onSaveState) {
+        isOnSaveState = onSaveState;
     }
 }

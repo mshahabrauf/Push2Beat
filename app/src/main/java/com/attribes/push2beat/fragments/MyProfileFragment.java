@@ -15,11 +15,13 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.Utils.OnSignUpSuccess;
+
 import com.attribes.push2beat.Utils.ReverseGeoLocationTask;
 import com.attribes.push2beat.databinding.FragmentMyProfileBinding;
 import com.attribes.push2beat.mainnavigation.MainActivityStart;
@@ -66,7 +68,7 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
 
     private void init() {
         mpBinding.profileImage.setOnClickListener(new ImageUploadListner());
-        mpBinding.userProfile.editName.setOnClickListener(new NameEditListner());
+        mpBinding.userProfile.userNameEdittv.setOnClickListener(new NameEditListner());
         mpBinding.logoutUserBtn.setOnClickListener(new LogOutListener());
     }
 
@@ -112,12 +114,12 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
         UpdateProfileDAL.updateProfile(profileParams, new OnSignUpSuccess() {
             @Override
             public void onSuccess() {
-
+                Toast.makeText(getContext(), "Profile is updated successfully", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure() {
-
+                Toast.makeText(getContext(), "Can't update your profile image", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -125,28 +127,15 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
 
     private String conversionInBase64Format(Uri selectedImage) {
 
-        InputStream inputStream = null;//You can get an inputStream using any IO API
-        try {
-            inputStream = new FileInputStream(String.valueOf(selectedImage));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        byte[] bytes;
-        byte[] buffer = new byte[8192];
-        int bytesRead;
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        try {
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                output.write(buffer, 0, bytesRead);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        bytes = output.toByteArray();
-        String encodedString = Base64.encodeToString(bytes, Base64.DEFAULT);
-
-        return encodedString;
+        Bitmap bm = BitmapFactory.decodeFile(String.valueOf(selectedImage));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+        byte[] b = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return encodedImage;
     }
+
+
 
     private void getMyProfileData() {
         GetProfileDAL.getProfileData(DevicePreferences.getInstance().getuser().getId(), new ProfileDataArrivalListner() {
