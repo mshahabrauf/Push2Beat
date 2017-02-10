@@ -14,11 +14,15 @@ import com.attribes.push2beat.models.Response.UserSignUp.SignupResponse;
 
 import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 /**
  * Created by Muhammad Shahab on 12/7/16.
@@ -56,9 +60,9 @@ public interface ApiInterface {
     @POST(EndPoints.MyStats_List)
     Call<MyStatsResponse> getMyStats(@Field("user_id")String user_id);
 
-    @FormUrlEncoded
+    @Multipart
     @POST(EndPoints.Update_Profile)
-    Call<UpdateProfileResponse> updateProfile(@FieldMap Map<String,Object> params);
+    Call<UpdateProfileResponse> updateProfile(@Part("user_id") RequestBody id,@Part("first_name") RequestBody fname,@Part("last_name") RequestBody lname, @Part MultipartBody.Part file);
 
     @FormUrlEncoded
     @POST(EndPoints.Social_Signup)

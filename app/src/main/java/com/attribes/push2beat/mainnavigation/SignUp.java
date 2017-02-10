@@ -69,8 +69,8 @@ public class SignUp extends AppCompatActivity {
 
                 user.setFirstName("" + username.getText().toString());
                 user.setLastName("");
-                user.setLongitude(""+DevicePreferences.getInstance().getLocation().getLatitude());
-                user.setLattitude(""+DevicePreferences.getInstance().getLocation().getLongitude());
+                user.setLongitude(""+DevicePreferences.getInstance().getLocation().getLongitude());
+                user.setLattitude(""+DevicePreferences.getInstance().getLocation().getLatitude());
                 user.setProfileImage("");
                 user.setEmail("" + email.getText().toString());
                 user.setPassword("" + password.getText().toString());

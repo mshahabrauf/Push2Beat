@@ -274,11 +274,9 @@ public class SignIn extends AppCompatActivity {
                 DevicePreferences.getInstance().saveQbuser(qbUser);
 
                 removeLoader();
-
-
-        //       Toast.makeText(getApplicationContext(), "QuickBlox SignIn Success", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(SignIn.this, MainActivity.class));
-
+                Intent intent = new Intent(SignIn.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
 
 
             }
@@ -416,8 +414,7 @@ public class SignIn extends AppCompatActivity {
      */
     public Action getIndexApiAction() {
         Thing object = new Thing.Builder()
-                .setName("SignIn Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
+                .setName("SignIn Page")
                 .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
                 .build();
         return new Action.Builder(Action.TYPE_VIEW)

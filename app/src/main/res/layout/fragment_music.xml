@@ -4,7 +4,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg"
+        android:background="@drawable/background"
         android:id="@+id/music_container">
 
     <LinearLayout
@@ -216,7 +216,7 @@
                     android:id="@+id/burn_calories"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="500+"
+                    android:text="50+"
 
                     android:maxLines="1"
                     android:textStyle="bold"
@@ -281,7 +281,7 @@
                         android:id="@+id/seven_hit_btn"
                         android:layout_width="75dp"
                         android:layout_height="50dp"
-                        android:text="$1.49"
+                        android:text="$1"
                         android:textColor="@color/white"
                         android:background="@color/primary_pink"
                         android:layout_alignTop="@+id/clock1"
@@ -338,7 +338,7 @@
 
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="500+"
+                    android:text="100+"
 
                     android:maxLines="1"
                     android:textStyle="bold"
@@ -403,7 +403,7 @@
                         android:id="@+id/fifteen_hit_btn"
                         android:layout_width="75dp"
                         android:layout_height="50dp"
-                        android:text="$2.99"
+                        android:text="$2"
                         android:textColor="@color/white"
                         android:background="@color/primary_pink"
                         android:layout_alignTop="@+id/clock2"
@@ -461,7 +461,7 @@
 
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="500+"
+                    android:text="230+"
 
                     android:maxLines="1"
                     android:textStyle="bold"
@@ -526,7 +526,7 @@
                         android:id="@+id/twentytwo_hit_btn"
                         android:layout_width="75dp"
                         android:layout_height="50dp"
-                        android:text="$4.49"
+                        android:text="$3"
                         android:textColor="@color/white"
                         android:background="@color/primary_pink"
                         android:layout_alignTop="@+id/clock3"
@@ -583,7 +583,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="500+"
+                    android:text="330+"
 
                     android:maxLines="1"
                     android:textStyle="bold"
@@ -648,7 +648,7 @@
                         android:id="@+id/thirty_hit_btn"
                         android:layout_width="75dp"
                         android:layout_height="50dp"
-                        android:text="$5.99"
+                        android:text="$4"
                         android:textColor="@color/white"
                         android:background="@color/primary_pink"
                         android:layout_alignTop="@+id/clock4"
@@ -705,7 +705,7 @@
 
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="500+"
+                    android:text="440+"
 
                     android:maxLines="1"
                     android:textStyle="bold"

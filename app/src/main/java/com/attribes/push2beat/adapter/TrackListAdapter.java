@@ -23,6 +23,9 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListHolder> {
     private RecyclerAdapterInterface listener;
 
 
+
+
+
     public TrackListAdapter(List<Datum> data,RecyclerAdapterInterface listener)
     {
         this.data = data;

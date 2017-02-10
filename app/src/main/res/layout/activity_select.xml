@@ -4,7 +4,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg"
+        android:background="@drawable/background"
         android:id="@+id/main_container">
 
 
@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:padding="@dimen/activity_horizontal_margin"
             android:orientation="vertical"
-            android:background="@drawable/bg">
+            android:background="@drawable/background">
 
 
 
@@ -44,7 +44,7 @@
                     android:background="#CD1253"
                     android:id="@+id/btn"
                     android:layout_marginTop="20dp"
-                    android:text="START YOUR HIIT WORKOUT"
+                    android:text="HIIT WORKOUT"
                     android:textColor="#ffffff"/>
 
             <Button

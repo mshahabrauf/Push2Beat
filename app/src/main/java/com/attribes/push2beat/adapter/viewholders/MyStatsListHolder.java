@@ -15,12 +15,14 @@ public class MyStatsListHolder extends RecyclerView.ViewHolder {
     public TextView mystats_distance_goal;
     public TextView mystats_cal_current;
     public TextView mystats_distance_current;
+    public TextView mystats_type;
 
 
     public MyStatsListHolder(View itemView) {
         super(itemView);
 
             mystats_cal_goal = (TextView) itemView.findViewById(R.id.mystats_calories_goal);
+            mystats_type = (TextView) itemView.findViewById(R.id.stats_type);
             mystats_distance_goal  = (TextView) itemView.findViewById(R.id.mystats_distance_goal);
             mystats_cal_current  = (TextView) itemView.findViewById(R.id.mystats_calorietv);
             mystats_distance_current  = (TextView) itemView.findViewById(R.id.mystats_distancetv);

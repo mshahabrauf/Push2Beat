@@ -1,7 +1,9 @@
 package com.attribes.push2beat.fragments;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +17,7 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.Common;
@@ -22,6 +25,7 @@ import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.Utils.OnSignUpSuccess;
 import com.attribes.push2beat.Utils.ReverseGeoLocationTask;
 import com.attribes.push2beat.databinding.FragmentMyProfileBinding;
+import com.attribes.push2beat.mainnavigation.MainActivity;
 import com.attribes.push2beat.mainnavigation.MainActivityStart;
 import com.attribes.push2beat.models.BodyParams.UpdateProfileParams;
 import com.attribes.push2beat.models.Response.MyProfileResponse;
@@ -31,12 +35,13 @@ import com.attribes.push2beat.network.interfaces.ProfileDataArrivalListner;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -50,6 +55,7 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
     private static final int REQUEST_CAMERA = 3;
     private static final int SELECT_FILE = 4;
     UpdateProfileParams profileParams = new UpdateProfileParams();
+   private String username;
 
     public MyProfileFragment() {
     }
@@ -78,92 +84,106 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
             case REQUEST_CAMERA:
                     if(resultCode == RESULT_OK) {
                         Bitmap photo = (Bitmap) data.getExtras().get("data");
+                        Uri uri = getImageUri(getContext(),photo);
+                     //  String base =  convertBitmaptoBase64(photo);
+                        updateProfilePic(uri);
 
-                       String base =  convertBitmaptoBase64(photo);
-                        updateProfilePic(base);
-
-                        mpBinding.profileImage.setImageBitmap(photo);
+                        mpBinding.profileImage.setImageURI(uri);
                     }
                 break;
             case SELECT_FILE:
-
+                if(resultCode == RESULT_OK) {
                     Uri selectedImagefile = data.getData();
-                String encodedProfileImageString = conversionInBase64Format(selectedImagefile);
-                    updateProfilePic(encodedProfileImageString);
+                    updateProfilePic(selectedImagefile);
                     mpBinding.profileImage.setImageURI(selectedImagefile);
-
+                }
                 break;
         }
     }
 
-    private String convertBitmaptoBase64(Bitmap photo) {
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        photo.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
-        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        return encoded;
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
-    private void updateProfilePic(String selectedImage) {
+    private void updateProfilePic(Uri selectedImage) {
 
         profileParams.setUser_id(DevicePreferences.getInstance().getuser().getId());
-        profileParams.setProfile_image(selectedImage);
-        UpdateProfileDAL.updateProfile(profileParams, new OnSignUpSuccess() {
+        profileParams.setFirst_name(mpBinding.userProfile.userNameTv.getText().toString());
+        profileParams.setLast_name("");
+     //   profileParams.setProfile_image(selectedImage);
+
+
+       File file = new File(getRealPathFromURI(getContext(),selectedImage));
+        //File file = FileUtils.getFile(getContext(),selectedImage);
+
+
+        RequestBody requestFile =
+                RequestBody.create(
+                        MediaType.parse("multipart/form-data"),file
+                );
+
+
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("e_pic1", file.getName(), requestFile);
+
+
+
+
+        UpdateProfileDAL.updateProfile(profileParams,body, new OnSignUpSuccess() {
             @Override
             public void onSuccess() {
 
+                Toast.makeText(getContext(), "Profile updated successfully ", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
 
             @Override
             public void onFailure() {
-
+                Toast.makeText(getContext(), "update failed ", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private String conversionInBase64Format(Uri selectedImage) {
 
-        InputStream inputStream = null;//You can get an inputStream using any IO API
+
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
         try {
-            inputStream = new FileInputStream(String.valueOf(selectedImage));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        byte[] bytes;
-        byte[] buffer = new byte[8192];
-        int bytesRead;
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        try {
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                output.write(buffer, 0, bytesRead);
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        bytes = output.toByteArray();
-        String encodedString = Base64.encodeToString(bytes, Base64.DEFAULT);
-
-        return encodedString;
     }
+
+
 
     private void getMyProfileData() {
         GetProfileDAL.getProfileData(DevicePreferences.getInstance().getuser().getId(), new ProfileDataArrivalListner() {
             @Override
             public void onDataRecieved(MyProfileResponse.Data data) {
+                username = "" + data.getFirst_name();
                 mpBinding.userProfileName.setText("" + data.getFirst_name());
                 mpBinding.userProfile.userNameTv.setText("" + data.getFirst_name());
                 mpBinding.userProfile.userMailTv.setText("" + data.getEmail());
                 makeAddressFromLatLong(data.getLattitude(),data.getLongitude());
                if(data.getProfile_image() != null) {
-                   if (data.getProfile_image().contains("http")) {
-                       mpBinding.profileImage.setImageURI(Uri.parse(data.getProfile_image()));
-                   } else {
-                       mpBinding.profileImage.setImageBitmap(decodeImage(data.getProfile_image()));
-                   }
 
                    setProfileImage(data.getProfile_image());
+
+//                   mpBinding.profileImage.setImageURI(Uri.parse(data.getProfile_image()));
                    Common.getInstance().setProfile_image(data.getProfile_image());
 
                }
@@ -178,11 +198,8 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
 
     private void setProfileImage(String profileImage) {
 
-        if(profileImage == null) {
-            mpBinding.profileImage.setBackgroundResource(R.drawable.placeholder);
-        }else{
+
             Picasso.with(getActivity()).load(profileImage).placeholder(R.drawable.placeholder).into(mpBinding.profileImage);
-        }
     }
 
     private void makeAddressFromLatLong(String lattitude, String longitude) {
@@ -271,6 +288,7 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
     private class LogOutListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            ((MainActivity)getActivity()).stopMusic();
             DevicePreferences.getInstance().saverememberme(false);
             DevicePreferences.getInstance().removeUserObject();
             Intent intent = new Intent(getActivity(), MainActivityStart.class);
@@ -298,18 +316,33 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
                 params.setUser_id(DevicePreferences.getInstance().getuser().getId());
                 params.setFirst_name(editedName);
                 params.setLast_name("");
-                params.setProfile_image(Common.getInstance().getProfile_image());
-                UpdateProfileDAL.updateProfile(params, new OnSignUpSuccess() {
-                    @Override
-                    public void onSuccess() {
-                        getMyProfileData();
-                    }
 
-                    @Override
-                    public void onFailure() {
 
-                    }
-                });
+//                File file = new File(selectedImage.getPath());
+//                //File file = FileUtils.getFile(getContext(),selectedImage);
+//
+//
+//                RequestBody requestFile =
+//                        RequestBody.create(
+//                                MediaType.parse(getContext().getContentResolver().getType(selectedImage)),
+//                                file
+//                        );
+//
+//
+//                MultipartBody.Part body =  MultipartBody.Part.createFormData("e_pic1", file.getName(), requestFile);
+//
+//                params.setProfile_image(Common.getInstance().getProfile_image());
+//                UpdateProfileDAL.updateProfile(params, body, new OnSignUpSuccess() {
+//                    @Override
+//                    public void onSuccess() {
+//                        getMyProfileData();
+//                    }
+//
+//                    @Override
+//                    public void onFailure() {
+//
+//                    }
+//                });
 
 
             }

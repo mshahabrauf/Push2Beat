@@ -5,7 +5,7 @@
 
     <string name="facebook_app_id">1281291265227739</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="track_hint">Track name: </string>
     <string name="distance">Distance:</string>

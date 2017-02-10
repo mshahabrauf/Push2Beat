@@ -145,7 +145,7 @@
 
             <ImageView
                 android:id="@+id/btn_add_track"
-                android:layout_width="80dp"
+                android:layout_width="100dp"
                 android:layout_height="30dp"
                 android:visibility="gone"
                 android:background="@drawable/save_track"/>
