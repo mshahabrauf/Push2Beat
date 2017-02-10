@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main_start"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+<RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:padding="@dimen/activity_vertical_margin">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <ImageView android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/p2b_icon"
+                   android:layout_margin ="20dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="100dp"
+            android:padding="20dp">
+
+
+    <EditText
+            android:id="@+id/usersignin"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#ffffff"
+            android:padding="10dp"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/ic_action_name"
+            android:drawableStart="@drawable/ic_action_name"
+            android:layout_marginTop="24dp"
+            android:hint="Email"
+            android:inputType="textWebEmailAddress"/>
+
+
+
+    <EditText
+            android:id="@+id/userpassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#ffffff"
+            android:padding="13dp"
+            android:drawablePadding="13dp"
+            android:drawableLeft="@drawable/ic_password"
+
+            android:layout_marginTop="24dp"
+            android:hint="Password"
+            android:inputType="textPassword"/>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+    <CheckBox
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:button="@drawable/selector"
+        android:gravity="center"
+            android:background="@drawable/blackcheckbox"
+            android:id="@+id/checkBox"/>
+
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remember me"
+            android:textColor="#ffffff"
+            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_centerVertical="true"/>
+
+    <ImageView
+            android:id="@+id/signinuser"
+            android:layout_width="120dp"
+            android:layout_height="80dp"
+            android:background="@drawable/signin"
+            android:textColor="#ffffff"
+            android:layout_marginTop="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"/>
+</RelativeLayout>
+
+
+
+     <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical">
+
+     <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="Or login with your facebook"
+             android:textColor="#ffffff"
+
+             android:gravity="center"
+             android:layout_marginBottom="20dp"/>
+     </LinearLayout>
+
+        <ImageButton
+
+            android:id="@+id/login_button1"
+            android:layout_width="195dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fbbutton"
+            android:layout_gravity="center_horizontal"
+
+                        />
+
+</LinearLayout>
+
+</RelativeLayout>
+</FrameLayout>

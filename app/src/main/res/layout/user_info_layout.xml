@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+    <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_action_name"/>
+
+    <TextView
+            android:id="@+id/user_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MBK Alam"
+            android:layout_gravity="center"
+            android:gravity="center|left"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:textColor="@color/black"/>
+
+        <EditText
+                android:id="@+id/user_name_edittv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
+                android:textColor="@color/black"
+                android:visibility="gone"/>
+        <ImageView
+            android:id="@+id/edit_name"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:src="@android:drawable/ic_menu_edit"
+            android:backgroundTint="@color/white"
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="25dp">
+
+        <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_email"/>
+
+        <TextView
+                android:id="@+id/user_mail_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="maazkhursheed2@gmail.com"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
+                android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="25dp">
+
+        <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_gps"/>
+
+        <TextView
+                android:id="@+id/user_loc_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Briz Vegas , Australia"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
+                android:textColor="@color/black"/>
+
+    </LinearLayout>
+</LinearLayout>
+</layout>

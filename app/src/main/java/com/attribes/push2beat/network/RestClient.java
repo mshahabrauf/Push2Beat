@@ -25,6 +25,7 @@ public class RestClient {
     private static final int TIMEOUT = 25;
     private static ApiInterface restClient;
 
+
     static {
         setupClient();
     }
@@ -33,7 +34,10 @@ public class RestClient {
 
         setupRestClient();
 
+
     }
+
+
 
     private static void setupRestClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -45,7 +49,7 @@ public class RestClient {
                         Request request = chain.request();
                         Request newRequest;
                         newRequest = request.newBuilder()
-                                .addHeader("accept", "application/json")
+                                .addHeader("Accept", "application/json")
                                 .build();
                         return chain.proceed(newRequest);
                     }
@@ -71,5 +75,7 @@ public class RestClient {
     public static ApiInterface getAuthAdapter(){
         return restClient;
     }
+
+
 }
 

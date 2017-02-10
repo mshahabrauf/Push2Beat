@@ -1,0 +1,91 @@
+
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id="@+id/container_full"
+              android:clickable="true"
+
+              android:background="@drawable/background" >
+
+
+    <FrameLayout
+            android:id="@+id/container_above"
+            android:padding="20dp"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            />
+
+
+<FrameLayout
+    android:clickable="true"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="2.5"
+
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:id="@+id/layout_below"
+    >
+    <android.support.v7.widget.CardView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+           >
+
+
+        <include android:id="@+id/layout_counter_cal"
+            layout="@layout/timer_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           />
+
+
+        <include
+            android:id="@+id/layout_timer_sub_replace"
+            layout="@layout/timer_sub_replace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            />
+
+        <include
+
+            android:id="@+id/timer_ghost"
+            layout="@layout/timer_ghost"
+            android:layout_height="60dp"
+            android:layout_width="match_parent"
+
+       />
+
+        <include
+            android:id="@+id/timer_cmiyc"
+            layout="@layout/timer_cmiyc"
+            android:layout_height="60dp"
+            android:layout_width="match_parent"
+           />
+
+
+
+
+    </LinearLayout>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
+
+
+</FrameLayout>
+
+</LinearLayout>
+</layout>

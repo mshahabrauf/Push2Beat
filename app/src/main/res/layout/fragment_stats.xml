@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+           >
+
+    <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp" >
+
+
+        <RelativeLayout
+                android:id="@+id/stats_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/secondary_dark_black"
+                android:layout_marginTop="110dp">
+
+            <ImageView
+                android:id="@+id/share_btn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@android:drawable/ic_menu_share"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                    android:id="@+id/stats_profile_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Maaz Khursheed"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    android:gravity="center"
+                    android:padding="30dp"/>
+        </RelativeLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/stats_profile_image"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:src="@drawable/placeholder"
+                app:civ_border_width="4dp"
+                app:civ_border_color="@color/secondary_red"
+                android:scaleType="centerCrop"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"/>
+        <LinearLayout
+                android:id="@+id/user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_below="@+id/stats_layout"
+                android:layout_marginTop="15dp"
+                android:padding="20dp"
+                android:orientation="vertical">
+
+            <include android:id="@+id/layoutUser"
+                     layout="@layout/track_name_layout"/>
+
+        </LinearLayout>
+
+        <FrameLayout
+                android:id="@+id/stats_map_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@+id/user"/>
+
+        <include android:id="@+id/layoutUserStats"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 layout="@layout/user_track_info_layout"
+                 android:layout_below="@+id/stats_map_view"/>
+
+        <include android:id="@+id/layout_gudjob"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 layout="@layout/stats_gudjob_layout"
+                 android:layout_below="@+id/layoutUserStats"/>
+
+    </RelativeLayout>
+    </ScrollView>
+</layout>

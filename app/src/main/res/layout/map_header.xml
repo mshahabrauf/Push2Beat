@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/map_header_root"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/small_padding"
+
+    android:gravity="center_horizontal"
+    >
+
+    <TextView
+        android:id="@+id/terrain"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Terrain"
+
+        android:textSize="@dimen/medium_text_size"
+        android:textColor="@color/secondary_red"
+        />
+    
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_marginLeft="7dp"
+        android:layout_height="25dp"
+        android:src="@drawable/gps_white"
+        />
+
+    <TextView
+        android:id="@+id/satelite"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="7dp"
+        android:text="Satellite"
+        android:textColor="@color/white"
+        android:textSize="@dimen/medium_text_size"
+        />
+
+
+</LinearLayout>
+</layout>

@@ -9,8 +9,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.attribes.push2beat.fragments.PlaceholderFragment;
-import com.attribes.push2beat.mainnavigation.MainActivity;
+import com.attribes.push2beat.Utils.Common;
+import com.attribes.push2beat.fragments.GpsFragment;
+import com.attribes.push2beat.fragments.MusicFragment;
+import com.attribes.push2beat.fragments.MyProfileFragment;
+import com.attribes.push2beat.fragments.MyStatsFragment;
+import com.attribes.push2beat.fragments.SelectFragment;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -22,11 +26,52 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
+
+
     @Override
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
-        return PlaceholderFragment.newInstance(position + 1);
+        switch (position)
+        {
+            case 0:
+
+                if(Common.getInstance().getRunType() == 3)
+                {
+                    GpsFragment gpsFragment = new GpsFragment();
+                    return gpsFragment;
+
+                }
+                else {
+                    SelectFragment selectFragment = new SelectFragment();
+                    return selectFragment;
+                }
+
+//                switch (Common.getInstance().getRunType()) {
+//                    case 1: MusicFragment musicFragment = new MusicFragment(true);
+//                        return musicFragment;
+//                    case 2:
+//                    case 3:
+//                }
+            case 1:
+                MusicFragment musicFragment = new MusicFragment();
+                return musicFragment;
+            case 2:
+                MyStatsFragment myStatsFragment = new MyStatsFragment();
+                return myStatsFragment;
+            case 3:
+                MyProfileFragment myProfileFragment = new MyProfileFragment();
+                return myProfileFragment;
+            default:
+                return null;
+
+
+
+
+        }
+
+
+     //   return PlaceholderFragment.newInstance(position + 1);
     }
 
     @Override
@@ -41,7 +86,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return "GPS";
             case 1:
-                return "WORKOUT";
+                return "Music";
             case 2:
                 return "Stats";
             case 3:
@@ -49,4 +94,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         }
         return null;
     }
+
+
 }

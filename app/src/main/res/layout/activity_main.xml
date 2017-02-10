@@ -4,15 +4,16 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg">
+    android:background="@drawable/background">
 
     <include android:id="@+id/appbar"
         layout="@layout/custom_app_bar"/>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
+        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         app:tabMode="fixed"
         android:layout_alignParentBottom="true"
         app:tabGravity="fill"/>

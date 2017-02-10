@@ -5,5 +5,9 @@ package com.attribes.push2beat.network;
  */
 
 public class NetworkConstant {
-    public static String base_url ="http://verfix.com/push2beat/index.php/services";
+    public static final String base_url ="http://verfix.com/push2beat/index.php/services/";
+
+
+
+
 }

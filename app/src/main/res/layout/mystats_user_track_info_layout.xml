@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@color/white"
+                  android:padding="20dp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/stats_icon"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calories Burnt:"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:paddingLeft="20dp"
+                    android:paddingStart="20dp"
+                    android:textColor="@color/primary_pink"/>
+
+            <TextView
+                    android:id="@+id/mystats_calburnt_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1,024"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="25dp"
+                    android:background="@drawable/stats_icon"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Distance Travelled:"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:paddingLeft="20dp"
+                    android:paddingStart="20dp"
+                    android:textColor="@color/primary_pink"/>
+
+            <TextView
+                    android:id="@+id/mystats_distancetravelled_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1.26km"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="25dp"
+                    android:background="@drawable/stats_icon"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Top Speed:"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:paddingLeft="20dp"
+                    android:paddingStart="20dp"
+                    android:textColor="@color/primary_pink"/>
+
+            <TextView
+                    android:id="@+id/mystats_topspeed_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="32 km/h"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="25dp"
+                    android:background="@drawable/stats_icon"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Average Speed:"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:paddingLeft="20dp"
+                    android:paddingStart="20dp"
+                    android:textColor="@color/primary_pink"/>
+
+            <TextView
+                    android:id="@+id/mystats_averagespeed_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="16 km/h"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/black"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

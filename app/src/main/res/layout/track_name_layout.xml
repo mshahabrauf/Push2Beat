@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<RelativeLayout
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Track:"
+            android:textColor="@color/secondary_red"
+            android:id="@+id/textView"/>
+
+    <TextView
+            android:id="@+id/track_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Killin itn Stuff"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView"
+            android:layout_toEndOf="@+id/textView"/>
+
+    <TextView
+            android:id="@+id/track_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="28/12/2016"
+            android:layout_gravity="end"
+            android:textColor="@color/secondary_red"
+            android:layout_alignParentTop="true" android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>
+</layout>

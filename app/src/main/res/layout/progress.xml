@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/progress_wheel"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="invisible"
+        android:background="@android:color/transparent"
+        app:indicatorName="LineScaleIndicator"
+        app:indicatorColor="@color/secondary_red"
+        android:layout_gravity="center_horizontal"
+
+        />
+</layout>

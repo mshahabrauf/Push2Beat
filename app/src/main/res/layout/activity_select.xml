@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background"
+        android:id="@+id/main_container">
+
+
+
+
+
+        <LinearLayout
+
+            android:id="@+id/root_selector"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:orientation="vertical"
+            android:background="@drawable/background">
+
+
+
+            <include
+
+                android:id="@+id/timer_ghost"
+                layout="@layout/timer_ghost"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginTop="@dimen/extra_large_margin"/>
+
+            <include
+                android:id="@+id/timer_cmiyc"
+                layout="@layout/timer_cmiyc"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginTop="15dp"/>
+
+
+            <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="#CD1253"
+                    android:id="@+id/btn"
+                    android:layout_marginTop="20dp"
+                    android:text="HIIT WORKOUT"
+                    android:textColor="#ffffff"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="#CD1253"
+                android:id="@+id/move_now"
+                android:layout_marginTop="20dp"
+                android:text="MOVE NOW"
+                android:textColor="#ffffff"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Start Your Engines!!"
+                    android:layout_marginTop="80dp"
+                    android:textSize="@dimen/medium_text_size"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textColor="#ffffff"/>
+
+        </LinearLayout>
+    </FrameLayout>
+
+</layout>
