@@ -123,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Common.getInstance().setRunType(0);
-                restartThisActivity();
+               // Common.getInstance().setRunType(0);
+               // restartThisActivity();
 
             }
         });
@@ -151,6 +151,11 @@ public class MainActivity extends AppCompatActivity {
         tabView = LayoutInflater.from(this).inflate(R.layout.tab_item_layout_profile,null);
         binding.tabs.getTabAt(3).setCustomView(tabView);
 
+    }
+
+    public void refreshPager()
+    {
+        mViewPager.getAdapter().notifyDataSetChanged();
     }
 
 
@@ -341,6 +346,7 @@ public class MainActivity extends AppCompatActivity {
             }
             if(isCatcheMe)
             {
+
                 Common.getInstance().setCatchMeFromUser(isCatcheMe);
                 Common.getInstance().setRunType(3);
 

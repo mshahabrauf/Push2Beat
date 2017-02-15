@@ -37,6 +37,7 @@ public class Common {
     private List<LatLng> ghostTrack;
     private int fragmentCount = 0;
     private boolean isOnSaveState;
+    private boolean isOpponentLeave = false;
 
 
     private Common() {
@@ -248,5 +249,13 @@ public class Common {
 
     public void setOnSaveState(boolean onSaveState) {
         isOnSaveState = onSaveState;
+    }
+
+    public boolean isOpponentLeave() {
+        return isOpponentLeave;
+    }
+
+    public void setOpponentLeave(boolean opponentLeave) {
+        isOpponentLeave = opponentLeave;
     }
 }

@@ -92,6 +92,9 @@ public class MyStatsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             {
                 holder1.title.setVisibility(View.VISIBLE);
             }
+            else {
+                holder1.title.setVisibility(View.GONE);
+            }
 
 
 
@@ -104,6 +107,8 @@ public class MyStatsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             holder1.distance.setText(String.valueOf(Math.round(dist * 100) / 100)+"km");
             holder1.averageSpeed.setText(mTracks.get(position-mData.size()).getAverage_speed()+"km/hr");
             holder1.topSpeed.setText(mTracks.get(position-mData.size()).getTop_speed()+"km/hr");
+            holder1.trackName.setText(mTracks.get(position-mData.size()).getTrack_name());
+            holder1.date.setText(mTracks.get(position-mData.size()).getTrack_time());
 
 
 

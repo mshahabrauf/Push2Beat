@@ -16,6 +16,9 @@ public class AddTrackParams {
     private double end_longitude;
     private  String track_path;
     private int track_type;
+    private double average_speed;
+    private double top_speed;
+
 
     public String getTrack_name() {
         return track_name;
@@ -101,5 +104,21 @@ public class AddTrackParams {
 
     public void setTrack_type(int track_type) {
         this.track_type = track_type;
+    }
+
+    public double getAverage_speed() {
+        return average_speed;
+    }
+
+    public void setAverage_speed(double average_speed) {
+        this.average_speed = average_speed;
+    }
+
+    public double getTop_speed() {
+        return top_speed;
+    }
+
+    public void setTop_speed(double top_speed) {
+        this.top_speed = top_speed;
     }
 }

@@ -32,6 +32,8 @@ public class AddTrackDAL {
         params.put("end_longitude",data.getEnd_longitude());
         params.put("track_path",data.getTrack_path());
         params.put("track_type",data.getTrack_type());
+        params.put("top_speed",data.getAverage_speed());
+        params.put("average_speed",data.getTop_speed());
 
 
 

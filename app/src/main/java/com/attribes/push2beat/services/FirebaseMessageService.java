@@ -2,7 +2,9 @@ package com.attribes.push2beat.services;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 
+import com.attribes.push2beat.R;
 import com.attribes.push2beat.Utils.ChallengeDialog;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.DevicePreferences;
@@ -12,6 +14,12 @@ import com.attribes.push2beat.network.DAL.GetProfileDAL;
 import com.attribes.push2beat.network.interfaces.ProfileDataArrivalListner;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import android.app.PendingIntent;
+import android.app.NotificationManager;
+import android.app.Notification;
+import android.content.Context;
+import android.media.RingtoneManager;
+import android.net.Uri;
 
 import java.util.Map;
 
@@ -31,16 +39,36 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         {
             if(remoteMessage.getData().get("text").contains("beaten"))
             {
-                restartCatchActivity(remoteMessage.getData().get("text"));
+                showNotification(remoteMessage.getData().get("text"));
+                Common.getInstance().setOpponentLeave(true);
+               // restartCatchActivity(remoteMessage.getData().get("text"));
             }
             else {
                 handleRequest(remoteMessage.getData());
+                showNotification(remoteMessage.getData().get("text"));
             }
         }
 
     }
 
+    private void showNotification(String text) {
+        Intent intent=new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
+       Uri notificationsound= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder nBuilder=new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.catch_me_icon)
+                .setContentTitle("Catch me if you can")
+                .setContentText(text)
+                .setSound(notificationsound)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setPriority(Notification.PRIORITY_HIGH)
+                .setAutoCancel(true);
+               // .setContentIntent(pendingIntent);
+        NotificationManager notificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify((int) System.currentTimeMillis(),nBuilder.build());
+    }
 
 
     private void handleRequest(Map<String, String> data) {

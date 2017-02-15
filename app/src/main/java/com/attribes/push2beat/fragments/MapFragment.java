@@ -120,7 +120,6 @@ public class MapFragment extends android.support.v4.app.Fragment {
             if(opponent != null)
             {
                 map.addMarker(opponent);
-
             }
 
             if(startLocation!=null) {
@@ -180,7 +179,7 @@ public class MapFragment extends android.support.v4.app.Fragment {
         {
             start.remove();
             end.remove();
-            line.remove();
+        //    line.remove();
         }
     }
 

@@ -79,6 +79,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     private Location startLocation;
     private Location curr;
     private Location prev;
+    private boolean isCatchRunFinished = false;
     private SpeedoMeterFragment speedMeterFragment;
 
     private double totalDistance = 0;
@@ -151,6 +152,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
             case 0:
               //  ((MainActivity)getActivity()).showMusicIcon();
                // binding.pickMusic.setVisibility(View.VISIBLE);
+
                 ((MainActivity)getActivity()).showMusicIcon();
                 showGhostAndCMButton();
                 break;
@@ -481,10 +483,18 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         model.setCaleries_burnt(burntCalories);
         model.setTrack_time(""+ hrs + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs));
         model.setGenrated_by(Integer.parseInt(DevicePreferences.getInstance().getuser().getId()));
-        model.setTrack_type(Common.getInstance().getRunType()); // 1 for simple run, 2 for ghots rider and 3 for catch me if you can
-
+        if(Common.getInstance().getRunType() == 0)
+        {
+            model.setTrack_type(1);
+        }
+        else {
+            model.setTrack_type(Common.getInstance().getRunType()); // 1 for simple run, 2 for ghots rider and 3 for catch me if you can
+        }
+        model.setTop_speed(Collections.max(speedList));
+        model.setAverage_speed(calculateAverageSpeed(speedList));
 
         AddTrackDAL.postTrack(model,getContext());
+        //((MainActivity)getActivity()).refreshPager();
 
 
     }
@@ -607,7 +617,8 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         //((MainActivity)getActivity()).showMusicIcon();
         //binding.pickMusic.setVisibility(View.VISIBLE);
         ((MainActivity)getActivity()).changeTitle("Catch Me If You Can");
-        binding.layoutTimerSubReplace.timerStop.setVisibility(View.GONE);
+       // binding.layoutTimerSubReplace.timerStop.setVisibility(View.VISIBLE);
+       // binding.layoutTimerSubReplace.btnGps.setVisibility(View.VISIBLE);
         binding.layoutTimerSubReplace.timeSubReplaceRow.setVisibility(View.VISIBLE);
         binding.layoutCounterCal.userRow.setVisibility(View.VISIBLE);
         binding.layoutCounterCal.timerRow.setVisibility(View.GONE);
@@ -698,6 +709,10 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                 prev = curr;
            // }
 
+            if(Common.getInstance().isOpponentLeave())
+            {
+                binding.layoutTimerSubReplace.timerStop.callOnClick();
+            }
             if(isCatchMeIfYouCan)
             {
                 QBChatMessage message = new QBChatMessage();
@@ -853,6 +868,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         data.setTrackname(binding.layoutCounterCal.trackName.getText().toString());
 
 
+
         StatsFragment fragment = new StatsFragment(data);
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
 
@@ -934,6 +950,11 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                 getMapFragment().showRoute(track);
                 if(!isGhostRider && !isCatchMeIfYouCan) {
                     getMapFragment().updateUIonStop(String.valueOf(Math.round(totalDistance * 100) / 100), String.valueOf(speed));
+                }
+
+                if(isCatchMeIfYouCan)
+                {
+                    ChallengeResultDAL.sendResultChallenge(Common.getInstance().getOppData().getId(),DevicePreferences.getInstance().getuser().getId());
                 }
                 saveRoute();
                 uiUpdate();

@@ -4,12 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ScrollingView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,21 +22,42 @@ import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.databinding.FragmentStatsBinding;
 import com.attribes.push2beat.models.StatsData;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
+import java.util.List;
+
+import android.graphics.Canvas;
+
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static android.graphics.Bitmap.Config.ARGB_8888;
 
 /**
  * Created by android on 12/20/16.
  */
 
-public class StatsFragment extends Fragment {
+public class StatsFragment extends Fragment implements OnMapReadyCallback {
 
     private FragmentStatsBinding binding;
 
     private StatsData data;
+    private GoogleMap googleMap;
+    private Marker start;
+    private Marker end;
+    private Polyline line;
+
     public StatsFragment() {}
 
     @SuppressLint("ValidFragment")
@@ -45,11 +69,22 @@ public class StatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_stats,container,false);
         View view = binding.getRoot();
-        initMapFragment();
+
+       // initMapFragment();
+        initMap();
         initUi();
         initListener();
         return view;
 
+    }
+
+    private void initMap() {
+        if(binding.statsMapView !=null) {
+            binding.statsMapView.onCreate(null);
+            binding.statsMapView.onResume();
+            binding.statsMapView.getMapAsync(this);
+            binding.statsMapView.setClickable(false);
+        }
     }
 
     private void initListener() {
@@ -60,6 +95,7 @@ public class StatsFragment extends Fragment {
 
             }
         });
+
 
         binding.shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,10 +148,25 @@ public class StatsFragment extends Fragment {
             String mPath = Environment.getExternalStorageDirectory().toString() + "/" + now + ".jpg";
 
             // create bitmap screen capture
-            View v1 = getActivity().getWindow().getDecorView().getRootView();
-            v1.setDrawingCacheEnabled(true);
-            Bitmap bitmap = Bitmap.createBitmap(v1.getDrawingCache());
-            v1.setDrawingCacheEnabled(false);
+
+            GoogleMap.SnapshotReadyCallback map = new GoogleMap.SnapshotReadyCallback() {
+                @Override
+                public void onSnapshotReady(Bitmap bitmap) {
+
+                }
+            };
+
+
+            Bitmap bitmap = Bitmap.createBitmap(
+                    binding.scrollView.getChildAt(0).getWidth(),
+                    binding.scrollView.getChildAt(0).getHeight(),
+                    Bitmap.Config.ARGB_8888);
+
+            binding.scrollView.layout(0, 0, binding.scrollView.getLayoutParams().width, binding.scrollView.getLayoutParams().height);
+
+
+            Canvas c = new Canvas(bitmap);
+            binding.scrollView.getChildAt(0).draw(c);
 
             imageFile = new File(mPath);
 
@@ -143,17 +194,17 @@ public class StatsFragment extends Fragment {
         return uri;
     }
 
-    private void initMapFragment() {
-        MapFragment fragment = new MapFragment(DevicePreferences.getInstance().getLocation(), new MapListener() {
-            @Override
-            public void onMapReady() {
-                getMapFragment().showRoute(data.getPath());
-                getMapFragment().hideHeader();
-            }
-        });
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.stats_map_view,fragment, Constants.STATS_MAP_TAG).commit();
-    }
+//    private void initMapFragment() {
+//        MapFragment fragment = new MapFragment(DevicePreferences.getInstance().getLocation(), new MapListener() {
+//            @Override
+//            public void onMapReady() {
+  //              getMapFragment().showRoute(data.getPath());
+//                getMapFragment().hideHeader();
+//            }
+//        });
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.replace(R.id.stats_map_view,fragment, Constants.STATS_MAP_TAG).commit();
+//    }
 
 
     private MapFragment getMapFragment()
@@ -163,6 +214,43 @@ public class StatsFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        showRoute(data.getPath());
+
+    }
+
+    public void showRoute(List<LatLng> track) {
+
+        if(track != null){
+            for (int i = 0; i < track.size() - 1; i++) {
+                LatLng src = track.get(i);
+                LatLng dest = track.get(i + 1);
+
+                line = googleMap.addPolyline(
+                        new PolylineOptions().add(
+                                new LatLng(src.latitude, src.longitude),
+                                new LatLng(dest.latitude,dest.longitude)
+                        ).width(4).color(Color.RED).geodesic(true)
+                );
+            }
+            addTrackMarker(track);
+        }
+           moveMapCamera(track.get(0).latitude,track.get(0).longitude);
+    }
+
+    public void moveMapCamera(double latitude, double longitude) {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude), 16.0f));
+    }
+
+
+    private void addTrackMarker(List<LatLng> track) {
+        if(track.size() > 0) {
+            start = googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)).position(track.get(0)));
+            end = googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)).position(track.get(track.size() - 1)));
+        }
+    }
 
     public interface MapListener
     {

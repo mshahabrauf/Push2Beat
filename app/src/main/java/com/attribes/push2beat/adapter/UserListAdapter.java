@@ -76,7 +76,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListHolder> {
         @Override
         public void onClick(View view) {
 
-            ChallengeDAL.challengeOpponent(mData.get(position).getId(), DevicePreferences.getInstance().getuser().getId());
+            ChallengeDAL.challengeOpponent(mData.get(position).getId(), DevicePreferences.getInstance().getuser().getId(),mContext);
             listener.onstartCallback(position);
         }
     }

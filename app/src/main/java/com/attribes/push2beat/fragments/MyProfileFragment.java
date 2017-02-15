@@ -71,6 +71,12 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
     }
 
     private void init() {
+        mpBinding.userProfileName.setText(DevicePreferences.getInstance().getuser().getFirst_name());
+        setProfileImage(DevicePreferences.getInstance().getuser().getProfile_image());
+        mpBinding.userProfile.userNameTv.setText(DevicePreferences.getInstance().getuser().getFirst_name());
+        mpBinding.userProfile.userMailTv.setText(DevicePreferences.getInstance().getuser().getEmail());
+
+
         mpBinding.profileImage.setOnClickListener(new ImageUploadListner());
         mpBinding.userProfile.editName.setOnClickListener(new NameEditListner());
         mpBinding.logoutUserBtn.setOnClickListener(new LogOutListener());
@@ -197,10 +203,15 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
     }
 
     private void setProfileImage(String profileImage) {
+            if(profileImage == null)
+            {
 
+            }
+        else {
 
-            Picasso.with(getActivity()).load(profileImage).placeholder(R.drawable.placeholder).into(mpBinding.profileImage);
-    }
+                Picasso.with(getActivity()).load(profileImage).placeholder(R.drawable.placeholder).into(mpBinding.profileImage);
+            }
+            }
 
     private void makeAddressFromLatLong(String lattitude, String longitude) {
         Geocoder geocoder;

@@ -3,6 +3,7 @@ package com.attribes.push2beat.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -143,6 +144,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         musicBinding.hitTwoLayout.fifteenHitBtn.setOnClickListener(new HitTwoFifteenListener() );
         musicBinding.hitTwoLayout.twentytwoHitBtn.setOnClickListener(new TwentwoHIT2Listner() );
         musicBinding.hitTwoLayout.thirtyHitBtn.setOnClickListener(new HitTwothirtyListener());
+        musicBinding.hitTwoLayout.thirtysixHitBtn.setOnClickListener(new  HitTwothirtyListener());  //Todo :Change it to 36 listerner
         musicBinding.hitTwoLayout.fortyHitBtn.setOnClickListener(new HitTwotfortyListener());
         musicBinding.hitTwoLayout.freeBtn.setOnClickListener(new FreeHIT2Listner() );
 
@@ -656,6 +658,8 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         public void onClick(View view) {
             musicBinding.hitTwoLayout.hitTwo.setVisibility(View.GONE);
             musicBinding.hitoneLayout.setVisibility(View.VISIBLE);
+            musicBinding.hitOne.setBackgroundColor(getResources().getColor(R.color.secondary_red_dark));
+            musicBinding.hitTwo.setBackgroundColor(getResources().getColor(R.color.secondary_red));
         }
     }
 
@@ -666,6 +670,8 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         public void onClick(View view) {
             musicBinding.hitTwoLayout.hitTwo.setVisibility(View.VISIBLE);
             musicBinding.hitoneLayout.setVisibility(View.GONE);
+            musicBinding.hitOne.setBackgroundColor(getResources().getColor(R.color.secondary_red));
+            musicBinding.hitTwo.setBackgroundColor(getResources().getColor(R.color.secondary_red_dark));
         }
     }
 

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
 
@@ -19,15 +21,199 @@
         />
 
 
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Track:"
+            android:textColor="@color/secondary_red"
+            android:id="@+id/textView"/>
+
+        <TextView
+            android:id="@+id/track_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Killin itn Stuff"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView"
+            android:layout_toEndOf="@+id/textView"/>
+
+        <TextView
+            android:id="@+id/track_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="28/12/2016"
+            android:layout_gravity="end"
+            android:textColor="@color/secondary_red"
+            android:layout_alignParentTop="true" android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="170dp" />
+        android:layout_height="170dp"
 
-    <include android:id="@+id/layoutUserStats"
+
+        />
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/user_track_info_layout"
-        android:layout_below="@+id/stats_map_view"/>
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/calories_red"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Calories Burnt:"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
+                android:textColor="@color/primary_pink"/>
+
+            <TextView
+                android:id="@+id/stats_calburnt_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1,024"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/calories_red"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Distance Travelled:"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
+                android:textColor="@color/primary_pink"/>
+
+            <TextView
+                android:id="@+id/stats_distancetravelled_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.26km"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/calories_red"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Top Speed:"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
+                android:textColor="@color/primary_pink"/>
+
+            <TextView
+                android:id="@+id/stats_topspeed_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="32 km/h"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/calories_red"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Average Speed:"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
+                android:textColor="@color/primary_pink"/>
+
+            <TextView
+                android:id="@+id/stats_averagespeed_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="16 km/h"
+                android:layout_gravity="center"
+                android:gravity="center|left"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
 
 </LinearLayout>

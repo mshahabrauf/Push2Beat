@@ -33,6 +33,8 @@ public class StatsTrackHolder extends RecyclerView.ViewHolder implements OnMapRe
     public TextView distance;
     public TextView topSpeed;
     public TextView averageSpeed;
+    public TextView trackName;
+    public TextView date;
     public List<LatLng> traker;
 
     private Polyline line;
@@ -51,6 +53,8 @@ public class StatsTrackHolder extends RecyclerView.ViewHolder implements OnMapRe
         title = (TextView) itemView.findViewById(R.id.titler);
         topSpeed = (TextView) itemView.findViewById(R.id.stats_topspeed_tv);
         averageSpeed = (TextView) itemView.findViewById(R.id.stats_averagespeed_tv);
+        trackName = (TextView) itemView.findViewById(R.id.track_name_tv);
+        date = (TextView) itemView.findViewById(R.id.track_date_tv);
         traker = new ArrayList<>();
 
         if (map != null)

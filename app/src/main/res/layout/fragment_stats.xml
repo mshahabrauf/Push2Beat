@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:map="http://schemas.android.com/apk/res-auto">
+    <FrameLayout
+        android:id="@+id/layout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ScrollView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/scrollView"
+
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
            >
 
     <RelativeLayout
+
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,11 +75,15 @@
 
         </LinearLayout>
 
-        <FrameLayout
-                android:id="@+id/stats_map_view"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_below="@+id/user"/>
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/stats_map_view"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/user"
+            map:liteMode="true"
+
+            />
+
 
         <include android:id="@+id/layoutUserStats"
                  android:layout_width="match_parent"
@@ -89,4 +99,5 @@
 
     </RelativeLayout>
     </ScrollView>
+    </FrameLayout>
 </layout>

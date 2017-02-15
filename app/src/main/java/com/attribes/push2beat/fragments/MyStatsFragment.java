@@ -48,6 +48,8 @@ public class MyStatsFragment extends android.support.v4.app.Fragment  {
     private void initView() {
         mRecycle = mtBinding.mystatsRecyclerView;
        // trackRecycle = mtBinding.mystatsTrackRecyclerView;
+        mtBinding.mystatsProfileName.setText(DevicePreferences.getInstance().getuser().getFirst_name());
+        setProfileImage(DevicePreferences.getInstance().getuser().getProfile_image());
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext())
         {
@@ -85,11 +87,20 @@ public class MyStatsFragment extends android.support.v4.app.Fragment  {
     }
 
     private void setProfileImage(String profile_image) {
-        if(profile_image == null) {
-            mtBinding.mystatsProfileImage.setBackgroundResource(R.drawable.placeholder);
-        }else{
-            Picasso.with(getContext()).load(profile_image).placeholder(R.drawable.placeholder).into( mtBinding.mystatsProfileImage);
+        if(profile_image ==null)
+        {
+
+        }
+        else {
+
+            Picasso.with(getActivity()).load(profile_image).placeholder(R.drawable.placeholder).into(mtBinding.mystatsProfileImage);
         }
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 }

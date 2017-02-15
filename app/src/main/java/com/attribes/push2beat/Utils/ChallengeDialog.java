@@ -4,10 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.databinding.DialogChallengeBinding;
+import com.attribes.push2beat.fragments.LoaderFragment;
 import com.attribes.push2beat.mainnavigation.MainActivity;
 import com.attribes.push2beat.models.Response.MyProfileResponse;
 import com.attribes.push2beat.network.DAL.ChallengeReplyDAL;
@@ -18,11 +23,12 @@ import com.attribes.push2beat.network.interfaces.ProfileDataArrivalListner;
  * Created by android on 1/10/17.
  */
 
-public class ChallengeDialog extends Activity {
+public class ChallengeDialog extends FragmentActivity {
 
 
     private DialogChallengeBinding binding;
     private String opponentId;
+    private MyProfileResponse.Data data;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,9 +37,28 @@ public class ChallengeDialog extends Activity {
         binding = DataBindingUtil.setContentView(this,R.layout.dialog_challenge);
         String message = getIntent().getExtras().get("text").toString();
         opponentId = getIntent().getExtras().get("challenger_id").toString();
+        getApiData(opponentId);
         startListeners();
         binding.messageTv.setText(message);
 
+    }
+
+    private void getApiData(String opponentId) {
+       startLoader();
+
+        GetProfileDAL.getProfileData(opponentId, new ProfileDataArrivalListner() {
+            @Override
+            public void onDataRecieved(MyProfileResponse.Data datam) {
+                    data = datam;
+                      removeLoader();
+            }
+
+            @Override
+            public void onEmptyData(String msg) {
+                removeLoader();
+
+            }
+        });
     }
 
     private void startListeners() {
@@ -47,31 +72,21 @@ public class ChallengeDialog extends Activity {
     private class AcceptAction implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            ChallengeReplyDAL.replyChallenger(DevicePreferences.getInstance().getuser().getId(),opponentId,"1");
 
-            GetProfileDAL.getProfileData(opponentId, new ProfileDataArrivalListner() {
-                @Override
-                public void onDataRecieved(MyProfileResponse.Data data) {
-                    Intent intent = new Intent(ChallengeDialog.this,MainActivity.class);
+            Intent intent = new Intent(ChallengeDialog.this,MainActivity.class);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("id",data.getId());
-                    bundle.putBoolean("fromNotification",true);
-                    bundle.putString("email",data.getEmail());
-                    bundle.putString("latitude",data.getLattitude());
-                    bundle.putString("longitude",data.getLongitude());
-                    bundle.putString("username",data.getFirst_name());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                   ChallengeReplyDAL.replyChallenger(DevicePreferences.getInstance().getuser().getId(),opponentId,"1");
+            Bundle bundle = new Bundle();
+            bundle.putString("id",data.getId());
+            bundle.putBoolean("fromNotification",true);
+            bundle.putString("email",data.getEmail());
+            bundle.putString("latitude",data.getLattitude());
+            bundle.putString("longitude",data.getLongitude());
+            bundle.putString("username",data.getFirst_name());
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtras(bundle);
+            startActivity(intent);
 
-                }
-
-                @Override
-                public void onEmptyData(String msg) {
-
-                }
-            });
 
         }
     }
@@ -83,5 +98,38 @@ public class ChallengeDialog extends Activity {
             ChallengeReplyDAL.replyChallenger(DevicePreferences.getInstance().getuser().getId(),opponentId,"0");
             finish();
         }
+    }
+
+
+
+    private void startLoader() {
+        try {
+            LoaderFragment loaderFragment = new LoaderFragment("Fetching Opponent Detail...");
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.parent_top,loaderFragment, Constants.CATCH_LOADER_TAG).commit();
+        }
+        catch(Exception e)
+        {
+            Log.e("crash", "removeLoader:"  + e.getMessage());
+        }
+
+    }
+
+    private void removeLoader()
+    {
+
+
+        try
+        {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(Constants.CATCH_LOADER_TAG);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.remove(fragment);
+            ft.commit();
+        }
+        catch(Exception e)
+        {
+            Log.e("crash", "removeLoader:"  + e.getMessage());
+        }
+
     }
 }
