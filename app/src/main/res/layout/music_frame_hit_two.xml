@@ -34,7 +34,7 @@
                     android:id="@+id/three"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="7"
+                    android:text="3"
                     android:layout_toRightOf="@+id/clock"
                     android:layout_toEndOf="@+id/clock"
 
@@ -119,7 +119,7 @@
                     android:id="@+id/burn_calories"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="500+"
+                    android:text="100+"
 
                     android:maxLines="1"
                     android:textStyle="bold"
@@ -158,7 +158,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:text="15"
+                    android:text="7"
                     android:layout_toRightOf="@+id/clock1"
                     android:layout_toEndOf="@+id/clock1"
 
@@ -186,7 +186,7 @@
                     android:id="@+id/seven_hit_btn"
                     android:layout_width="75dp"
                     android:layout_height="50dp"
-                    android:text="$1.49"
+                    android:text="$1"
                     android:textColor="@color/white"
                     android:background="@color/primary_pink"
                     android:layout_alignTop="@+id/clock1"
@@ -243,7 +243,7 @@
 
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="500+"
+                    android:text="230+"
 
                     android:maxLines="1"
                     android:textStyle="bold"
@@ -282,7 +282,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:text="22"
+                    android:text="15"
                     android:layout_toRightOf="@+id/clock7"
                     android:layout_toEndOf="@+id/clock7"
 
@@ -307,13 +307,13 @@
                     android:layout_centerVertical="true"/>
 
                 <Button
-                    android:id="@+id/twentytwos_hit_btn"
+                    android:id="@+id/fifteen_hit_btn"
                     android:layout_width="75dp"
                     android:layout_height="50dp"
-                    android:text="$1.49"
+                    android:text="$2"
                     android:textColor="@color/white"
                     android:background="@color/primary_pink"
-                    android:layout_alignTop="@+id/clock1"
+                    android:layout_alignTop="@+id/clock7"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"/>
 
@@ -367,7 +367,7 @@
 
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="500+"
+                    android:text="330+"
 
                     android:maxLines="1"
                     android:textStyle="bold"
@@ -402,7 +402,7 @@
                     android:id="@+id/three2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="30"
+                    android:text="22"
                     android:layout_toRightOf="@+id/clock2"
                     android:layout_toEndOf="@+id/clock2"
 
@@ -427,10 +427,10 @@
                     android:layout_centerVertical="true"/>
 
                 <Button
-                    android:id="@+id/fifteen_hit_btn"
+                    android:id="@+id/twentytwo_hit_btn"
                     android:layout_width="75dp"
                     android:layout_height="50dp"
-                    android:text="$2.99"
+                    android:text="$3"
                     android:textColor="@color/white"
                     android:background="@color/primary_pink"
                     android:layout_alignTop="@+id/clock2"
@@ -488,7 +488,7 @@
 
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="500+"
+                    android:text="440+"
 
                     android:maxLines="1"
                     android:textStyle="bold"
@@ -525,7 +525,7 @@
                     android:id="@+id/three3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="36"
+                    android:text="30"
                     android:layout_toRightOf="@+id/clock3"
                     android:layout_toEndOf="@+id/clock3"
 
@@ -550,10 +550,10 @@
                     android:layout_centerVertical="true"/>
 
                 <Button
-                    android:id="@+id/twentytwo_hit_btn"
+                    android:id="@+id/thirty_hit_btn"
                     android:layout_width="75dp"
                     android:layout_height="50dp"
-                    android:text="$4.49"
+                    android:text="$4"
                     android:textColor="@color/white"
                     android:background="@color/primary_pink"
                     android:layout_alignTop="@+id/clock3"
@@ -610,7 +610,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="500+"
+                    android:text="540+"
 
                     android:maxLines="1"
                     android:textStyle="bold"
@@ -672,10 +672,10 @@
                     android:layout_centerVertical="true"/>
 
                 <Button
-                    android:id="@+id/thirty_hit_btn"
+                    android:id="@+id/forty_hit_btn"
                     android:layout_width="75dp"
                     android:layout_height="50dp"
-                    android:text="$5.99"
+                    android:text="$5"
                     android:textColor="@color/white"
                     android:background="@color/primary_pink"
                     android:layout_alignTop="@+id/clock4"
@@ -732,7 +732,7 @@
 
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="500+"
+                    android:text="700+"
 
                     android:maxLines="1"
                     android:textStyle="bold"

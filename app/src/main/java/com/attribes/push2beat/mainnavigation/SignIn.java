@@ -274,13 +274,9 @@ public class SignIn extends AppCompatActivity {
                 DevicePreferences.getInstance().saveQbuser(qbUser);
 
                 removeLoader();
-
-
-        //       Toast.makeText(getApplicationContext(), "QuickBlox SignIn Success", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SignIn.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-
 
 
             }
@@ -349,7 +345,30 @@ public class SignIn extends AppCompatActivity {
         callbackManager1.onActivityResult(requestCode, resultCode, data);
     }
 
+    private String conversionInBase64Format(Uri selectedImage) {
 
+        InputStream inputStream = null;//You can get an inputStream using any IO API
+        try {
+            inputStream = new FileInputStream(String.valueOf(selectedImage));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        byte[] bytes;
+        byte[] buffer = new byte[8192];
+        int bytesRead;
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        try {
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bytes = output.toByteArray();
+        String encodedString = Base64.encodeToString(bytes, Base64.DEFAULT);
+
+        return encodedString;
+    }
 
 
 
@@ -395,8 +414,7 @@ public class SignIn extends AppCompatActivity {
      */
     public Action getIndexApiAction() {
         Thing object = new Thing.Builder()
-                .setName("SignIn Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
+                .setName("SignIn Page")
                 .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
                 .build();
         return new Action.Builder(Action.TYPE_VIEW)

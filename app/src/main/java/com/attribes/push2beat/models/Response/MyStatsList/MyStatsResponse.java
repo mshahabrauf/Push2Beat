@@ -1,8 +1,6 @@
 package com.attribes.push2beat.models.Response.MyStatsList;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Maaz on 12/23/2016.
@@ -12,7 +10,8 @@ public class MyStatsResponse {
     private Integer code;
     private String msg;
     private List<Datum> data = null;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private List<Track> tracks = null;
+
 
     public Integer getCode() {
         return code;
@@ -38,12 +37,11 @@ public class MyStatsResponse {
         this.data = data;
     }
 
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
+    public List<Track> getTracks() {
+        return tracks;
     }
 
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
+    public void setTracks(List<Track> tracks) {
+        this.tracks = tracks;
     }
-
 }

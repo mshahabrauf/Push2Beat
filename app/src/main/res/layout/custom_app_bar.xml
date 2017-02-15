@@ -3,6 +3,7 @@
 <RelativeLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
+
     android:layout_height="@dimen/app_bar_height">
     <ImageView android:id="@+id/back_button"
         android:layout_width="20dp"
@@ -17,6 +18,21 @@
         android:layout_centerInParent="true"
         android:textColor="#ffffff"
         android:text="Push2Beat"/>
+
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/pick_music"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
+        android:src="@drawable/ic_music"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="5dp"
+
+
+        />
+
 
 </RelativeLayout>
 </layout>

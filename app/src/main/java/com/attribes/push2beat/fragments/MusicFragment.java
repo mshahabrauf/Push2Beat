@@ -10,8 +10,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteException;
 import android.databinding.DataBindingUtil;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -37,7 +37,6 @@ import com.attribes.push2beat.databinding.FragmentMusicBinding;
 import com.attribes.push2beat.mainnavigation.MainActivity;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import utils_in_app_purchase.IabHelper;
@@ -68,6 +67,13 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     String fifteenM_HIT = "com.attribes.push2beat.15minutes";
     String twentytwoM_HIT = "com.attribes.push2beat.22minutes";
     String thirtyM_HIT = "com.attribes.push2beat.30minutes";
+
+    String sevenM_HIT2 = "com.attribe.push2beat.hit2.3minute";
+    String fifteenM_HIT2 = "com.attribes.push2beat.hiit2.22minutes";
+    String twentytwoM_HIT2 = "com.attribes.push2beat.hiit2.22minutes";
+    String thirtyM_HIT2 = "com.attribes.push2beat.hiit2.30minutes";
+    String fourtyM_HIT2 = "com.attribes.push2beat.hiit2.40minutes";
+
 
 
 
@@ -132,13 +138,12 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         musicBinding.twentytwoHitBtn.setOnClickListener(new TwentwoHITListner());
         musicBinding.thirtyHitBtn.setOnClickListener(new ThirtyHITListner());
 
-        //
+        // HIIT TWO SONGS
         musicBinding.hitTwoLayout.sevenHitBtn.setOnClickListener(new HitTwoSevenListener() );
-
-        musicBinding.hitTwoLayout.fifteenHitBtn.setOnClickListener(new HitTwoSevenListener() );
-        musicBinding.hitTwoLayout.twentytwosHitBtn.setOnClickListener(new TwentwoHITListner());
-        musicBinding.hitTwoLayout.twentytwoHitBtn.setOnClickListener(new HitTwoSevenListener() );
-        musicBinding.hitTwoLayout.thirtyHitBtn.setOnClickListener(new HitTwoSevenListener() );
+        musicBinding.hitTwoLayout.fifteenHitBtn.setOnClickListener(new HitTwoFifteenListener() );
+        musicBinding.hitTwoLayout.twentytwoHitBtn.setOnClickListener(new TwentwoHIT2Listner() );
+        musicBinding.hitTwoLayout.thirtyHitBtn.setOnClickListener(new HitTwothirtyListener());
+        musicBinding.hitTwoLayout.fortyHitBtn.setOnClickListener(new HitTwotfortyListener());
         musicBinding.hitTwoLayout.freeBtn.setOnClickListener(new FreeHIT2Listner() );
 
     }
@@ -382,7 +387,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
                 }
                 else {
                     DevicePreferences.getInstance().saveMusicTrackPath(extStore.getAbsolutePath() + "/push2beat/0-8.25.mp3");
-                    playMusic();
+                    ((MainActivity)getActivity()).playMusic();
                 }
             }
             else {
@@ -411,7 +416,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
                }
                 else {
                    DevicePreferences.getInstance().saveMusicTrackPath(extStore.getAbsolutePath() + "/push2beat/first3.mp3");
-                   playMusic();
+                   ((MainActivity)getActivity()).playMusic();
                }
             }
             else {
@@ -438,12 +443,56 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         }
     }
 
+
+    private class HitTwotfortyListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            String payload = "";
+            try {
+                mHelper.launchPurchaseFlow(getActivity(), fourtyM_HIT2, RC_REQUEST, mPurchaseFinishedListener, payload);
+            } catch(IllegalStateException ex){
+                Toast.makeText(getContext(), "Please retry in a few seconds.", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
+
+    private class HitTwothirtyListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            String payload = "";
+            try {
+                mHelper.launchPurchaseFlow(getActivity(), thirtyM_HIT2, RC_REQUEST, mPurchaseFinishedListener, payload);
+            } catch(IllegalStateException ex){
+                Toast.makeText(getContext(), "Please retry in a few seconds.", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
+
+
     private class HitTwoSevenListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             String payload = "";
             try {
-                mHelper.launchPurchaseFlow(getActivity(), fifteenM_HIT, RC_REQUEST, mPurchaseFinishedListener, payload);
+                mHelper.launchPurchaseFlow(getActivity(), sevenM_HIT2, RC_REQUEST, mPurchaseFinishedListener, payload);
+            } catch(IllegalStateException ex){
+                Toast.makeText(getContext(), "Please retry in a few seconds.", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
+
+    private class HitTwoFifteenListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            String payload = "";
+            try {
+                mHelper.launchPurchaseFlow(getActivity(), fifteenM_HIT2, RC_REQUEST, mPurchaseFinishedListener, payload);
             } catch(IllegalStateException ex){
                 Toast.makeText(getContext(), "Please retry in a few seconds.", Toast.LENGTH_SHORT).show();
             }
@@ -461,6 +510,19 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     catch(IllegalStateException ex){
     Toast.makeText(getContext(), "Please retry in a few seconds.", Toast.LENGTH_SHORT).show();
 }
+        }
+    }
+    private class TwentwoHIT2Listner implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            String payload = "";
+            try {
+                mHelper.launchPurchaseFlow(getActivity(), twentytwoM_HIT2, RC_REQUEST, mPurchaseFinishedListener, payload);
+            }
+            catch(IllegalStateException ex){
+                Toast.makeText(getContext(), "Please retry in a few seconds.", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 
@@ -521,26 +583,34 @@ public class MusicFragment extends android.support.v4.app.Fragment {
                 DownloadManager.Query q = new DownloadManager.Query();
                 q.setFilterById(lastDownload);
 
-                Cursor cursor = mgr.query(q);
-                cursor.moveToFirst();
-                long bytes_downloaded = cursor.getLong(cursor
-                        .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-                long bytes_total = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-                publishProgress(String.valueOf(bytes_total), String.valueOf(bytes_downloaded));
-                if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
-                    pDialog.dismiss();
+                try {
+                    Cursor cursor = mgr.query(q);
+                    cursor.moveToFirst();
+                    long bytes_downloaded = cursor.getLong(cursor
+                            .getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+                    long bytes_total = cursor.getLong(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+                    publishProgress(String.valueOf(bytes_total), String.valueOf(bytes_downloaded));
+                    if (cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)) == DownloadManager.STATUS_SUCCESSFUL) {
+                        pDialog.dismiss();
 
-                    if(isOnGpsFragment)
-                    {
-                        startPrepareFragment();
-                    }
-                    else
-                    {
-                        playMusic();
-                    }
+                        if (isOnGpsFragment) {
+                            startPrepareFragment();
+                        } else {
+                            ((MainActivity)getActivity()).playMusic();
+                        }
 
-                    downloading = false;
+                        downloading = false;
+                    }
                 }
+                catch (SQLiteException e)
+                {
+                    e.printStackTrace(); // if unable to open database file (code 14)
+                }
+                catch (RuntimeException e)
+                {
+                    e.printStackTrace();
+                }
+
             }
 
             return null;
@@ -604,41 +674,10 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         @Override
         public void onClick(View view) {
 
-            playMusic();
+            ((MainActivity)getActivity()).playMusic();
         }
     }
 
-    private void playMusic() {
-
-        if(DevicePreferences.getInstance().getMusicTrackPath() != null) {
-
-            Uri myUri = Uri.parse(DevicePreferences.getInstance().getMusicTrackPath());
-            mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            try {
-                mPlayer.setDataSource(getActivity(), myUri);
-                mPlayer.prepare();
-            } catch (IllegalArgumentException e) {
-
-            } catch (SecurityException e) {
-
-            } catch (IllegalStateException e) {
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            mPlayer.start();
-
-        }
-        else{
-
-            try {
-                DevicePreferences.getInstance().getMusicTrackPath();
-            } catch (NullPointerException e) {
-
-            }
-        }
-    }
 
 
     private void startPrepareFragment()
@@ -654,12 +693,9 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     private class StopListner implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            if(mPlayer!=null && mPlayer.isPlaying()){
-                mPlayer.stop();
-            }
-//            if(mp!=null && mp.isPlaying()){
-//                mp.stop();
-//            }
+
+            ((MainActivity)getActivity()).stopMusic();
+
         }
     }
 
@@ -703,9 +739,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     private class PauseListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            if (mPlayer.isPlaying()) {
-                mPlayer.pause();
-            }
+            ((MainActivity)getActivity()).pauseMusic();
         }
     }
 
@@ -720,6 +754,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
 
 
     }
+
 
 }
 

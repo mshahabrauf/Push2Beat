@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+
+    >
+    <TextView
+        android:id="@+id/titler"
+        android:padding="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:text="Top 10 Track History"
+        android:visibility="gone"
+        />
+
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="170dp" />
+
+    <include android:id="@+id/layoutUserStats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/user_track_info_layout"
+        android:layout_below="@+id/stats_map_view"/>
+
+</LinearLayout>

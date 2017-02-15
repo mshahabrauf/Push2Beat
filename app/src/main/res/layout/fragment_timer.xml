@@ -7,33 +7,12 @@
               android:id="@+id/container_full"
               android:clickable="true"
 
-              android:background="@drawable/bg" >
+              android:background="@drawable/background" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-
-        android:gravity="right"
-        android:layout_gravity="right"
-        >
-
-        <ImageView
-            android:id="@+id/pick_music"
-            android:visibility="gone"
-            android:layout_width="25dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_music"
-            android:layout_marginRight="10dp"
-
-
-            />
-
-    </LinearLayout>
 
     <FrameLayout
             android:id="@+id/container_above"
-             android:padding="20dp"
+            android:padding="20dp"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -45,15 +24,21 @@
     android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:layout_weight="2.2"
-    android:padding="20dp"
+    android:layout_weight="2.5"
+
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
     android:id="@+id/layout_below"
     >
     <android.support.v7.widget.CardView
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,10 +61,27 @@
 
             />
 
+        <include
+
+            android:id="@+id/timer_ghost"
+            layout="@layout/timer_ghost"
+            android:layout_height="60dp"
+            android:layout_width="match_parent"
+
+       />
+
+        <include
+            android:id="@+id/timer_cmiyc"
+            layout="@layout/timer_cmiyc"
+            android:layout_height="60dp"
+            android:layout_width="match_parent"
+           />
+
 
 
 
     </LinearLayout>
+        </ScrollView>
     </android.support.v7.widget.CardView>
 
 

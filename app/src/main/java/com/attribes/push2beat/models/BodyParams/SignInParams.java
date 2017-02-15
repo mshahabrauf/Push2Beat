@@ -6,8 +6,8 @@ package com.attribes.push2beat.models.BodyParams;
 public class SignInParams {
 
     public String id;
-    public String firstName;
-    public Object profileImage;
+    public String first_name;
+    private String profile_image;
     public String email;
     public String lattitude;
     public String longitude;
@@ -20,20 +20,20 @@ public class SignInParams {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getProfile_image() {
+        return profile_image;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setProfile_image(String profile_image) {
+        this.profile_image = profile_image;
     }
 
-    public Object getProfileImage() {
-        return profileImage;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setProfileImage(Object profileImage) {
-        this.profileImage = profileImage;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
     public String getEmail() {

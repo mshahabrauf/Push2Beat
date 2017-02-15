@@ -24,6 +24,13 @@
                 android:background="@color/secondary_dark_black"
                 android:layout_marginTop="110dp">
 
+            <ImageView
+                android:id="@+id/share_btn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@android:drawable/ic_menu_share"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
             <TextView
                     android:id="@+id/stats_profile_name"
