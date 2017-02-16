@@ -1,6 +1,5 @@
 package com.attribes.push2beat.Utils;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -29,14 +28,17 @@ public class ChallengeDialog extends FragmentActivity {
     private DialogChallengeBinding binding;
     private String opponentId;
     private MyProfileResponse.Data data;
+    private boolean isFromNotification;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_challenge);
+        this.setFinishOnTouchOutside(false);
         binding = DataBindingUtil.setContentView(this,R.layout.dialog_challenge);
         String message = getIntent().getExtras().get("text").toString();
         opponentId = getIntent().getExtras().get("challenger_id").toString();
+        isFromNotification = getIntent().getExtras().getBoolean("fromNotification");
         getApiData(opponentId);
         startListeners();
         binding.messageTv.setText(message);
@@ -50,7 +52,14 @@ public class ChallengeDialog extends FragmentActivity {
             @Override
             public void onDataRecieved(MyProfileResponse.Data datam) {
                     data = datam;
-                      removeLoader();
+                    if(isFromNotification == false)
+                    {
+                        finish();
+                        startMainActivityForUser();
+
+                    }
+                    removeLoader();
+
             }
 
             @Override
@@ -59,6 +68,22 @@ public class ChallengeDialog extends FragmentActivity {
 
             }
         });
+    }
+
+    private void startMainActivityForUser() {
+        Intent intent = new Intent(this,MainActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("id",data.getId());
+        bundle.putBoolean("fromcatch",true);
+        bundle.putString("email",data.getEmail());
+        bundle.putString("latitude",data.getLattitude());
+        bundle.putString("longitude",data.getLongitude());
+        bundle.putString("username",data.getFirst_name());
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void startListeners() {
@@ -78,6 +103,7 @@ public class ChallengeDialog extends FragmentActivity {
 
             Bundle bundle = new Bundle();
             bundle.putString("id",data.getId());
+
             bundle.putBoolean("fromNotification",true);
             bundle.putString("email",data.getEmail());
             bundle.putString("latitude",data.getLattitude());
@@ -131,5 +157,10 @@ public class ChallengeDialog extends FragmentActivity {
             Log.e("crash", "removeLoader:"  + e.getMessage());
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 }

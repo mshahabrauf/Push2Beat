@@ -1,6 +1,12 @@
 package com.attribes.push2beat.services;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
@@ -14,12 +20,6 @@ import com.attribes.push2beat.network.DAL.GetProfileDAL;
 import com.attribes.push2beat.network.interfaces.ProfileDataArrivalListner;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import android.app.PendingIntent;
-import android.app.NotificationManager;
-import android.app.Notification;
-import android.content.Context;
-import android.media.RingtoneManager;
-import android.net.Uri;
 
 import java.util.Map;
 
@@ -75,7 +75,8 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         if(data.get("challenger_id").equals(DevicePreferences.getInstance().getuser().getId()))
         {
             if(data.get("text").contains("accepted")) {
-                requestUserDetail(data.get("challanged_person_id").toString());
+                startDialogAcitivity(data,false);
+              //  requestUserDetail(data.get("challanged_person_id").toString());
             }
             else {
                 restartCatchActivity(data.get("text"));
@@ -83,18 +84,22 @@ public class FirebaseMessageService extends FirebaseMessagingService {
             }
         }
         else {
-            Intent intent = new Intent(this, ChallengeDialog.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("fromNotification",true);
-            bundle.putString("text", data.get("text"));
-            bundle.putString("challenger_id",data.get("challenger_id"));
-            intent.putExtras(bundle);
-            startActivity(intent);
+            startDialogAcitivity(data,true);
+
         }
     }
 
+    private void startDialogAcitivity(Map<String, String> data, boolean isFromNotification) {
+        Intent intent = new Intent(this, ChallengeDialog.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("fromNotification",isFromNotification);
+        bundle.putString("text", data.get("text"));
+        bundle.putString("challenger_id",data.get("challenger_id"));
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
 
 
     private void restartCatchActivity(String text) {

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -123,10 +124,15 @@ public class SignUp extends AppCompatActivity {
 
     private void removeLoader()
     {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(Constants.CATCH_LOADER_TAG);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.remove(fragment);
-        ft.commit();
+        try {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(Constants.CATCH_LOADER_TAG);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.remove(fragment);
+            ft.commit();
+        } catch(Exception e)
+        {
+            Log.e("crash", "removeLoader:"  + e.getMessage());
+        }
     }
 
     private void signInUser(String email, String password) {

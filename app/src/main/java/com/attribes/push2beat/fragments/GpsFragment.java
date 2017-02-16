@@ -715,6 +715,13 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
             }
             if(isCatchMeIfYouCan)
             {
+                if(Common.getInstance().isOpponentLeave())
+                {
+                    isCatchMeIfYouCan = false;
+                    isCatchMeRunning = false;
+                    binding.layoutTimerSubReplace.timerStop.callOnClick();
+                }
+
                 QBChatMessage message = new QBChatMessage();
                 if(Common.getInstance().getQbChatDialog() != null){
                 message.setDialogId(Common.getInstance().getQbChatDialog().getDialogId());
@@ -951,9 +958,10 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                 if(!isGhostRider && !isCatchMeIfYouCan) {
                     getMapFragment().updateUIonStop(String.valueOf(Math.round(totalDistance * 100) / 100), String.valueOf(speed));
                 }
-
-                if(isCatchMeIfYouCan)
+                if(isCatchMeIfYouCan && Common.getInstance().isOpponentLeave() == false)
                 {
+                    isCatchMeIfYouCan = false;
+                    isCatchMeRunning = false;//Common.getInstance().setCatchMeFromNotification(false);
                     ChallengeResultDAL.sendResultChallenge(Common.getInstance().getOppData().getId(),DevicePreferences.getInstance().getuser().getId());
                 }
                 saveRoute();
