@@ -75,10 +75,10 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         if(data.get("challenger_id").equals(DevicePreferences.getInstance().getuser().getId()))
         {
             if(data.get("text").contains("accepted")) {
-                requestUserDetail(data.get("challanged_person_id").toString());
+                requestUserDetail(data.get("challanged_person_id").toString()); //accept Request
             }
             else {
-                restartCatchActivity(data.get("text"));
+                restartCatchActivity(data.get("text")); //Reject
 
             }
         }

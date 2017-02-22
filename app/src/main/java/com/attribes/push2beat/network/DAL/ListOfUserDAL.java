@@ -1,5 +1,6 @@
 package com.attribes.push2beat.network.DAL;
 
+import android.widget.Toast;
 import com.attribes.push2beat.models.BodyParams.GetListRequestParams;
 import com.attribes.push2beat.models.Response.UserList.Datum;
 import com.attribes.push2beat.models.Response.UserList.ListOfUserResponse;
@@ -12,6 +13,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Created by android on 12/11/16.
@@ -42,7 +44,7 @@ public class ListOfUserDAL {
 
             @Override
             public void onFailure(Call<ListOfUserResponse> call, Throwable t) {
-
+                listener.onFailure("Something went wrong");
             }
         });
 
