@@ -32,6 +32,7 @@ import com.attribes.push2beat.models.Response.MyProfileResponse;
 import com.attribes.push2beat.network.DAL.GetProfileDAL;
 import com.attribes.push2beat.network.DAL.UpdateProfileDAL;
 import com.attribes.push2beat.network.interfaces.ProfileDataArrivalListner;
+import com.attribes.push2beat.services.LocationService;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -199,6 +200,11 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
             public void onEmptyData(String msg) {
 
             }
+
+            @Override
+            public void onFailure() {
+
+            }
         });
     }
 
@@ -302,11 +308,17 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
             ((MainActivity)getActivity()).stopMusic();
             DevicePreferences.getInstance().saverememberme(false);
             DevicePreferences.getInstance().removeUserObject();
+            stopservice();
             Intent intent = new Intent(getActivity(), MainActivityStart.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
 
         }
+    }
+
+    private void stopservice() {
+        getActivity().stopService(new Intent(getActivity(), LocationService.class));
+
     }
 
 

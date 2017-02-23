@@ -36,18 +36,6 @@ import java.util.List;
 
 public class MapFragment extends android.support.v4.app.Fragment {
 
-
-    public MapFragment() {
-
-
-    }
-
-    @SuppressLint("ValidFragment")
-    public MapFragment(Location location)
-        {
-            startLocation = location;
-        }
-
     private GoogleApiClient apiClient;
     private MapView mapView;
     private FragmentMapBinding binding;
@@ -60,6 +48,19 @@ public class MapFragment extends android.support.v4.app.Fragment {
     private Polyline line;
     private MarkerOptions opponent;
     StatsFragment.MapListener maplistener;
+
+    public MapFragment() {
+
+
+    }
+
+    @SuppressLint("ValidFragment")
+    public MapFragment(Location location)
+        {
+            startLocation = location;
+        }
+
+
 
     @SuppressLint("ValidFragment")
     public MapFragment(Location location, StatsFragment.MapListener mapListener) {
@@ -219,7 +220,8 @@ public class MapFragment extends android.support.v4.app.Fragment {
     public void showRoute(List<LatLng> track) {
 
         if(track != null){
-            for (int i = 0; i < track.size() - 1; i++) {
+            for (int i = 0; i < track.size() - 1; i++)
+            {
                 LatLng src = track.get(i);
                 LatLng dest = track.get(i + 1);
 

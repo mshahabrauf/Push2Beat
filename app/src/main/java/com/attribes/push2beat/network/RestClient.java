@@ -72,7 +72,8 @@ public class RestClient {
     }
 
 
-    public static ApiInterface getAuthAdapter(){
+    public static ApiInterface getAuthAdapter()
+    {
         return restClient;
     }
 

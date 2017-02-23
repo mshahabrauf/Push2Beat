@@ -17,5 +17,6 @@ public class FirebaseInstanceService extends FirebaseInstanceIdService {
 
         //Todo: retrieve new device token and call api ..There is no API right now
 
+
     }
 }

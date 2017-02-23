@@ -28,7 +28,9 @@ public class GetProfileDAL {
             }
 
             @Override
-            public void onFailure(Call<MyProfileResponse> call, Throwable t) {
+            public void onFailure(Call<MyProfileResponse> call, Throwable t)
+            {
+                profileDataArrivalListner.onFailure();
 
             }
         });

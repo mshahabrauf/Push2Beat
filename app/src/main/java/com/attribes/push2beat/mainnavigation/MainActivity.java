@@ -27,7 +27,7 @@ import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 
 import java.io.IOException;
-
+//all tabs are under in this activity
 public class MainActivity extends AppCompatActivity {
 
     /**

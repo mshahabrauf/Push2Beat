@@ -47,12 +47,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                     return selectFragment;
                 }
 
-//                switch (Common.getInstance().getRunType()) {
-//                    case 1: MusicFragment musicFragment = new MusicFragment(true);
-//                        return musicFragment;
-//                    case 2:
-//                    case 3:
-//                }
+//
             case 1:
                 MusicFragment musicFragment = new MusicFragment();
                 return musicFragment;

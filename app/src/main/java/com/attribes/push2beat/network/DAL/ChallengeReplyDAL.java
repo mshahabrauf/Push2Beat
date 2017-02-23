@@ -17,7 +17,8 @@ public class ChallengeReplyDAL {
     {
         RestClient.getAuthAdapter().challengerResponse(userId,opponentId,status).enqueue(new Callback<PushResponse>() {
             @Override
-            public void onResponse(Call<PushResponse> call, Response<PushResponse> response) {
+            public void onResponse(Call<PushResponse> call, Response<PushResponse> response)
+            {
 
             }
 

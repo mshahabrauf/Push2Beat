@@ -136,7 +136,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         initGoogleApi();
         init();
         initFragments();
-        startButtons();
+        setstartButtonsListners();
         timer_start();
 
 
@@ -149,24 +149,24 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     private void setScreenForRunType() {
         switch ( Common.getInstance().getRunType())
         {
-            case 0:
+            case 0:// update Ui for Go now
               //  ((MainActivity)getActivity()).showMusicIcon();
                // binding.pickMusic.setVisibility(View.VISIBLE);
 
                 ((MainActivity)getActivity()).showMusicIcon();
                 showGhostAndCMButton();
                 break;
-            case 1:
+            case 1: //For Hiit workout
                 hideGhostAndCMButton();
                // binding.pickMusic.setVisibility(View.VISIBLE);
                 ((MainActivity)getActivity()).playMusic();
                 ((MainActivity)getActivity()).showMusicIcon();
                 break;
-            case 2:
+            case 2: // For ghost rider
                 hideGhostAndCMButton();
                ghostButtonCaller();
                 break;
-            case 3:
+            case 3:  //For Catch me if you can
                 ((MainActivity)getActivity()).showMusicIcon();
                 hideGhostAndCMButton();
                 if(Common.getInstance().isCatchMeFromNotification() == false && Common.getInstance().isCatchMeFromUser() == false) {
@@ -280,7 +280,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
 
-    private void startButtons() {
+    private void setstartButtonsListners() {
 
         binding.layoutTimerSubReplace.btnGps.setOnClickListener(new GpsButtonListener());
         binding.layoutTimerSubReplace.timerStop.setOnClickListener(new StopButtonListener());
@@ -331,7 +331,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
 
-    private void startpostButtonListener() {
+    private void startpostButtonListener() { //Add track button which  shows after clicking on Stop button
         binding.layoutTimerSubReplace.btnAddTrack.setOnClickListener(new AddTrackButtonListener());
     }
 
@@ -346,9 +346,6 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     }
 
 
-    private void saveRoute(){
-        //Todo Saving Track to preference
-    }
 
 
     private void initGoogleApi() {
@@ -410,8 +407,9 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     }
 
 
-
-
+    /**
+     * this method Start Timer on screen like stop watch
+     */
     private void timer_start() {
         if(t == 1){
             //timer_start will start
@@ -458,6 +456,8 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
 
+
+
     private void callAddTrackApi() {
 
         AddTrackParams model = new AddTrackParams();
@@ -500,10 +500,10 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     }
 
 
-
-
-
-
+    /**
+     * This is Quick Block Chat Initializaiton with opponent Email
+     * @param email
+     */
     private void initQBChat(String email) {
 
         QBChatService.setDebugEnabled(true); // enable chat logging
@@ -561,6 +561,10 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         });
     }
 
+
+    /**
+     * This method is a Message Listener which recive message calculate distance and call api if Distance is less than 5
+     */
     private void setMessageRecieverManager() {
 
         if(Common.getInstance().getChatService() !=null && isCatchMeIfYouCan) {
@@ -636,7 +640,6 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
      * this is a callback of child fragment Ghost Rider
      * @param datum
      */
-
     public void onStartGhostRider(com.attribes.push2beat.models.Response.TrackList.Datum datum) {
 
         stopTimer();
@@ -691,29 +694,32 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     //====================================== Listeners==================================================================//
 
 
+    /**
+     * This is Location listener which calculate distance made track of the lat Lng and show on map
+     */
     private class CustomLocationListener implements LocationListener {
         @Override
         public void onLocationChanged(Location curr) {
-            DevicePreferences.getInstance().saveLocation(curr);
+            DevicePreferences.getInstance().saveLocation(curr);  // save current Location to preference
            // getMapFragment().addLocationToQb(curr);
-
-            double distance = calculateDistance(curr,prev);
+//**************This part calculate distance and add to Track*********
+            double distance = calculateDistance(curr,prev);  //calculate distance from prev and
           //  if(distance > 5) { Todo uncomment it for accuracy
                 totalDistance += distance / 1609.344; //miles
                 distanceInMeter += distance;
-                cal_setCalories(totalDistance);
+                cal_setCalories(totalDistance); // Calculate calories
 
                 speedList.add(calculateSpeed());
                 LatLng latLng = new LatLng(curr.getLatitude(),curr.getLongitude());
                 track.add(latLng);
                 prev = curr;
            // }
-
-            if(Common.getInstance().isOpponentLeave())
-            {
-                binding.layoutTimerSubReplace.timerStop.callOnClick();
-            }
-            if(isCatchMeIfYouCan)
+//****************end this process************
+//            if(Common.getInstance().isOpponentLeave()) // this if for catch me if you can if opponent press stop leave button
+//            {
+//                binding.layoutTimerSubReplace.timerStop.callOnClick();
+//            }
+            if(isCatchMeIfYouCan)       // this if is for Catch me if you can to sending User location in Quickblox message
             {
                 if(Common.getInstance().isOpponentLeave())
                 {
@@ -738,7 +744,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                 }
             }
 
-            if(isGhostRider) {
+            if(isGhostRider) {    // this is for ghost Rider and match with previous track
                 Location trackLocation = new Location("");
                 trackLocation.setLatitude(Common.getInstance().getGhostTrack().get(iterator).latitude);
                 trackLocation.setLongitude(Common.getInstance().getGhostTrack().get(iterator).longitude);
@@ -757,7 +763,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
 
             }
-            if(isUserOnTrackPosition)
+            if(isUserOnTrackPosition)  // This if is run when User is on Ghost Rider and user get into Previous Track start position
             {
 
                 int size = Common.getInstance().getGhostTrack().size() - 1;
@@ -964,7 +970,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
                     isCatchMeRunning = false;//Common.getInstance().setCatchMeFromNotification(false);
                     ChallengeResultDAL.sendResultChallenge(Common.getInstance().getOppData().getId(),DevicePreferences.getInstance().getuser().getId());
                 }
-                saveRoute();
+
                 uiUpdate();
                 startpostButtonListener();
                 apiClient.disconnect(); // to stop getting any further locations Todo :Should connect again

@@ -29,24 +29,16 @@ import java.util.Map;
 
 public class FirebaseMessageService extends FirebaseMessagingService {
 
-    @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    private MyProfileResponse.Data data;
 
-//        if (remoteMessage.getNotification() != null) {
-//            handleRequest(remoteMessage.getData());
-//        }
+    @Override
+    public void onMessageReceived(RemoteMessage remoteMessage)
+    {
+
+        //handles when push recieves an data
         if(remoteMessage.getData().size() > 0)
         {
-            if(remoteMessage.getData().get("text").contains("beaten"))
-            {
-                showNotification(remoteMessage.getData().get("text"));
-                Common.getInstance().setOpponentLeave(true);
-               // restartCatchActivity(remoteMessage.getData().get("text"));
-            }
-            else {
-                handleRequest(remoteMessage.getData());
-                showNotification(remoteMessage.getData().get("text"));
-            }
+            handleRequest(remoteMessage.getData());   // Other than ending push
         }
 
     }
@@ -56,7 +48,7 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
-       Uri notificationsound= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri notificationsound= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder nBuilder=new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.catch_me_icon)
                 .setContentTitle("Catch me if you can")
@@ -65,38 +57,54 @@ public class FirebaseMessageService extends FirebaseMessagingService {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_HIGH)
                 .setAutoCancel(true);
-               // .setContentIntent(pendingIntent);
+        // .setContentIntent(pendingIntent);
         NotificationManager notificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify((int) System.currentTimeMillis(),nBuilder.build());
     }
 
 
     private void handleRequest(Map<String, String> data) {
-        if(data.get("challenger_id").equals(DevicePreferences.getInstance().getuser().getId()))
+        if(data.get("text").contains("beaten")) // if push contains beaten words means Catch me if you can Ending Push
         {
-            if(data.get("text").contains("accepted")) {
-                startDialogAcitivity(data,false);
-              //  requestUserDetail(data.get("challanged_person_id").toString());
+            Common.getInstance().setOpponentLeave(true);
+        }
+        else if(data.get("challenger_id").equals(DevicePreferences.getInstance().getuser().getId()))  // if Challenger Id is my Id then ITs a Challenge Resonpse push
+        {
+            if(data.get("text").contains("accepted"))
+            {   // if opponent accept Challenge
+                startDialogAcitivity(data,false,data.get("challanged_person_id"));
             }
-            else {
-                restartCatchActivity(data.get("text"));
-
+            else
+            {
+                restartCatchActivity(data.get("text"));  // if opponent reject Challenge
             }
         }
-        else {
-            startDialogAcitivity(data,true);
-
+        else
+        {
+            startDialogAcitivity(data,true, data.get("challenger_id"));  // else this is Challenge Push to the opponent
         }
+        showNotification(data.get("text"));
     }
 
-    private void startDialogAcitivity(Map<String, String> data, boolean isFromNotification) {
+    private void startDialogAcitivity(Map<String, String> data, boolean isFromNotification, String openentId) {
         Intent intent = new Intent(this, ChallengeDialog.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Bundle bundle = new Bundle();
         bundle.putBoolean("fromNotification",isFromNotification);
         bundle.putString("text", data.get("text"));
+        bundle.putString("challenger_id",openentId);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    private void startMainActivityForUser(Map<String, String> data) {
+        Intent intent = new Intent(this,MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("fromcatch",true);
         bundle.putString("challenger_id",data.get("challenger_id"));
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -118,7 +126,7 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         GetProfileDAL.getProfileData(opponentId, new ProfileDataArrivalListner() {
             @Override
             public void onDataRecieved(MyProfileResponse.Data data) {
-               startMainActivity(data);
+                startMainActivity(data);
 
             }
 
@@ -126,8 +134,15 @@ public class FirebaseMessageService extends FirebaseMessagingService {
             public void onEmptyData(String msg) {
 
             }
+
+            @Override
+            public void onFailure() {
+
+            }
         });
     }
+
+
 
     private void startMainActivity(MyProfileResponse.Data data) {
 
@@ -146,4 +161,6 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         intent.putExtras(bundle);
         startActivity(intent);
     }
+
+
 }

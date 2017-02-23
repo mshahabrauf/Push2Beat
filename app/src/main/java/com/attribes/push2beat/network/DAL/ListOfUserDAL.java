@@ -29,13 +29,16 @@ public class ListOfUserDAL {
         RestClient.getAuthAdapter().getUsers(body).enqueue(new Callback<ListOfUserResponse>() {
             @Override
             public void onResponse(Call<ListOfUserResponse> call, Response<ListOfUserResponse> response) {
-                if(response.isSuccessful()) {
+                if(response.isSuccessful())
+                {
                     List<Datum> data = response.body().getData();
-                    if (data.isEmpty()) {
+                    if (data.isEmpty())
+                    {
                         listener.onEmptyData(response.body().getMsg());
-                    } else{
+                    } else
+                    {
                         listener.onDataRecieved(data);
-                         }
+                    }
                 }
 
             }

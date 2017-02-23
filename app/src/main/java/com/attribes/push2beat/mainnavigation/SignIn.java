@@ -30,6 +30,7 @@ import com.attribes.push2beat.models.UserProfile;
 import com.attribes.push2beat.network.DAL.LoginDAL;
 import com.attribes.push2beat.network.DAL.SocialSignIn;
 import com.attribes.push2beat.network.DAL.SocialSignup;
+import com.attribes.push2beat.services.LocationService;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -214,24 +215,30 @@ public class SignIn extends AppCompatActivity {
         detail.setPassword(password.getText().toString());
 
 
-        LoginDAL.userLogin(detail, new OnSignUpSuccess() {
+        LoginDAL.userLogin(detail, new OnSignUpSuccess()
+        {
             @Override
-            public void onSuccess() {
+            public void onSuccess()
+            {
                 QbSignIn(username.getText().toString().trim(), password.getText().toString().trim());
                 Common.getInstance().setPassword(password.getText().toString());
-
-
-
-
                 DevicePreferences.getInstance().saveusers(Common.getInstance().getUser());
+
+
             }
 
             @Override
-            public void onFailure() {
+            public void onFailure()
+            {
                 removeLoader();
                 Toast.makeText(SignIn.this, "Email or password is wrong", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void startlocationService()
+    {
+        startService(new Intent(SignIn.this, LocationService.class));
     }
 
     private void startLoader() {
@@ -274,6 +281,7 @@ public class SignIn extends AppCompatActivity {
                 DevicePreferences.getInstance().saveQbuser(qbUser);
 
                 removeLoader();
+                startlocationService();//tracking your location
                 Intent intent = new Intent(SignIn.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

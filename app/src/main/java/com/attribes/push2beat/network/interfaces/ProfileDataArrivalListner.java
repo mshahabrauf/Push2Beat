@@ -9,4 +9,5 @@ public interface ProfileDataArrivalListner {
 
     void onDataRecieved(MyProfileResponse.Data data);
     void onEmptyData(String msg);
+    void onFailure();
 }

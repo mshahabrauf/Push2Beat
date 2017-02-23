@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.attribes.push2beat.R;
 import com.attribes.push2beat.databinding.DialogChallengeBinding;
@@ -28,7 +29,7 @@ public class ChallengeDialog extends FragmentActivity {
     private DialogChallengeBinding binding;
     private String opponentId;
     private MyProfileResponse.Data data;
-    private boolean isFromNotification;
+    private boolean ChallengeOrAcceptNotification;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,26 +39,41 @@ public class ChallengeDialog extends FragmentActivity {
         binding = DataBindingUtil.setContentView(this,R.layout.dialog_challenge);
         String message = getIntent().getExtras().get("text").toString();
         opponentId = getIntent().getExtras().get("challenger_id").toString();
-        isFromNotification = getIntent().getExtras().getBoolean("fromNotification");
-        getApiData(opponentId);
-        startListeners();
-        binding.messageTv.setText(message);
+        ChallengeOrAcceptNotification = getIntent().getExtras().getBoolean("fromNotification");
+
+        /*Accept or Challenge */
+        if (!ChallengeOrAcceptNotification)
+        {
+            binding.blackBackground.setVisibility(View.GONE);
+            getApiData();
+        }
+        else    //run when new challenge recived
+        {
+            startListeners();
+            binding.messageTv.setText(message);
+        }
+
 
     }
 
-    private void getApiData(String opponentId) {
+    private void getApiData()
+    {
        startLoader();
 
         GetProfileDAL.getProfileData(opponentId, new ProfileDataArrivalListner() {
             @Override
             public void onDataRecieved(MyProfileResponse.Data datam) {
                     data = datam;
-                    if(isFromNotification == false)
-                    {
-                        finish();
-                        startMainActivityForUser();
 
+                    if(ChallengeOrAcceptNotification == false)//when opponent accepts challenged
+                    {
+                        startMainActivityForAccept();
                     }
+                    else
+                    {
+                        startActivityforChallenge();
+                    }
+                    finish();
                     removeLoader();
 
             }
@@ -67,10 +83,34 @@ public class ChallengeDialog extends FragmentActivity {
                 removeLoader();
 
             }
+
+            @Override
+            public void onFailure() {
+                removeLoader();
+                Toast.makeText(getApplicationContext(),"Something went wrong!",Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
-    private void startMainActivityForUser() {
+    private void startActivityforChallenge() {
+        ChallengeReplyDAL.replyChallenger(DevicePreferences.getInstance().getuser().getId(),opponentId,"1");
+
+        Intent intent = new Intent(ChallengeDialog.this,MainActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("id",data.getId());
+
+        bundle.putBoolean("fromNotification",true);
+        bundle.putString("email",data.getEmail());
+        bundle.putString("latitude",data.getLattitude());
+        bundle.putString("longitude",data.getLongitude());
+        bundle.putString("username",data.getFirst_name());
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    private void startMainActivityForAccept() {
         Intent intent = new Intent(this,MainActivity.class);
 
         Bundle bundle = new Bundle();
@@ -97,23 +137,7 @@ public class ChallengeDialog extends FragmentActivity {
     private class AcceptAction implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            ChallengeReplyDAL.replyChallenger(DevicePreferences.getInstance().getuser().getId(),opponentId,"1");
-
-            Intent intent = new Intent(ChallengeDialog.this,MainActivity.class);
-
-            Bundle bundle = new Bundle();
-            bundle.putString("id",data.getId());
-
-            bundle.putBoolean("fromNotification",true);
-            bundle.putString("email",data.getEmail());
-            bundle.putString("latitude",data.getLattitude());
-            bundle.putString("longitude",data.getLongitude());
-            bundle.putString("username",data.getFirst_name());
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtras(bundle);
-            startActivity(intent);
-
-
+            getApiData();
         }
     }
 

@@ -9,6 +9,7 @@ import com.attribes.push2beat.models.Response.SocialSignUp.SocialSignUpResponse;
 import com.attribes.push2beat.models.Response.TrackList.ListOfTrackResponse;
 import com.attribes.push2beat.models.Response.UpdateProfileResponse;
 import com.attribes.push2beat.models.Response.UserList.ListOfUserResponse;
+import com.attribes.push2beat.models.Response.UserList.UpdateLocationResponse;
 import com.attribes.push2beat.models.Response.UserSignUp.SigninResponse;
 import com.attribes.push2beat.models.Response.UserSignUp.SignupResponse;
 
@@ -86,6 +87,12 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(EndPoints.Challenge_Loser)
     Call<PushResponse> challengeLoser(@Field("winner") String winnerId,@Field("loser") String loserId);
+
+
+    @FormUrlEncoded
+    @POST(EndPoints.updateUserLocation)
+    Call<UpdateLocationResponse> updateUserLocation(@Field("user_id") String userid, @Field("lattitude") String latitude, @Field("longitude") String longitude);
+
 
 
 }
