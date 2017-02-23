@@ -92,6 +92,9 @@ public class CatchMeFragment extends Fragment {
           params.setUser_id(Integer.parseInt(DevicePreferences.getInstance().getuser().getId()));
          params.setLat(DevicePreferences.getInstance().getLocation().getLatitude());
          params.setLng(DevicePreferences.getInstance().getLocation().getLongitude());
+        params.setUser_id(Integer.parseInt(DevicePreferences.getInstance().getuser().getId()));
+        params.setLat(DevicePreferences.getInstance().getLocation().getLatitude());
+        params.setLng(DevicePreferences.getInstance().getLocation().getLongitude());
 
 
 
@@ -117,6 +120,12 @@ public class CatchMeFragment extends Fragment {
 
             @Override
             public void onEmptyData(String msg) {
+                binding.progress.progressWheel.setVisibility(View.GONE);
+                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(String msg) {
                 binding.progress.progressWheel.setVisibility(View.GONE);
                 Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
             }

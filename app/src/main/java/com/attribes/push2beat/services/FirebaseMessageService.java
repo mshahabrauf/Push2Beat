@@ -73,10 +73,15 @@ public class FirebaseMessageService extends FirebaseMessagingService {
             if(data.get("text").contains("accepted"))
             {   // if opponent accept Challenge
                 startDialogAcitivity(data,false,data.get("challanged_person_id"));
+            if(data.get("text").contains("accepted")) {
+                requestUserDetail(data.get("challanged_person_id").toString()); //accept Request
             }
             else
             {
                 restartCatchActivity(data.get("text"));  // if opponent reject Challenge
+            else {
+                restartCatchActivity(data.get("text")); //Reject
+
             }
         }
         else
