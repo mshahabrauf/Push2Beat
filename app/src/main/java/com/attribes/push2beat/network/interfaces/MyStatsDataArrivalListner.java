@@ -12,4 +12,6 @@ public interface MyStatsDataArrivalListner {
 
     void onDataRecieved(List<Datum> data, List<Track> track);
     void onEmptyData(String msg);
+    void onFailure(String message);
+
 }

@@ -1,11 +1,14 @@
 package com.attribes.push2beat.fragments;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,11 +58,9 @@ public class MapFragment extends android.support.v4.app.Fragment {
     }
 
     @SuppressLint("ValidFragment")
-    public MapFragment(Location location)
-        {
-            startLocation = location;
-        }
-
+    public MapFragment(Location location) {
+        startLocation = location;
+    }
 
 
     @SuppressLint("ValidFragment")
@@ -96,34 +97,38 @@ public class MapFragment extends android.support.v4.app.Fragment {
     }
 
 
-
-
     private void addTrackMarker(List<LatLng> track) {
-        if(track.size() > 0) {
+        if (track.size() > 0) {
             start = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)).position(track.get(0)));
             end = map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)).position(track.get(track.size() - 1)));
-            }
+        }
     }
-
-
 
 
     private class MapReadyCallback implements OnMapReadyCallback {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
-            if(maplistener != null)
-            {
-            maplistener.onMapReady();
+            if (maplistener != null) {
+                maplistener.onMapReady();
             }
 
 
-            if(opponent != null)
-            {
+            if (opponent != null) {
                 map.addMarker(opponent);
             }
 
-            if(startLocation!=null) {
+            if (startLocation != null) {
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
                 map.setMyLocationEnabled(true);
                 moveMapCamera(startLocation.getLatitude(),startLocation.getLongitude());
             }

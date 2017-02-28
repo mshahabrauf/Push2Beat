@@ -61,21 +61,17 @@ public class LoginDAL {
                 {
                     if(t instanceof SocketTimeoutException)
                     {
-                        onSignInListner.onFailure(t.getMessage());
+                        onSignInListner.onFailure("Time Out!Your internet is slow");
                     }
-                    if(t instanceof JsonSyntaxException)//executes when invalid login
+                    else if(t instanceof JsonSyntaxException)//executes when invalid login
                     {
                         onSignInListner.onFailure("Wrong Email ID or Password");
                     }
-                    if(t instanceof java.net.UnknownHostException)
+                   else if(t instanceof java.net.UnknownHostException)
                     {
                         onSignInListner.onFailure("No Internet Connection");
                     }
-                    else
-                    {
-                        onSignInListner.onFailure(t.getMessage());
-                    }
-
+//
 
 
                 }

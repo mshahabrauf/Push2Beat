@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.Alerts;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.adapter.MyStatsAdapter;
 import com.attribes.push2beat.databinding.FragmentMystatsBinding;
@@ -65,7 +66,8 @@ public class MyStatsFragment extends android.support.v4.app.Fragment  {
 
     }
 
-    private void fetchMyStats() {
+    private void fetchMyStats()
+    {
         mtBinding.loaderLayout.progressWheel.setVisibility(View.VISIBLE);
         MyStatsDAL.getMyStatsList(DevicePreferences.getInstance().getuser().getId(), new MyStatsDataArrivalListner() {
             @Override
@@ -82,6 +84,14 @@ public class MyStatsFragment extends android.support.v4.app.Fragment  {
             public void onEmptyData(String msg) {
                 mtBinding.loaderLayout.progressWheel.setVisibility(View.GONE);
                 Toast.makeText(getContext(), "No stats found", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(String message)
+            {
+                mtBinding.loaderLayout.progressWheel.setVisibility(View.GONE);
+                Alerts.showError(getActivity(),message);
+
             }
         });
     }

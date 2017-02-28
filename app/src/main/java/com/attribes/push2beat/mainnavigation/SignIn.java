@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -16,11 +15,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.attribes.push2beat.R;
-import com.attribes.push2beat.Utils.AlertS;
+import com.attribes.push2beat.Utils.Alerts;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.Utils.DevicePreferences;
-import com.attribes.push2beat.Utils.OnSignUpSuccess;
 import com.attribes.push2beat.Utils.OnSocialSignInSuccess;
 import com.attribes.push2beat.Utils.OnSocialSignUpSuccess;
 import com.attribes.push2beat.fragments.LoaderFragment;
@@ -28,13 +26,11 @@ import com.attribes.push2beat.interfaces.MyCallBacks;
 import com.attribes.push2beat.models.BodyParams.SignInParams;
 import com.attribes.push2beat.models.BodyParams.UserLoginDetailParams;
 import com.attribes.push2beat.models.Response.SocialSignUp.SocialSignUpResponse;
-import com.attribes.push2beat.models.Response.UpdateToken;
 import com.attribes.push2beat.models.Response.UserSignUp.SigninResponse;
 import com.attribes.push2beat.models.UserProfile;
 import com.attribes.push2beat.network.DAL.LoginDAL;
 import com.attribes.push2beat.network.DAL.SocialSignIn;
 import com.attribes.push2beat.network.DAL.SocialSignup;
-import com.attribes.push2beat.network.DAL.UpdateDeviceTokenDAL;
 import com.attribes.push2beat.services.LocationService;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -60,11 +56,6 @@ import com.wang.avi.AVLoadingIndicatorView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 
 public class SignIn extends AppCompatActivity {
@@ -251,8 +242,7 @@ public class SignIn extends AppCompatActivity {
             public void onFailure(String message)
             {
                 removeLoader();
-                AlertS alertS=new AlertS();
-                alertS.showError(SignIn.this,message);
+                Alerts.showError(SignIn.this,message);
             }
 
 

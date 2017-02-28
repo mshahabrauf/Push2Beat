@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.attribes.push2beat.R;
-import com.attribes.push2beat.Utils.AlertS;
+import com.attribes.push2beat.Utils.Alerts;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.Utils.DevicePreferences;
@@ -157,8 +157,8 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onFailure(String message) {
                 removeLoader();
-                AlertS alertS=new AlertS();
-                alertS.showError(SignUp.this,message);
+
+                Alerts.showError(SignUp.this,message);
                 //Toast.makeText(SignUp.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
 
 

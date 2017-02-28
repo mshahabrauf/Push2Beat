@@ -20,10 +20,12 @@ public class ChallengeReplyDAL {
             public void onResponse(Call<PushResponse> call, Response<PushResponse> response)
             {
 
+
             }
 
             @Override
-            public void onFailure(Call<PushResponse> call, Throwable t) {
+            public void onFailure(Call<PushResponse> call, Throwable t)
+            {
 
             }
         });

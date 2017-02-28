@@ -22,7 +22,8 @@ public class MyStatsDAL {
         RestClient.getAuthAdapter().getMyStats(user_id).enqueue(new Callback<MyStatsResponse>() {
             @Override
             public void onResponse(Call<MyStatsResponse> call, Response<MyStatsResponse> response) {
-                if(response.isSuccessful()){
+                if(response.isSuccessful())
+                {
                     List<Datum> data = response.body().getData();
                     List<Track> track = response.body().getTracks();
                     if (data.isEmpty()) {
@@ -34,7 +35,10 @@ public class MyStatsDAL {
             }
 
             @Override
-            public void onFailure(Call<MyStatsResponse> call, Throwable t) {
+            public void onFailure(Call<MyStatsResponse> call, Throwable t)
+            {
+                myStatsDataArrivalListner.onFailure(t.getMessage());
+
 
             }
         });
