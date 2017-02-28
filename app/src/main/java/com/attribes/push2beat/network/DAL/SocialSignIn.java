@@ -47,7 +47,8 @@ public class SocialSignIn {
 
 
                 @Override
-                public void onFailure(Call<SocialSignInResponse> call, Throwable t) {
+                public void onFailure(Call<SocialSignInResponse> call, Throwable t)
+                {
 
                 }
             });

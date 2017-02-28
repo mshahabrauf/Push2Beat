@@ -191,11 +191,13 @@ public class MapFragment extends android.support.v4.app.Fragment {
 
     public void showUsers(List<Datum> data)
     {
-        for(Datum datum:data)
+        if(!data.isEmpty())
         {
-            LatLng userPosition =new LatLng(Double.parseDouble(datum.getLat()),Double.parseDouble(datum.getLng()));
-            map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_action_name)).position(userPosition)).setTag(datum);
+            for (Datum datum : data) {
+                LatLng userPosition = new LatLng(Double.parseDouble(datum.getLat()), Double.parseDouble(datum.getLng()));
+                map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_action_name)).position(userPosition)).setTag(datum);
 
+            }
         }
 
     }

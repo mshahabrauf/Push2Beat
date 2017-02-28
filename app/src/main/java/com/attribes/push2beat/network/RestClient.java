@@ -22,7 +22,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Muhammad Shahab on 7/20/16.
  */
 public class RestClient {
-    private static final int TIMEOUT = 25;
+   private static final int TIMEOUT = 25;
+   // private static final int TIMEOUT = 60;
+
     private static ApiInterface restClient;
 
 

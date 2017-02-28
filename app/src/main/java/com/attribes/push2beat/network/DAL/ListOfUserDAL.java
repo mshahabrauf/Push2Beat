@@ -7,6 +7,7 @@ import com.attribes.push2beat.models.Response.UserList.ListOfUserResponse;
 import com.attribes.push2beat.network.RestClient;
 import com.attribes.push2beat.network.interfaces.UsersArrivalListener;
 
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,7 +38,8 @@ public class ListOfUserDAL {
                     if (data.isEmpty())
                     {
                         listener.onEmptyData(response.body().getMsg());
-                    } else
+                    }
+                    else
                     {
                         listener.onDataRecieved(data);
                     }
@@ -47,7 +49,17 @@ public class ListOfUserDAL {
 
             @Override
             public void onFailure(Call<ListOfUserResponse> call, Throwable t) {
-                listener.onFailure("Something went wrong");
+                if(t instanceof SocketTimeoutException)
+                {
+                   listener.onFailure(t.getMessage());
+
+                }
+                else
+                {
+                    listener.onFailure(t.getMessage());
+
+                }
+
             }
         });
 

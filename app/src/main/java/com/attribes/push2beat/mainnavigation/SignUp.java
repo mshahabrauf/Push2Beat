@@ -14,13 +14,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.AlertS;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.Utils.OnSignUpSuccess;
 import com.attribes.push2beat.fragments.LoaderFragment;
+import com.attribes.push2beat.interfaces.MyCallBacks;
 import com.attribes.push2beat.models.BodyParams.SignUpParams;
 import com.attribes.push2beat.models.BodyParams.UserLoginDetailParams;
+import com.attribes.push2beat.models.Response.UserSignUp.SigninResponse;
 import com.attribes.push2beat.network.DAL.LoginDAL;
 import com.attribes.push2beat.network.DAL.SignUpDAL;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -144,19 +147,23 @@ public class SignUp extends AppCompatActivity {
         detail.setPassword(password);
 
 
-        LoginDAL.userLogin(detail, new OnSignUpSuccess() {
+        LoginDAL.userLogin(detail, new MyCallBacks<SigninResponse>() {
             @Override
-            public void onSuccess() {
-
+            public void onSuccess(SigninResponse data) {
                 Common.getInstance().setPassword(SignUp.this.password.getText().toString());
                 DevicePreferences.getInstance().saveusers(Common.getInstance().getUser());
             }
 
             @Override
-            public void onFailure() {
+            public void onFailure(String message) {
                 removeLoader();
-                Toast.makeText(SignUp.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
+                AlertS alertS=new AlertS();
+                alertS.showError(SignUp.this,message);
+                //Toast.makeText(SignUp.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
+
+
             }
+
         });
 
 

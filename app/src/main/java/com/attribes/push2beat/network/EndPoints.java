@@ -27,8 +27,8 @@ public class EndPoints {
     public static final String Challenge_Response ="challenge_responce";
     public static final String Challenge_Loser ="challenge_loser";
 
-    public static final String updateUserLocation="update_location ";
-
+    public static final String updateUserLocation="update_location";
+    public static final String update_DeviceToken="update_device_token";
 
 
 }

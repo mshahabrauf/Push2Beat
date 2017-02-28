@@ -64,6 +64,7 @@ public class ChallengeDialog extends FragmentActivity {
             @Override
             public void onDataRecieved(MyProfileResponse.Data datam) {
                     data = datam;
+                    removeLoader();
 
                     if(ChallengeOrAcceptNotification == false)//when opponent accepts challenged
                     {
@@ -74,7 +75,7 @@ public class ChallengeDialog extends FragmentActivity {
                         startActivityforChallenge();
                     }
                     finish();
-                    removeLoader();
+
 
             }
 
@@ -136,7 +137,8 @@ public class ChallengeDialog extends FragmentActivity {
 
     private class AcceptAction implements View.OnClickListener {
         @Override
-        public void onClick(View view) {
+        public void onClick(View view)
+        {
             getApiData();
         }
     }

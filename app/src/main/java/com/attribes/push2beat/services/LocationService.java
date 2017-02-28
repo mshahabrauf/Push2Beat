@@ -48,9 +48,8 @@ public class LocationService extends IntentService
         super.onCreate();
         buildGoogleClient();
         setLocationRequest();
-        //mGoogleApiClient.connect();
-        //DevicePreference.getInstance().init(getApplicationContext());
-        Toast.makeText(getApplicationContext(), "Monitoring Start", Toast.LENGTH_SHORT).show();
+        DevicePreferences.getInstance().init(getApplicationContext());
+
     }
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -171,7 +170,7 @@ public class LocationService extends IntentService
         if (mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             mGoogleApiClient.disconnect();
-            Toast.makeText(this,"Monitoring Stop",Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this,"Monitoring Stop",Toast.LENGTH_SHORT).show();
         }
         super.onDestroy();
     }

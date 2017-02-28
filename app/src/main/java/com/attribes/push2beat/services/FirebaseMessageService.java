@@ -73,15 +73,10 @@ public class FirebaseMessageService extends FirebaseMessagingService {
             if(data.get("text").contains("accepted"))
             {   // if opponent accept Challenge
                 startDialogAcitivity(data,false,data.get("challanged_person_id"));
-            if(data.get("text").contains("accepted")) {
-                requestUserDetail(data.get("challanged_person_id").toString()); //accept Request
             }
             else
             {
                 restartCatchActivity(data.get("text"));  // if opponent reject Challenge
-            else {
-                restartCatchActivity(data.get("text")); //Reject
-
             }
         }
         else
@@ -90,7 +85,6 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         }
         showNotification(data.get("text"));
     }
-
     private void startDialogAcitivity(Map<String, String> data, boolean isFromNotification, String openentId) {
         Intent intent = new Intent(this, ChallengeDialog.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

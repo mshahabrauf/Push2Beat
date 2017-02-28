@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.AlertS;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.Constants;
 import com.attribes.push2beat.Utils.DevicePreferences;
@@ -26,6 +27,8 @@ import com.attribes.push2beat.network.DAL.ListOfUserDAL;
 import com.attribes.push2beat.network.interfaces.UsersArrivalListener;
 
 import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by android on 12/11/16.
@@ -120,6 +123,7 @@ public class CatchMeFragment extends Fragment {
 
             @Override
             public void onEmptyData(String msg) {
+
                 binding.progress.progressWheel.setVisibility(View.GONE);
                 Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
             }
@@ -127,7 +131,9 @@ public class CatchMeFragment extends Fragment {
             @Override
             public void onFailure(String msg) {
                 binding.progress.progressWheel.setVisibility(View.GONE);
-                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                AlertS alertS=new AlertS();
+                alertS.showError(getActivity(),msg);;
             }
         });
     }

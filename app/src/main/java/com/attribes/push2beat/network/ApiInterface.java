@@ -8,6 +8,7 @@ import com.attribes.push2beat.models.Response.SocialSignIn.SocialSignInResponse;
 import com.attribes.push2beat.models.Response.SocialSignUp.SocialSignUpResponse;
 import com.attribes.push2beat.models.Response.TrackList.ListOfTrackResponse;
 import com.attribes.push2beat.models.Response.UpdateProfileResponse;
+import com.attribes.push2beat.models.Response.UpdateToken;
 import com.attribes.push2beat.models.Response.UserList.ListOfUserResponse;
 import com.attribes.push2beat.models.Response.UserList.UpdateLocationResponse;
 import com.attribes.push2beat.models.Response.UserSignUp.SigninResponse;
@@ -92,6 +93,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST(EndPoints.updateUserLocation)
     Call<UpdateLocationResponse> updateUserLocation(@Field("user_id") String userid, @Field("lattitude") String latitude, @Field("longitude") String longitude);
+    @FormUrlEncoded
+    @POST(EndPoints.update_DeviceToken)
+    Call<UpdateToken> updateDeviceToken(@Field("user_id") String user_id,@Field("device_token") String devicetoken);
 
 
 
