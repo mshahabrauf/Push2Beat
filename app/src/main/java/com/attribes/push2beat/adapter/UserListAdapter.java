@@ -7,10 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.attribes.push2beat.R;
+import com.attribes.push2beat.Utils.Alerts;
 import com.attribes.push2beat.Utils.Common;
 import com.attribes.push2beat.Utils.DevicePreferences;
 import com.attribes.push2beat.Utils.RecyclerAdapterInterface;
 import com.attribes.push2beat.adapter.viewholders.UserListHolder;
+import com.attribes.push2beat.interfaces.MyCallBacks;
+import com.attribes.push2beat.models.Response.PushFireBase.PushResponse;
 import com.attribes.push2beat.models.Response.UserList.Datum;
 import com.attribes.push2beat.network.DAL.ChallengeDAL;
 import com.squareup.picasso.Picasso;
@@ -27,12 +30,12 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListHolder> {
 
     public List<Datum> mData;
     private Context mContext;
-    private RecyclerAdapterInterface listener;
 
-    public UserListAdapter(List<Datum> data,RecyclerAdapterInterface mapInterface)
+
+    public UserListAdapter(List<Datum> data)
     {
         mData = data;
-        listener = mapInterface;
+
     }
 
     @Override
@@ -69,7 +72,8 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListHolder> {
     private class startButtonListener implements View.OnClickListener {
         private int position;
 
-        public startButtonListener(int position) {
+        public startButtonListener(int position)
+        {
             this.position = position;
         }
 
@@ -77,8 +81,24 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListHolder> {
         public void onClick(View view) {
 
             ChallengeDAL.challengeOpponent(mData.get(position).getId(),
-                    DevicePreferences.getInstance().getuser().getId(),mContext);
-            listener.onstartCallback(position);
+                    DevicePreferences.getInstance().getuser().getId(), new MyCallBacks<PushResponse>()
+                    {
+                        @Override
+                        public void onSuccess(PushResponse data)
+                        {
+                            Common.getInstance().setOpponentData(mData.get(position));//need some verification
+                            Alerts.showDialoge(mContext,"Challenge Successfully Sent");
+
+                        }
+
+                        @Override
+                        public void onFailure(String message)
+                        {
+                            Alerts.showDialoge(mContext,message);
+
+                        }
+                    });
+
         }
     }
 
@@ -87,30 +107,3 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListHolder> {
 
 
 
-//Purana Kachra :D
-/*            GetProfileDAL.getProfileData(mData.get(position).getId(), new ProfileDataArrivalListner() {
-                @Override
-                public void onDataRecieved(MyProfileResponse.Data data) {
-                    PushData push = new PushData();
-                    Data dataa = new Data();
-                    dataa.setUsername(Common.getInstance().getUser().getFirstName());
-                    dataa.setToken(FirebaseInstanceId.getInstance().getToken());
-                    dataa.setStatus(0);
-                    dataa.setEmail(Common.getInstance().getUser().getEmail());
-                    dataa.setLatitude(String.valueOf(DevicePreferences.getInstance().getLocation().getLatitude()));
-                    dataa.setLongitude(String.valueOf(DevicePreferences.getInstance().getLocation().getLongitude()));
-                    push.setData(dataa);
-
-                    push.setTo(data.getDevice_token());
-
-
-                    SendPush.sendPushToUser(push);
-                    listener.onstartCallback(position);
-
-                }
-
-                @Override
-                public void onEmptyData(String msg) {
-
-                }
-            });*/

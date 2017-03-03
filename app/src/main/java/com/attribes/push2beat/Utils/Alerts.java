@@ -23,4 +23,16 @@ public class Alerts {
         //pDialog.setCancelable(false);
         pDialog.show();
     }
+    public static void showDialoge(Context context,String message)
+    {
+        SweetAlertDialog pDialog = new SweetAlertDialog(context, SweetAlertDialog.NORMAL_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+
+        pDialog.setTitleText("Alert!");
+        pDialog.setContentText(message);
+
+        //pDialog.setCancelable(false);
+        pDialog.show();
+    }
+
 }

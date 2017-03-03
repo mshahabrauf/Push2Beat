@@ -105,16 +105,8 @@ public class CatchMeFragment extends Fragment {
             {
                 binding.progress.progressWheel.setVisibility(View.GONE);
 
-                mRecycle.setAdapter(new UserListAdapter(data, new RecyclerAdapterInterface()
-                {
-                    @Override
-                    public void onstartCallback(int position) {
-                        startLoaderFragment();
-                        Common.getInstance().setOpponentData(data.get(position));
-                   //  listener.onStartCmiyc(data.get(position));
-                    }
-                }));
 
+                mRecycle.setAdapter(new UserListAdapter(data));//sets adapter when data has been recieved
                 displayUserOnMap(data);
 
             }
