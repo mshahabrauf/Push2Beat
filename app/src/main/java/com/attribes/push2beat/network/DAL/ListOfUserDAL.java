@@ -6,6 +6,7 @@ import com.attribes.push2beat.models.Response.UserList.Datum;
 import com.attribes.push2beat.models.Response.UserList.ListOfUserResponse;
 import com.attribes.push2beat.network.RestClient;
 import com.attribes.push2beat.network.interfaces.UsersArrivalListener;
+import com.google.gson.JsonSyntaxException;
 
 import java.net.SocketTimeoutException;
 import java.util.HashMap;
@@ -51,13 +52,15 @@ public class ListOfUserDAL {
             public void onFailure(Call<ListOfUserResponse> call, Throwable t) {
                 if(t instanceof SocketTimeoutException)
                 {
-                   listener.onFailure(t.getMessage());
-
+                    listener.onFailure("Time Out!Your internet is slow");
                 }
-                else
+                else if(t instanceof JsonSyntaxException)//executes when invalid login
                 {
-                    listener.onFailure(t.getMessage());
-
+                    listener.onFailure("No result found");
+                }
+                else if(t instanceof java.net.UnknownHostException)
+                {
+                    listener.onFailure("No Internet Connection");
                 }
 
             }

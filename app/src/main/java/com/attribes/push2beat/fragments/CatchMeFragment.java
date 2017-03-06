@@ -104,8 +104,6 @@ public class CatchMeFragment extends Fragment {
             public void onDataRecieved(final List<Datum> data)
             {
                 binding.progress.progressWheel.setVisibility(View.GONE);
-
-
                 mRecycle.setAdapter(new UserListAdapter(data));//sets adapter when data has been recieved
                 displayUserOnMap(data);
 

@@ -18,12 +18,14 @@ public class ChallengeResultDAL {
     {
         RestClient.getAuthAdapter().challengeLoser(winnerId,loserId).enqueue(new Callback<PushResponse>() {
             @Override
-            public void onResponse(Call<PushResponse> call, Response<PushResponse> response) {
-
+            public void onResponse(Call<PushResponse> call, Response<PushResponse> response)
+            {
+                    //do some thing
             }
 
             @Override
-            public void onFailure(Call<PushResponse> call, Throwable t) {
+            public void onFailure(Call<PushResponse> call, Throwable t)
+            {
 
             }
         });

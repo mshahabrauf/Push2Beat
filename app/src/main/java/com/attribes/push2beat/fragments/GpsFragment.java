@@ -69,7 +69,8 @@ import static com.google.android.gms.location.LocationRequest.create;
  * Created by Moiz on 12/8/16.
  */
 
-public class GpsFragment extends android.support.v4.app.Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,GhostRiderFragment.OnStartButtonListener{
+public class GpsFragment extends android.support.v4.app.Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,
+        GhostRiderFragment.OnStartButtonListener{
 
     private MapView mapView;
     private FragmentTimerBinding binding;
@@ -571,7 +572,8 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
             final QBIncomingMessagesManager manager = Common.getInstance().getChatService().getIncomingMessagesManager();
             manager.addDialogMessageListener(new QBChatDialogMessageListener() {
                 @Override
-                public void processMessage(String s, QBChatMessage qbChatMessage, Integer integer) {
+                public void processMessage(String s, QBChatMessage qbChatMessage, Integer integer)
+                {
                    if(isCatchMeRunning) {
                        String message = qbChatMessage.getBody();
                        String[] str = message.split(",");
@@ -697,7 +699,8 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
     /**
      * This is Location listener which calculate distance made track of the lat Lng and show on map
      */
-    private class CustomLocationListener implements LocationListener {
+    private class CustomLocationListener implements LocationListener
+    {
         @Override
         public void onLocationChanged(Location curr) {
             DevicePreferences.getInstance().saveLocation(curr);  // save current Location to preference

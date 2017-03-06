@@ -71,8 +71,9 @@
 
 
         <activity android:name=".Utils.ChallengeDialog"
-            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar.MinWidth"
+            android:theme="@style/Custom_AppDialogTheme"
             >
+            <!--android:theme="@android:style/Theme.Holo.Dialog.NoActionBar.MinWidth"-->
 
         </activity>
 

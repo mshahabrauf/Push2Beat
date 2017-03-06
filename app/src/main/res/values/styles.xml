@@ -23,4 +23,8 @@
         <item name="android:background">@drawable/fbbutton</item>
 
     </style>
+    <style name="Custom_AppDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="windowNoTitle">true</item>
+
+    </style>
 </resources>
