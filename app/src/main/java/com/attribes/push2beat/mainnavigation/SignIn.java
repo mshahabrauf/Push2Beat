@@ -66,7 +66,7 @@ public class SignIn extends AppCompatActivity {
     AVLoadingIndicatorView progress;
 
     private UserProfile userProfile;
-    private ImageButton loginButton1;
+    private ImageButton fbButton;
     private CallbackManager callbackManager1;
     CheckBox remember;
     public SignInParams data1;
@@ -85,7 +85,7 @@ public class SignIn extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         Common.getInstance().initializeQBInstance(getApplicationContext());
-        loginButton1 = (ImageButton) findViewById(R.id.login_button1);
+        fbButton = (ImageButton) findViewById(R.id.login_button1);
 
 
         signin = (ImageView) findViewById(R.id.signinuser);
@@ -100,7 +100,7 @@ public class SignIn extends AppCompatActivity {
 
 
 
-        loginButton1.setOnClickListener(new View.OnClickListener() {
+        fbButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -166,8 +166,10 @@ public class SignIn extends AppCompatActivity {
                     public void onError(FacebookException error) {
                         Toast.makeText(getApplicationContext(),""+ error, Toast.LENGTH_SHORT).show();
 
+
                     }
-                });
+                }
+                );
 
 
             }

@@ -304,6 +304,33 @@ public class MusicFragment extends android.support.v4.app.Fragment {
                 mHelper.consumeAsync(purchase, mConsumeFinishedListener);
                 new DownloadFileFromURL().execute("https://www.dropbox.com/s/c4vuopcqd2mzuzz/fullmix.mp3?dl=1");
             }
+
+                       /*  Hit 2 music consumptions */
+
+            if (purchase.getSku().equals(fifteenM_HIT2)) {
+                Toast.makeText(getActivity(), "fifteenM_HIT2"+" Purchased", Toast.LENGTH_SHORT).show();
+                mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                new DownloadFileFromURL().execute("https://www.dropbox.com/s/81tbdhv7qb93mtu/0-15.40.mp3?dl=0");
+            }
+
+            if (purchase.getSku().equals(twentytwoM_HIT2)) {
+                Toast.makeText(getActivity(), "twentytwoM_HIT2"+" Purchased", Toast.LENGTH_SHORT).show();
+                mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                new DownloadFileFromURL().execute("https://www.dropbox.com/s/i5dyz8e593utwce/0-22.22.mp3?dl=0");
+            }
+
+            if (purchase.getSku().equals(thirtyM_HIT2)) {
+                Toast.makeText(getActivity(), "thirtyM_HIT2"+" Purchased", Toast.LENGTH_SHORT).show();
+                mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                new DownloadFileFromURL().execute("https://www.dropbox.com/s/w8bcrocm4purgtd/0-29.15.mp3?dl=0");
+            }
+
+            if (purchase.getSku().equals(fourtyM_HIT2)) {
+                Toast.makeText(getActivity(), "fourtyM_HIT2"+" Purchased", Toast.LENGTH_SHORT).show();
+                mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                new DownloadFileFromURL().execute("https://www.dropbox.com/s/of965naknzekth7/Push2beat%20FULL%20MASTER.mp3?dl=0");
+            }
+
         }
     };
 
@@ -478,13 +505,25 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     private class HitTwoSevenListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            String payload = "";
-            try {
-                mHelper.launchPurchaseFlow(getActivity(), sevenM_HIT2, RC_REQUEST, mPurchaseFinishedListener, payload);
-            } catch(IllegalStateException ex){
-                Toast.makeText(getContext(), "Please retry in a few seconds.", Toast.LENGTH_SHORT).show();
-            }
 
+            File extStore = Environment.getExternalStorageDirectory();
+            File myFile = new File(extStore.getAbsolutePath() + "/push2beat/first8.mp3");
+
+            if(myFile.exists() ){
+                if(isOnGpsFragment) {
+                    startPrepareFragment();
+                    DevicePreferences.getInstance().saveMusicTrackPath(extStore.getAbsolutePath() + "/push2beat/first8.mp3");
+                }
+                else {
+                    DevicePreferences.getInstance().saveMusicTrackPath(extStore.getAbsolutePath() + "/push2beat/first8.mp3");
+                    ((MainActivity)getActivity()).playMusic();
+                }
+            }
+            else {
+                fileName = "first8.mp3";
+                new DownloadFileFromURL().execute("https://www.dropbox.com/s/q67r5s94dm3ny1m/0-8.25.mp3?dl=0");
+
+            }
         }
     }
 
@@ -633,7 +672,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-
+            dismissDialog();
         }
 
         private void showDialog(int progress_bar_type) {
@@ -649,6 +688,11 @@ public class MusicFragment extends android.support.v4.app.Fragment {
                 pDialog.setCancelable(true);
             }
             pDialog.show();
+        }
+
+        private void dismissDialog(){
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.dismiss();
         }
 
     }
@@ -680,7 +724,12 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         @Override
         public void onClick(View view) {
 
+        if(DevicePreferences.getInstance().getMusicTrackPath() == null || DevicePreferences.getInstance().getMusicTrackPath().isEmpty()){
+            Toast.makeText(getActivity(), "Please select or download music first", Toast.LENGTH_SHORT).show();
+        }else{
             ((MainActivity)getActivity()).playMusic();
+        }
+
         }
     }
 

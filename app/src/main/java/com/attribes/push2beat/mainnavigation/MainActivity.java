@@ -284,6 +284,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void playMusic() {
+        mPlayer = new MediaPlayer();
+        Uri  myUri = Uri.parse(DevicePreferences.getInstance().getMusicTrackPath());
 
         if(mPlayer !=null) {
             if (mPlayer.isPlaying()) {
@@ -291,26 +293,23 @@ public class MainActivity extends AppCompatActivity {
                 mPlayer = null;
             }
         }
-
-        mPlayer = new MediaPlayer();
-        Uri myUri = Uri.parse(DevicePreferences.getInstance().getMusicTrackPath());
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            mPlayer.setDataSource(this, myUri);
-            mPlayer.prepare();
-            mPlayer.start();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            try {
+                mPlayer.setDataSource(this, myUri);
+                mPlayer.prepare();
+                mPlayer.start();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
 
-        } catch (SecurityException e) {
-            e.printStackTrace();
+            } catch (SecurityException e) {
+                e.printStackTrace();
 
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
     }
 

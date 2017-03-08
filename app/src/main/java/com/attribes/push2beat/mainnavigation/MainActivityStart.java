@@ -217,8 +217,32 @@ public class MainActivityStart extends AppCompatActivity implements GoogleApiCli
         apiClient.disconnect();
     }
 
+    @Override
+    public void onBackPressed() {
 
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to exit ?")
+                .setCancelable(false)
+                .setIcon(R.drawable.ic_launcher)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        MainActivityStart.this.finish();
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.cancel();
+
+                    }
+                })
+                .show();
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,int[] grantResults) {

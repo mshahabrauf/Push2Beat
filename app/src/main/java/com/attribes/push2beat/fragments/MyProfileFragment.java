@@ -295,12 +295,6 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
         }
     }
 
-    private class EditListners
-    {
-
-
-    }
-
 
     private class LogOutListener implements View.OnClickListener {
         @Override
@@ -311,8 +305,9 @@ public class MyProfileFragment extends android.support.v4.app.Fragment {
             stopservice();
             Intent intent = new Intent(getActivity(), MainActivityStart.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-
+            getActivity().finish();
         }
     }
 
