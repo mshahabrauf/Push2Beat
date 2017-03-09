@@ -213,7 +213,9 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 
     private void initFragments() {
         if(startLocation != null)
-        {mapFragment = new MapFragment(startLocation);}
+        {
+            mapFragment = new MapFragment(startLocation);
+        }
         else {mapFragment = new MapFragment();}
         showHideFragment(mapFragment);
 
@@ -329,6 +331,7 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         MapFragment fragment = (MapFragment)fm.findFragmentByTag(Constants.MAP_TAG);
         return fragment;
     }
+
 
 
 
@@ -600,8 +603,8 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
 //                        }
 
                        }
-
-                       getMapFragment().addOpponentMaker(opponent.getLatitude(), opponent.getLongitude());
+                       getMapFragment().addUserMarker(new LatLng(DevicePreferences.getInstance().getLocation().getLatitude(),DevicePreferences.getInstance().getLocation().getLongitude()));
+                       getMapFragment().addOpponentMaker(opponent.getLatitude(), opponent.getLongitude());   //hide comments
                        getMapFragment().moveOpponent(lat, lng);
 
                    }
@@ -1080,7 +1083,9 @@ public class GpsFragment extends android.support.v4.app.Fragment implements Goog
         }
 
         getMapFragment().removeTrackMarkers();
-        getMapFragment().addOpponentMaker(oppData.getLatitude(),oppData.getLongitude());
+       // getMapFragment().addMArkers(new LatLng(startLocation.getLatitude(),startLocation.getLongitude()),new LatLng(oppData.getLatitude(),oppData.getLongitude()));
+        getMapFragment().addUserMarker(new LatLng(DevicePreferences.getInstance().getLocation().getLatitude(),DevicePreferences.getInstance().getLocation().getLongitude()));
+        getMapFragment().addOpponentMaker(oppData.getLatitude(),oppData.getLongitude()); //hide comments
 
         initQBChat(oppData.getEmail());
 

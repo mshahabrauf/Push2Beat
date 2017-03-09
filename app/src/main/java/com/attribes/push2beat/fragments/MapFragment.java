@@ -50,6 +50,7 @@ public class MapFragment extends android.support.v4.app.Fragment {
     private Marker end;
     private Polyline line;
     private MarkerOptions opponent;
+    private MarkerOptions mUser;
     StatsFragment.MapListener maplistener;
 
     public MapFragment() {
@@ -58,7 +59,8 @@ public class MapFragment extends android.support.v4.app.Fragment {
     }
 
     @SuppressLint("ValidFragment")
-    public MapFragment(Location location) {
+    public MapFragment(Location location)
+    {
         startLocation = location;
     }
 
@@ -114,9 +116,14 @@ public class MapFragment extends android.support.v4.app.Fragment {
             }
 
 
-            if (opponent != null) {
+            if (opponent != null)
+            {
                 map.addMarker(opponent);
             }
+            if(mUser!=null){
+                map.addMarker(mUser);
+            }
+
 
             if (startLocation != null) {
                 if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -213,10 +220,18 @@ public class MapFragment extends android.support.v4.app.Fragment {
     public void addOpponentMaker(double lat,double lng)
     {
         LatLng latLng = new LatLng(lat,lng);
-        opponent = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_action_name)).position(latLng);
-      //  map.addMarker(opponent);
+        opponent = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_calories_red)).position(latLng);
+//         map.addMarker(opponent);
 
     }
+    public void addUserMarker(LatLng user)
+    {
+         mUser =new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_action_name)).position(user);
+       // map.addMarker(musermarker);
+
+
+    }
+
 
     public void moveOpponent(double lat,double lng){
         LatLng latLng = new LatLng(lat,lng);
